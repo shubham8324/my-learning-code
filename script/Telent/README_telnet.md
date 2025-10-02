@@ -21,17 +21,24 @@
   - `Telnet_Failed.txt` → failed servers  
   - `Telnet_Results.csv` → CSV format for Excel/analysis  
 
-- ✅ **Suppresses unnecessary output**
-  - Prevents “Terminated” messages from showing up  
+- ✅ **Clean Output**  
+  - Suppresses unnecessary “Terminated” messages  
+  - IP and Port columns aligned for readability  
+
+- ✅ **Error Handling**  
+  - Checks if input file exists  
+  - Checks if file contains valid servers  
+  - Exits with clear error if file is empty or invalid  
 
 ---
 
 ## 📋 Usage
 
-1️⃣ **Ensure your serverlist.txt is correctly formatted**
+### 1️⃣ Prepare your server list (`serverlist.txt`)
 
-Use spaces or tabs consistently, no extra spaces at the end:
+- Use spaces or tabs consistently, no extra spaces at the end:
 
+```text
 # IP Address   Port
 - 8.8.8.8       53
 - 1.1.1.1       80
