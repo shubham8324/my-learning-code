@@ -15,7 +15,7 @@ k8s_backup_alert_monitoring_framework
 - │ ├── Daily_Config_Backup_Scripts
 - │ │ ├── config_prop_backup
 - │ │ ├── deployment_backup
-- │ │ ├── EBDM_Backup_Failed_K8s.sh
+- │ │ ├── Backup_Failed_K8s.sh
 - │ │ ├── image_compare # Compare image versions across clusters
 - │ │ ├── Image_version_backup
 - │ │ ├── pod_backup
@@ -150,7 +150,7 @@ Add metrics in the folder name and script as required. Example metrics:
 **Backup Alert**
 
     ```bash
-     /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/EBDM_Backup_Failed_K8s.sh
+     /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/Backup_Failed_K8s.sh
     ```
     
 
