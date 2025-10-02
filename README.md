@@ -92,12 +92,13 @@ my-learning-code/
 ## ⚡ Usage
 Clone the repository:
 
-```bash
+bash
 git clone https://github.com/shubham8324/my-learning-code.git
 
 Browse the directories to explore code, dashboards, scripts, notes, and points.
 Submit suggestions via SUGGESTIONS.txt or GitHub Issues.
 Do not modify existing files directly.
+
 ---
 
 ## 🛠 Technologies
