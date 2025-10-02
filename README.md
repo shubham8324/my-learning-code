@@ -48,13 +48,13 @@ This repository is provided "as-is" without any warranty of any kind.
 ## 📂 Repository Structure
 
 my-learning-code/
-├─ 🧩 codes/            # Programming scripts and projects (Python, SQL, Shell)
-├─ 📊 dashboards/       # Analytics dashboards and visualizations
-├─ ⚙️ scripts/           # Utility and automation scripts
-├─ 📖 notes/            # Technical notes and learning guides
-├─ 💡 points/           # Key takeaways and summaries
-├─ ✏️ SUGGESTIONS.txt   # Optional suggestions file for feedback
-└─ 📄 README.md         # This file
+-├─ 🧩 codes/            # Programming scripts and projects (Python, SQL, Shell)
+-├─ 📊 dashboards/       # Analytics dashboards and visualizations
+-├─ ⚙️ scripts/           # Utility and automation scripts
+-├─ 📖 notes/            # Technical notes and learning guides
+-├─ 💡 points/           # Key takeaways and summaries
+-├─ ✏️ SUGGESTIONS.txt   # Optional suggestions file for feedback
+-└─ 📄 README.md         # This file
 ---
 
 ## 📝 Codes
