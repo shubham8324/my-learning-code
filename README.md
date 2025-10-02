@@ -37,15 +37,15 @@ This repository is provided "as-is" without any warranty of any kind.
 
 ## 📂 Repository Structure
 
-my-learning-code/
-│
-├─ codes/ # Programming scripts and projects (Python, SQL, Shell)
-├─ dashboards/ # Analytics dashboards and visualizations
-├─ scripts/ # Utility and automation scripts
-├─ notes/ # Technical notes and learning guides
-├─ points/ # Key takeaways and summaries
-├─ SUGGESTIONS.txt # Optional suggestions file for feedback
-└─ README.md # This file
+- my-learning-code/
+- │
+- ├─ codes/ # Programming scripts and projects (Python, SQL, Shell)
+- ├─ dashboards/ # Analytics dashboards and visualizations
+- ├─ scripts/ # Utility and automation scripts
+- ├─ notes/ # Technical notes and learning guides
+- ├─ points/ # Key takeaways and summaries
+- ├─ SUGGESTIONS.txt # Optional suggestions file for feedback
+- └─ README.md # This file
 ---
 
 ## 📝 Codes
@@ -95,9 +95,9 @@ Clone the repository:
 bash
 git clone https://github.com/shubham8324/my-learning-code.git
 
-Browse the directories to explore code, dashboards, scripts, notes, and points.
-Submit suggestions via SUGGESTIONS.txt or GitHub Issues.
-Do not modify existing files directly.
+- Browse the directories to explore code, dashboards, scripts, notes, and points.
+- Submit suggestions via SUGGESTIONS.txt or GitHub Issues.
+- Do not modify existing files directly.
 
 ---
 
@@ -105,10 +105,12 @@ Do not modify existing files directly.
 Python 🐍, SQL 🗄️, Shell 🖥️
 GitHub for version control 🔧
 
+
 ---
+
 ## 💡 Tips to Improve
-Add more badges for frameworks or tools you use.
-Include real screenshots of dashboards in the dashboards/ folder.
-Keep notes/ and points/ up-to-date to track your learning progress.
-Use README files in subfolders to explain scripts or projects in detail.
-Encourage contributors to use SUGGESTIONS.txt or Issues for feedback rather than modifying files directly.
+- Add more badges for frameworks or tools you use.
+- Include real screenshots of dashboards in the `dashboards/` folder.
+- Keep `notes/` and `points/` up-to-date to track your learning progress.
+- Use README files in subfolders to explain scripts or projects in detail.
+- Encourage contributors to use `SUGGESTIONS.txt` or Issues for feedback rather than modifying files directly.
