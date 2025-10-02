@@ -44,3 +44,63 @@ k8s_backup_alert_monitoring_framework
 - ├── kube_pod_created
 - ├── pod_not_running
 - └── TOMCAT_THREADS_CURRENT_THREADS
+
+
+---
+
+## ⚙️ Features
+
+- **Prometheus Metrics Monitoring**  
+  - Monitors CPU, memory, pod status, endpoint availability, HTTP response time, Tomcat threads, and HPA deployment status.
+  - IP configuration is centralized in `Prometheus/config/prometheus_servers_config.conf`.
+  - Default setup:  
+    ```
+    Prometheus IP: 10.10.10.10
+    Worker IP:     20.20.20.20
+    ```
+
+- **NGO Backup & Alerts**  
+  - Daily configuration backup for deployments, pods, services, and images.
+  - Compares image versions across clusters (`Prod1`, `Prod2`, `DR1`, `DR2`).
+  - Generates logs in `NGO/Logs` folder.
+  - Supports mail notifications (customizable).
+
+- **Certificate & Port Monitoring**  
+  - Monitors SSL expiry (`ssl_expiry.properties`) and certificates (`kube-config-certificate-expiry.sh`).  
+  - Monitors URL/Port availability (`url_monitoring.properties`, `port_monitor.properties`).
+
+- **SSH & Passwordless Setup**  
+  - Requires SSH and passwordless connectivity to clusters.
+  - Run backup and image version scripts remotely.
+
+---
+
+## 📝 Prerequisites
+
+- **Server Requirements**
+  - Linux server (Ubuntu/CentOS/RHEL)
+  - `bash`, `ssh`, `scp`, `rsync`, `curl` installed
+  - Passwordless SSH setup to all clusters (Prod & DR)
+
+- **Prometheus Configuration**
+  - Change IPs in `Prometheus/config/prometheus_servers_config.conf`:
+    ```text
+    prometheus_ip=10.10.10.10
+    worker_ip=20.20.20.20
+    ```
+  - Add matrix/alert whenever a new alert is created. Use **folder name = metric name = script name**.
+
+- **NGO Script Configuration**
+  - Update IPs in `NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh`:
+    ```bash
+    IP_LIST=("Prod1" "Prod2" "DR1" "DR2")
+    ```
+  - Update SSH username in scripts for your environment.
+
+---
+
+## 🛠️ How to Use
+
+### 1️⃣ Prometheus Alerts
+- Add metrics in the folder name and script as required. Example metrics:
+
