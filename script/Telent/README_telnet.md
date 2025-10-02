@@ -36,7 +36,7 @@
 
 ### 1️⃣ Prepare your server list (`serverlist.txt`)
 
-< Use spaces or tabs consistently, no extra spaces at the end:
+> Use spaces or tabs consistently, no extra spaces at the end:
 
 ```text
 # IP Address   Port
@@ -60,7 +60,7 @@ chmod +x telnet_checker.sh
 
 ./telnet_checker.sh
 
-< If no file is provided, it defaults to serverlist.txt.
+> If no file is provided, it defaults to serverlist.txt.
 
 
 ### 🗂 Output Files
@@ -76,13 +76,13 @@ The script will show clear errors in the following cases:
 
 ### 1. File not found
 
-< $ ./scripts/telnet_checker.sh missing_file.txt
-< ❌ Error: Input file 'missing_file.txt' not found!
-< Usage: ./scripts/telnet_checker.sh [serverlist.txt]
+> $ ./scripts/telnet_checker.sh missing_file.txt
+> ❌ Error: Input file 'missing_file.txt' not found!
+> Usage: ./scripts/telnet_checker.sh [serverlist.txt]
 
 ### 2. File exists but contains no valid servers
-< $ ./scripts/telnet_checker.sh empty_serverlist.txt
-<❌ Error: No valid server entries found in 'empty_serverlist.txt'!
+> $ ./scripts/telnet_checker.sh empty_serverlist.txt
+>❌ Error: No valid server entries found in 'empty_serverlist.txt'!
 
 ### How to fix:
 - Ensure the file exists.
