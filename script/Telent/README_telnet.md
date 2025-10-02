@@ -31,9 +31,10 @@ Logs results in **human-readable logs** and **CSV format** for further analysis.
 1. Place your server list in a file (`serverlist.txt`) in the format:
 
 IP Address Port
-8.8.8.8 53
-1.1.1.1 80
-192.168.1.10 22
+- 8.8.8.8 53
+- 1.1.1.1 80
+- 192.168.1.10 22
+<img width="365" height="166" alt="image" src="https://github.com/user-attachments/assets/62d5df21-a062-4c79-9611-2f5610c4c168" />
 
 bash
 Copy code
@@ -41,12 +42,12 @@ Copy code
 2. Make the script executable:
 
 ```bash
-chmod +x Telnet.sh
+chmod +x telnet_checker.sh
 Run the script:
 
 bash
 Copy code
-./Telnet.sh serverlist.txt
+./telnet_checker.sh
 If no file is provided, it defaults to serverlist.txt.
 
 🗂 Output Files
@@ -65,7 +66,7 @@ Can be extended to include retry logic or email notifications.
 ✨ Example
 bash
 Copy code
-./Telnet.sh serverlist.txt
+./telnet_checker.sh serverlist.txt
 Output:
 
 yaml
@@ -73,5 +74,6 @@ Copy code
 2025-10-02 22:15:01 - 8.8.8.8 53 ......Connected
 2025-10-02 22:15:02 - 1.1.1.1 80 ......Connected
 2025-10-02 22:15:03 - 192.168.1.10 22 ......Failed
+
 Author
 Shubham Patel 🖋️
