@@ -33,19 +33,17 @@ Logs results in **human-readable logs** and **CSV format** for further analysis.
 Use spaces or tabs consistently, no extra spaces at the end:
 
 # IP Address   Port
-8.8.8.8       53
-1.1.1.1       80
-192.168.1.10  22
+- 8.8.8.8       53
+- 1.1.1.1       80
+- 192.168.1.10  22
 
-
-Avoid mixing multiple spaces or tabs inconsistently.
-  
 <img width="365" height="166" alt="image" src="https://github.com/user-attachments/assets/62d5df21-a062-4c79-9611-2f5610c4c168" />
 
+Avoid mixing multiple spaces or tabs inconsistently.
 
 2. Make the script executable:
 
-```bash
+bash
 chmod +x telnet_checker.sh
 Run the script:
 
