@@ -59,11 +59,10 @@ k8s_backup_alert_monitoring_framework
     Worker IP:     20.20.20.20
     ```
 
-- **NGO Backup & Alerts**  
+- **Backup & Alerts Monitoring**  
   - Daily configuration backup for deployments, pods, services, and images.
   - Compares image versions across clusters (`Prod1`, `Prod2`, `DR1`, `DR2`).
   - Generates logs in `NGO/Logs` folder.
-  - Supports mail notifications (customizable).
 
 - **Certificate & Port Monitoring**  
   - Monitors SSL expiry (`ssl_expiry.properties`) and certificates (`kube-config-certificate-expiry.sh`).  
@@ -89,6 +88,12 @@ k8s_backup_alert_monitoring_framework
     worker_ip=20.20.20.20
     ```
   - Add matrix/alert whenever a new alert is created. Use **folder name = metric name = script name**.
+
+```
+Metric: container_memory_usage_bytes
+Folder: Prometheus/container_memory_usage_bytes/
+Script: container_memory_usage_bytes_monitor.sh
+```
 
 - **NGO Script Configuration**
   - Update IPs in `NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh`:
