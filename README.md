@@ -58,46 +58,6 @@ my-learning-code/
 - └─ 📄 README.md         # This file
 ---
 
-## 📝 Codes
-- Organized by language or project.  
-- Includes small experiments, challenges, and projects.  
-- Example:
-  - `codes/python/data_processing.py` – Python script for data cleaning.
-
-📌 **Tip:** Add a small README in `codes/` for project-specific explanations.
-
----
-
-## 📊 Dashboards
-- Visualizations created with Jupyter, Power BI, Tableau, or Python libraries.  
-- Example:
-  - `dashboards/sales_dashboard.ipynb` – Sales analytics dashboard.
-
-![Dashboard Screenshot](dashboards/screenshot_placeholder.png)  
-*(Replace with actual screenshot of your dashboard)*
-
----
-
-## 💻 Scripts
-- Reusable scripts for automation, deployment, or utilities.  
-- Example:
-  - `scripts/backup_db.sh` – Shell script to backup databases automatically.
-
----
-
-## 📚 Notes
-- Personal notes and guides for learning new technologies.  
-- Example:
-  - `notes/azure_services.md` – Notes on Azure components and use cases.
-
----
-
-## 🔑 Points
-- Key takeaways, tips, and important points from courses or practice.  
-- Example:
-  - `points/k8s_best_practices.md` – Kubernetes best practices checklist.
-
----
 
 ## ⚡ Usage
 Clone the repository:
