@@ -115,7 +115,7 @@ k8s_backup_alert_monitoring_framework
 ## 🛠️ How to Use
 
 ### 1️⃣ Prometheus Alerts
-- Add metrics in the folder name and script as required. Example metrics:
+Add metrics in the folder name and script as required. Example metrics:
 
  **Data**
  
@@ -135,16 +135,16 @@ k8s_backup_alert_monitoring_framework
 
 ### 2️⃣ Backup & Monitoring
 
-- **Daily Config Backup**
+**Daily Config Backup**
   
-    ```bash
+    ```
     /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/Daily_Config_Backup_Scripts.sh
     ```
     
-- **Image Version Compare**
+**Image Version Compare**
 
-    ```bash
-- /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
+    ```
+     /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
     ```
 
 ### 3️⃣ SSL & Port Monitoring
