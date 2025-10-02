@@ -28,7 +28,7 @@ Logs results in **human-readable logs** and **CSV format** for further analysis.
 
 ## 📋 Usage
 
-1️⃣ Ensure your serverlist.txt is correctly formatted
+1️⃣ **Ensure your serverlist.txt is correctly formatted**
 
 Use spaces or tabs consistently, no extra spaces at the end:
 
@@ -42,31 +42,31 @@ Use spaces or tabs consistently, no extra spaces at the end:
 Avoid mixing multiple spaces or tabs inconsistently.
 
 
-2️⃣ Make the script executable:
+2️⃣ **Make the script executable:**
 
 chmod +x telnet_checker.sh
 
-3️⃣ Run the script:
+3️⃣ **Run the script:**
 
 ./telnet_checker.sh
 If no file is provided, it defaults to serverlist.txt.
 
 
-🗂 Output Files
+🗂 **Output Files**
 File	Description
 - Telnet_Connected.txt	Successfully connected servers
 - Telnet_Failed.txt	Failed servers
 - Telnet_Results.csv	CSV file for Excel / automation
 
 
-⚙️ Notes
+⚙️ **Notes**
 
 - The script automatically throttles parallel jobs to avoid overwhelming the network.
 - Works completely offline — no external dependencies required.
 - Can be extended to include retry logic or email notifications.
 
 
-✨ Example
+✨ **Example**
 
 ./telnet_checker.sh serverlist.txt
 
@@ -76,5 +76,6 @@ Output:
 - 2025-10-02 22:15:03 - 192.168.1.10 22 ......Failed
 
 
-Author
+Author 
+
 Shubham Patel 🖋️
