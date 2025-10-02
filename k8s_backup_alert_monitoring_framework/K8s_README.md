@@ -88,6 +88,19 @@ k8s_backup_alert_monitoring_framework
     prometheus_ip=10.10.10.10
     worker_ip=20.20.20.20
     ```
+  ##Data
+    ```
+    container_memory_usage_bytes EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    container_cpu_usage_seconds_total EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    TOMCAT_THREADS_CURRENT_THREADS EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    http_request_count EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    HTTP_RESPONSE_TIME_MONITOR EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    pod_not_running EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    endpoint_not_available EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    Deployment_HPA_Missing EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    kube_pod_created EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    ```
+
   - Add matrix/alert whenever a new alert is created. Use **folder name = metric name = script name**.
 
     ```text
@@ -98,7 +111,8 @@ k8s_backup_alert_monitoring_framework
 
 - **NGO Script Configuration**
   - Update IPs in `NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh`:
-  - 
+
+
     ```bash
     IP_LIST=("Prod1" "Prod2" "DR1" "DR2")
     ssh username@$IP_ADDR ...
