@@ -156,7 +156,7 @@ Add metrics in the folder name and script as required. Example metrics:
 
 ### 3️⃣ SSL & Port Monitoring
 
-> Update:
+> Update: Update mention properties to use these script
 
 - port_monitor.properties → #website|IP|appname|port
 - url_monitoring.properties → #hostname port
@@ -164,9 +164,12 @@ Add metrics in the folder name and script as required. Example metrics:
 - Update certificates in kube-config-certificate-expiry.sh.
   
 
+
 ✉️ **Optional - Email Integration**
 
-You can integrate email notifications using sendmail, mailx, or any SMTP tool of your choice. Just call the mail function inside any .sh alert script.
+- You can integrate email notifications using sendmail, mailx, or any SMTP tool of your choice.
+- Just call the mail function inside any .sh alert script.
+
 
 ```
 Example snippet:
