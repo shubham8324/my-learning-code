@@ -1,0 +1,17 @@
+Custom Learning Repository License (Read-Only)
+
+Copyright (c) 2025 shubham8324
+
+Permission is granted to:
+- Download, copy, and use the contents of this repository for learning and reference.
+- Provide suggestions or feedback via:
+    1. Creating a single file named SUGGESTIONS.txt in the repository
+    2. Opening GitHub Issues
+
+Restrictions:
+- You may NOT modify, delete, or redistribute any existing files.
+- You may NOT create derivative works from this repository.
+
+All suggestions are subject to review and approval by the repository owner.
+
+This repository is provided "as-is" without warranty of any kind.
