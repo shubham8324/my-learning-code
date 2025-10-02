@@ -42,7 +42,7 @@
 # IP Address   Port
 - 8.8.8.8       53
 - 1.1.1.1       80
-- 192.168.1.10  22
+- 192.168.1.10  22 ```
 
 <img width="365" height="166" alt="image" src="https://github.com/user-attachments/assets/62d5df21-a062-4c79-9611-2f5610c4c168" />
 
