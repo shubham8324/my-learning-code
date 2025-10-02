@@ -71,6 +71,9 @@ k8s_backup_alert_monitoring_framework
 - **SSH & Passwordless Setup**  
   - Requires SSH and passwordless connectivity to clusters.
   - Run backup and image version scripts remotely.
+ 
+- **Logs for alert**
+  - All script outputs and alert logs are stored in NGO/Logs.  
 
 ---
 
@@ -87,18 +90,6 @@ k8s_backup_alert_monitoring_framework
     ```text
     prometheus_ip=10.10.10.10
     worker_ip=20.20.20.20
-    ```
-  ##Data
-    ```
-    container_memory_usage_bytes EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    container_cpu_usage_seconds_total EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    TOMCAT_THREADS_CURRENT_THREADS EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    http_request_count EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    HTTP_RESPONSE_TIME_MONITOR EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    pod_not_running EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    endpoint_not_available EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    Deployment_HPA_Missing EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    kube_pod_created EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
     ```
 
   - Add matrix/alert whenever a new alert is created. Use **folder name = metric name = script name**.
@@ -126,3 +117,71 @@ k8s_backup_alert_monitoring_framework
 ### 1️⃣ Prometheus Alerts
 - Add metrics in the folder name and script as required. Example metrics:
 
+ ##Data
+    ```
+    container_memory_usage_bytes EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    container_cpu_usage_seconds_total EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    TOMCAT_THREADS_CURRENT_THREADS EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    http_request_count EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    HTTP_RESPONSE_TIME_MONITOR EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    pod_not_running EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    endpoint_not_available EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    Deployment_HPA_Missing EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    kube_pod_created EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
+    ```
+
+
+### 2️⃣ Backup & Monitoring
+
+- **Daily Config Backup**
+  
+    ```bash
+    /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/Daily_Config_Backup_Scripts.sh
+    ```
+    
+- **Image Version Compare**
+
+    ```bash
+- /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
+    ```
+
+### 3️⃣ SSL & Port Monitoring
+
+> Update:
+
+- port_monitor.properties → #website|IP|appname|port
+- url_monitoring.properties → #hostname port
+- ssl_expiry.properties → #website|IP|hostname|port
+- Update certificates in kube-config-certificate-expiry.sh.
+  
+
+✉️ **Optional - Email Integration**
+
+You can integrate email notifications using sendmail, mailx, or any SMTP tool of your choice. Just call the mail function inside any .sh alert script.
+
+```
+Example snippet:
+echo "Alert: Pod Not Running" | mail -s "K8s Alert" user@example.com
+```
+
+---
+
+⚡ **Tips & Best Practices**
+
+- Always use same folder name for metric, alert script, and configuration.
+- Enable passwordless SSH for smooth monitoring.
+- Keep Prometheus IP & Worker IP updated in config.
+- Add new alerts or backups following the same folder + file naming convention.
+- Scripts are portable and can run manually or via cron jobs.
+ 
+----
+
+👋 **Final Words**
+- Stay proactive with your K8s monitoring!
+- This repo gives you a hands-on, scriptable, customizable monitoring system that works with your clusters.
+
+-----
+
+📫 Author
+
+🖋️ Shubham Patel 🚀 Happy Monitoring!
