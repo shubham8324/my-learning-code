@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/logo.png" alt="My Learning Code Logo" width="150"/>
+  <img src="/logo.png" alt="My Learning Code Logo" width="350"/>
 </p>
 
 # 🌟 My Learning Code
