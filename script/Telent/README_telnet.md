@@ -42,11 +42,11 @@ Use spaces or tabs consistently, no extra spaces at the end:
 Avoid mixing multiple spaces or tabs inconsistently.
 
 
-2. Make the script executable:
+2️⃣ Make the script executable:
 
 chmod +x telnet_checker.sh
-Run the script:
 
+3️⃣ Run the script:
 
 ./telnet_checker.sh
 If no file is provided, it defaults to serverlist.txt.
