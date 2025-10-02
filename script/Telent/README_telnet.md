@@ -41,9 +41,9 @@ Use spaces or tabs consistently, no extra spaces at the end:
 
 Avoid mixing multiple spaces or tabs inconsistently.
 
+
 2. Make the script executable:
 
-bash
 chmod +x telnet_checker.sh
 Run the script:
 
@@ -54,29 +54,27 @@ If no file is provided, it defaults to serverlist.txt.
 
 🗂 Output Files
 File	Description
-Telnet_Connected.txt	Successfully connected servers
-Telnet_Failed.txt	Failed servers
-Telnet_Results.csv	CSV file for Excel / automation
+- Telnet_Connected.txt	Successfully connected servers
+- Telnet_Failed.txt	Failed servers
+- Telnet_Results.csv	CSV file for Excel / automation
 
 
 ⚙️ Notes
-The script automatically throttles parallel jobs to avoid overwhelming the network.
 
-Works completely offline — no external dependencies required.
+- The script automatically throttles parallel jobs to avoid overwhelming the network.
+- Works completely offline — no external dependencies required.
+- Can be extended to include retry logic or email notifications.
 
-Can be extended to include retry logic or email notifications.
 
 ✨ Example
-bash
-Copy code
-./telnet_checker.sh serverlist.txt
-Output:
 
-yaml
-Copy code
-2025-10-02 22:15:01 - 8.8.8.8 53 ......Connected
-2025-10-02 22:15:02 - 1.1.1.1 80 ......Connected
-2025-10-02 22:15:03 - 192.168.1.10 22 ......Failed
+./telnet_checker.sh serverlist.txt
+
+Output:
+- 2025-10-02 22:15:01 - 8.8.8.8 53 ......Connected
+- 2025-10-02 22:15:02 - 1.1.1.1 80 ......Connected
+- 2025-10-02 22:15:03 - 192.168.1.10 22 ......Failed
+
 
 Author
 Shubham Patel 🖋️
