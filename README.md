@@ -52,7 +52,7 @@ my-learning-code/
 - ├─ 📊 dashboards/       # Analytics dashboards and visualizations
 - ├─ ⚙️ scripts/           # Utility and automation scripts
 - ├─ 📖 notes/            # Technical notes and learning guides
-- ├─ 📖 k8s_backup_alert_monitoring_framework/            # Alert, backup framwork
+- ├─ ☸️ k8s_backup_alert_monitoring_framework/   # Kubernetes backup & alert monitoring framework
 - ├─ 💡 points/           # Key takeaways and summaries
 - ├─ ✏️ SUGGESTIONS.txt   # Optional suggestions file for feedback
 - └─ 📄 README.md         # This file
