@@ -46,7 +46,6 @@ my-learning-code/
 ├─ points/ # Key takeaways and summaries
 ├─ SUGGESTIONS.txt # Optional suggestions file for feedback
 └─ README.md # This file
-
 ---
 
 ## 📝 Codes
@@ -99,12 +98,14 @@ git clone https://github.com/shubham8324/my-learning-code.git
 Browse the directories to explore code, dashboards, scripts, notes, and points.
 Submit suggestions via SUGGESTIONS.txt or GitHub Issues.
 Do not modify existing files directly.
+---
 
-🛠 Technologies
+## 🛠 Technologies
 Python 🐍, SQL 🗄️, Shell 🖥️
 GitHub for version control 🔧
 
-💡 Tips to Improve
+---
+## 💡 Tips to Improve
 Add more badges for frameworks or tools you use.
 Include real screenshots of dashboards in the dashboards/ folder.
 Keep notes/ and points/ up-to-date to track your learning progress.
