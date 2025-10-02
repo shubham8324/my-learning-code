@@ -62,7 +62,7 @@ chmod +x telnet_checker.sh
 
 > If no file is provided, it defaults to serverlist.txt.
 
-
+---
 ### 🗂 Output Files
 | File                   | Description                     |
 | ---------------------- | ------------------------------- |
@@ -70,6 +70,7 @@ chmod +x telnet_checker.sh
 | `Telnet_Failed.txt`    | Failed servers                  |
 | `Telnet_Results.csv`   | CSV file for Excel / automation |
 
+---
 ⚠️ Error Handling
 
 The script will show clear errors in the following cases:
@@ -88,24 +89,25 @@ The script will show clear errors in the following cases:
 - Ensure the file exists.
 - Add valid server IPs and ports in proper format.
 
+---
 ⚙️ **Notes**
 
 - The script automatically throttles parallel jobs to avoid overwhelming the network.
 - Works completely offline — no external dependencies required.
 - Can be extended to include retry logic or email notifications.
 
-
+---
 ✨ **Example**
 
 ./telnet_checker.sh
 
-Output:
+Output:```
 2025-10-02 22:15:01 - 8.8.8.8         53    ......Connected
 2025-10-02 22:15:02 - 1.1.1.1         80    ......Connected
 2025-10-02 22:15:03 - 192.168.1.10    22    ......Failed
+```
 
 
-
-👤 Author 
+### 👤 Author 
 
 Shubham Patel 🖋️
