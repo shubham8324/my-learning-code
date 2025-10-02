@@ -28,16 +28,20 @@ Logs results in **human-readable logs** and **CSV format** for further analysis.
 
 ## 📋 Usage
 
-1. Place your server list in a file (`serverlist.txt`) in the format:
+1️⃣ Ensure your serverlist.txt is correctly formatted
 
-IP Address Port
-- 8.8.8.8 53
-- 1.1.1.1 80
-- 192.168.1.10 22
+Use spaces or tabs consistently, no extra spaces at the end:
+
+# IP Address   Port
+8.8.8.8       53
+1.1.1.1       80
+192.168.1.10  22
+
+
+Avoid mixing multiple spaces or tabs inconsistently.
+  
 <img width="365" height="166" alt="image" src="https://github.com/user-attachments/assets/62d5df21-a062-4c79-9611-2f5610c4c168" />
 
-bash
-Copy code
 
 2. Make the script executable:
 
@@ -45,16 +49,17 @@ Copy code
 chmod +x telnet_checker.sh
 Run the script:
 
-bash
-Copy code
+
 ./telnet_checker.sh
 If no file is provided, it defaults to serverlist.txt.
+
 
 🗂 Output Files
 File	Description
 Telnet_Connected.txt	Successfully connected servers
 Telnet_Failed.txt	Failed servers
 Telnet_Results.csv	CSV file for Excel / automation
+
 
 ⚙️ Notes
 The script automatically throttles parallel jobs to avoid overwhelming the network.
