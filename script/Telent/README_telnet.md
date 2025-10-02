@@ -100,8 +100,8 @@ The script will show clear errors in the following cases:
 ✨ **Example**
 
 ./telnet_checker.sh
-
-Output:```
+```
+Output:
 2025-10-02 22:15:01 - 8.8.8.8         53    ......Connected
 2025-10-02 22:15:02 - 1.1.1.1         80    ......Connected
 2025-10-02 22:15:03 - 192.168.1.10    22    ......Failed
