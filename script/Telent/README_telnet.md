@@ -1,7 +1,7 @@
 # 🌐 Telnet Connectivity Checker
 
-A **professional bash script** to check multiple server/port connectivity using `telnet`.  
-Logs results in **human-readable logs** and **CSV format** for further analysis.  
+> A **professional Bash script** to check multiple server/port connectivity using `telnet`.  
+> Logs results in **human-readable logs** and **CSV format** for easy analysis.  
 
 ---
 
