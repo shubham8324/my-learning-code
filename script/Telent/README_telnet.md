@@ -60,9 +60,6 @@ chmod +x telnet_checker.sh
 
 ./telnet_checker.sh
 
-> If no data in serverlist.txt, Error will come.
-
-<img width="481" height="20" alt="image" src="https://github.com/user-attachments/assets/e47d932e-5b86-46a5-9194-9c0f17162a46" />
 
 ---
 
