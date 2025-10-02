@@ -119,7 +119,7 @@ Add metrics in the folder name and script as required. Example metrics:
 
  **Data**
  
-    ```
+    ```bash
     container_memory_usage_bytes EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
     container_cpu_usage_seconds_total EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
     TOMCAT_THREADS_CURRENT_THREADS EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
@@ -137,15 +137,22 @@ Add metrics in the folder name and script as required. Example metrics:
 
 **Daily Config Backup**
   
-    ```
+    ```bash
     /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/Daily_Config_Backup_Scripts.sh
     ```
     
 **Image Version Compare**
 
-    ```
+    ```bash
      /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
     ```
+
+**Backup Alert**
+
+    ```bash
+     /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/EBDM_Backup_Failed_K8s.sh
+    ```
+    
 
 ### 3️⃣ SSL & Port Monitoring
 
