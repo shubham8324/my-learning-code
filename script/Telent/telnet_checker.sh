@@ -26,6 +26,12 @@ fi
 # Count effective server lines (ignore empty lines/comments)
 SERVER_COUNT=$(grep -E '^[[:space:]]*[^#[:space:]]' "$INPUT_FILE" | wc -l)
 
+# Exit if file is empty (no servers to check)
+if (( SERVER_COUNT == 0 )); then
+    echo "❌ Error: No valid server entries found in '$INPUT_FILE'!"
+    exit 1
+fi
+
 # Decide concurrency based on server count
 if (( SERVER_COUNT < 100 )); then
     MAX_JOBS=3
