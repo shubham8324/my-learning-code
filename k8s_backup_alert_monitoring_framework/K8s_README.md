@@ -98,10 +98,12 @@ k8s_backup_alert_monitoring_framework
 
 - **NGO Script Configuration**
   - Update IPs in `NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh`:
+  - 
     ```bash
     IP_LIST=("Prod1" "Prod2" "DR1" "DR2")
+    ssh username@$IP_ADDR ...
     ```
-  - Update SSH username in scripts for your environment.
+  > Update SSH username in scripts for your environment.
 
 ---
 
