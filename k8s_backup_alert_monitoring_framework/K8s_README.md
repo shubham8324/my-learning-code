@@ -83,17 +83,18 @@ k8s_backup_alert_monitoring_framework
 
 - **Prometheus Configuration**
   - Change IPs in `Prometheus/config/prometheus_servers_config.conf`:
+    
     ```text
     prometheus_ip=10.10.10.10
     worker_ip=20.20.20.20
     ```
   - Add matrix/alert whenever a new alert is created. Use **folder name = metric name = script name**.
 
-```
-Metric: container_memory_usage_bytes
-Folder: Prometheus/container_memory_usage_bytes/
-Script: container_memory_usage_bytes_monitor.sh
-```
+    ```text
+    Metric: container_memory_usage_bytes
+    Folder: Prometheus/container_memory_usage_bytes/
+    Script: container_memory_usage_bytes_monitor.sh
+    ```
 
 - **NGO Script Configuration**
   - Update IPs in `NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh`:
