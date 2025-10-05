@@ -58,11 +58,11 @@ Linux 🐧
 
   - `df` : **Show disk space usage**
 > Filesystem     1K-blocks  Used Available Use% Mounted on
->/dev/sda1      20511356 823456  18679900  5% /
+> /dev/sda1      20511356 823456  18679900  5% /
 
   - `free` : **Display memory usage**
 >               total        used        free      shared  buff/cache   available
-> Mem:           7982        2048        3290         250        2644        5230
+>  Mem:           7982        2048        3290         250        2644        5230
 
   - `ps` : **List running processes**
 >   PID TTY          TIME CMD
