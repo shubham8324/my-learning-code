@@ -8,11 +8,11 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 
 Linux 🐧
 <details> <summary>⚡ Basic Commands (20)</summary>
-- `pwd` : **Print working directory**
 
-``` bash
-/home/username
-```
+  - `pwd` : **Print working directory**
+
+> /home/username
+
 
 ls : List directory contents
 
