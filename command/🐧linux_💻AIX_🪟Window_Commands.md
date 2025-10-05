@@ -32,11 +32,12 @@ Linux 🐧
 20. `man <command>` : Show manual page  
 
 ## 💡 Tips:
-- Use ls -la to list all files including hidden with permissions.
-- Use tab key for autocompletion.
-- cd .. moves up one directory.
-- Commands are case-sensitive.
-- Use man <command> to learn about options.
+- Use ls -la to check permissions and hidden files — useful during access issues.
+- cd - switches back to your previous directory instantly.
+- Use history | grep <keyword> to recall old useful commands.
+- man <command> shows examples and helps while learning new commands.
+- If a command fails with “Permission denied”, prefix with sudo.
+- pwd confirms your location before deleting or moving files.
 
 </details>
 <details> <summary>🔧 Intermediate Commands (20)</summary>
@@ -64,11 +65,12 @@ Linux 🐧
 
 ## 💡 Tips:
 
-> Use sudo !! to rerun last command as root.
-> grep -i for case-insensitive searches.
-> Use curl -O to save file with original name.
-> Use tar -xvf to extract archives.
-> Monitor system with htop if installed.
+- Use grep error /var/log/* to quickly find system errors.
+- Combine tail -f with grep to watch live filtered logs.
+- Automate routine cleanup using crontab -e.
+- Use rsync -avz for backup or sync between servers.
+- df -h and du -sh help identify space issues fast.
+- Use ping and netstat for quick connectivity checks.
 
 </details>
 <details> <summary>🚀 Advanced Commands (20)</summary>
@@ -96,11 +98,11 @@ Linux 🐧
 
 ## 💡 Tips:
 
-> Use iptables-save to back up firewall rules.
-> strace -p <pid> to attach to running process.
-> Use rsync -z to compress data during transfer.
-> Use awk to perform complex data extractions.
-> Use systemctl status to check service health.
+- Use iptables-save to back up firewall rules.
+- strace -p <pid> to attach to running process.
+- Use rsync -z to compress data during transfer.
+- Use awk to perform complex data extractions.
+- Use systemctl status to check service health.
 
 </details>
 <details> <summary>🏆 Expert Commands (20)</summary>
@@ -128,11 +130,11 @@ Linux 🐧
 
 ## 💡 Tips:
 
-> Use perf record and perf report for profiling.
-> Combine ss with filters for deep socket inspection.
-> Use bpftrace scripts for custom kernel probes.
-> tcpdump requires root privileges.
-> ip is preferred over deprecated ifconfig.
+- Use perf record and perf report for profiling.
+- Combine ss with filters for deep socket inspection.
+- Use bpftrace scripts for custom kernel probes.
+- tcpdump requires root privileges.
+- ip is preferred over deprecated ifconfig.
 
 </details>
 <details> <summary>📘 Should Know Commands (20)</summary>
@@ -160,11 +162,11 @@ Linux 🐧
 
 ## 💡 Tips:
 
-> Use watch to monitor changes live.
-> Combine getent with grep to filter database entries.
-> pkill for terminating multiple related processes.
-> Use jobs, fg, bg to manage shell jobs.
-> Regularly check logs with journalctl.
+- Use watch to monitor changes live.
+- Combine getent with grep to filter database entries.
+- pkill for terminating multiple related processes.
+- Use jobs, fg, bg to manage shell jobs.
+- Regularly check logs with journalctl.
 
 </details>
 
@@ -197,11 +199,11 @@ AIX 💻
 
 ## 💡 Tips:
 
-> Use ls -l for detailed list with permissions.
-> smit is useful for admin tasks via GUI.
-> Use file to quickly know file type.
-> Use more to scroll through large files.
-> man pages contain detailed command info.
+- Use ls -l for detailed list with permissions.
+- smit is useful for admin tasks via GUI.
+- Use file to quickly know file type.
+- Use more to scroll through large files.
+- man pages contain detailed command info.
 
 </details>
 <details> <summary>🔧 Intermediate Commands (20)</summary>
@@ -229,11 +231,11 @@ AIX 💻
 
 ## 💡 Tips:
 
-> Use lslpp -L | grep <package> to find specific software.
-> errpt -a gives detailed error info.
-> Combine lsvg and lslv to understand storage.
-> ping -c 4 for limited ping count.
-> Use netstat -rn for route table.
+- Use lslpp -L | grep <package> to find specific software.
+- errpt -a gives detailed error info.
+- Combine lsvg and lslv to understand storage.
+- ping -c 4 for limited ping count.
+- Use netstat -rn for route table.
 
 </details>
 <details> <summary>🚀 Advanced Commands (20)</summary>
@@ -260,11 +262,11 @@ AIX 💻
 
 ## 💡 Tips:
 
-> aixpert helps harden security.
-> Use alt_disk_copy for backup.
-> adb can debug core dumps.
-> acctcms helps analyze command usage.
-> bindprocessor optimizes CPU usage.
+- aixpert helps harden security.
+- Use alt_disk_copy for backup.
+- adb can debug core dumps.
+- acctcms helps analyze command usage.
+- bindprocessor optimizes CPU usage.
 
 </details>
 <details> <summary>🏆 Expert Commands (20)</summary>
@@ -292,11 +294,11 @@ AIX 💻
 
 ## 💡 Tips:
 
-> Use certcreate and certget for certificate management.
-> errlg -n to view recent errors.
-> Use filemon to track file/system I/O.
-> fastboot requires no other users logged in.
-> Use getconf before scripts for environment info.
+- Use certcreate and certget for certificate management.
+- errlg -n to view recent errors.
+- Use filemon to track file/system I/O.
+- fastboot requires no other users logged in.
+- Use getconf before scripts for environment info.
 
 </details>
 <details> <summary>📘 Should Know Commands (20)</summary>
@@ -325,11 +327,11 @@ AIX 💻
 
 ## 💡 Tips:
 
-> Use banner to create large ASCII headings.
-> batch schedules commands when load is low.
-> bc is useful for calculations in shell.
-> Use Basename to parse filenames.
-> ACL tools help manage file permissions finely.
+- Use banner to create large ASCII headings.
+- batch schedules commands when load is low.
+- bc is useful for calculations in shell.
+- Use Basename to parse filenames.
+- ACL tools help manage file permissions finely.
 
 </details>
 
@@ -360,11 +362,11 @@ Windows 🪟
 
 ## 💡 Tips:
 
-> Use dir /a to list hidden files.
-> Use tasklist and taskkill to manage processes.
-> Use ipconfig /all for detailed network info.
-> Use help to learn about commands.
-> cls clears the console screen.
+- Use dir /a to list hidden files.
+- Use tasklist and taskkill to manage processes.
+- Use ipconfig /all for detailed network info.
+- Use help to learn about commands.
+- cls clears the console screen.
 
 </details>
 <details> <summary>🔧 Intermediate Commands (20)</summary>
@@ -392,11 +394,11 @@ Windows 🪟
 
 ## 💡 Tips:
 
-> Use tracert to diagnose routing problems.
-> Use netstat -an for all connections.
-> schtasks to automate jobs.
-> sfc /scannow repairs system files.
-> sc to view and manage services.
+- Use tracert to diagnose routing problems.
+- Use netstat -an for all connections.
+- schtasks to automate jobs.
+- sfc /scannow repairs system files.
+- sc to view and manage services.
 
 </details>
 <details> <summary>🚀 Advanced Commands (20)</summary>
@@ -424,11 +426,11 @@ Windows 🪟
 
 ## 💡 Tips:
 
-> Use PowerShell for automation.
-> Get-Help is the best friend.
-> Use Format-Table to beautify output.
-> Invoke-WebRequest for REST calls.
-> Always check script execution policies.
+- Use PowerShell for automation.
+- Get-Help is the best friend.
+- Use Format-Table to beautify output.
+- Invoke-WebRequest for REST calls.
+- Always check script execution policies.
 
 </details>
 <details> <summary>🏆 Expert Commands (20)</summary>
@@ -456,11 +458,11 @@ Windows 🪟
 
 ## 💡 Tips:
 
-> Remote management via PowerShell is powerful.
-> Regularly back up PowerShell transcript.
-> Active Directory module is a must for admins.
-> Use Measure-Command to benchmark.
-> Registry manipulation requires caution.
+- Remote management via PowerShell is powerful.
+- Regularly back up PowerShell transcript.
+- Active Directory module is a must for admins.
+- Use Measure-Command to benchmark.
+- Registry manipulation requires caution.
 
 </details>
 <details> <summary>📘 Should Know Commands (20)</summary>
@@ -488,11 +490,11 @@ Windows 🪟
 
 ##💡 Tips:
 
-> Use wmic for deep Windows queries.
-> robocopy is superior for batch file copies.
-> Enable-PSRemoting is critical for remote admin.
-> Regularly chkdsk for disk health.
-> netsh provides granular network controls.
+- Use wmic for deep Windows queries.
+- robocopy is superior for batch file copies.
+- Enable-PSRemoting is critical for remote admin.
+- Regularly chkdsk for disk health.
+- netsh provides granular network controls.
 
 </details>
 
