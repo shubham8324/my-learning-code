@@ -1,42 +1,10 @@
-Command Reference: Linux 🐧, AIX 💻, and Windows 🪟
-Welcome to a comprehensive cheat sheet covering commands for Linux, AIX, and Windows operating systems. Each OS section contains 5 skill levels, starting from Basic ⚡ to Should Know 📘, with 20 commands each. Commands include descriptions, terminal-style output examples, and useful tips.
+# Command Reference: Linux, AIX, Windows
 
-Table of Contents
-Linux 🐧
+This file contains commands for **Linux, AIX, and Windows**, organized by skill levels: **Basic, Intermediate, Advanced, Expert, Should Know**.  
+Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 
-Basic ⚡
+---
 
-Intermediate 🔧
-
-Advanced 🚀
-
-Expert 🏆
-
-Should Know 📘
-
-AIX 💻
-
-Basic ⚡
-
-Intermediate 🔧
-
-Advanced 🚀
-
-Expert 🏆
-
-Should Know 📘
-
-Windows 🪟
-
-Basic ⚡
-
-Intermediate 🔧
-
-Advanced 🚀
-
-Expert 🏆
-
-Should Know 📘
 
 Linux 🐧
 <details> <summary>⚡ Basic Commands (20)</summary>
