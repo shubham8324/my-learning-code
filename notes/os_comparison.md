@@ -1,6 +1,6 @@
 # 🖥️ Operating System Comparison: Linux vs AIX vs Windows
 
-> 🔹 Human-friendly engineer notes for quick learning, DevOps, Admin, and interview prep.
+> 🔹 Notes for quick learning, DevOps, Admin, and interview prep.
 
 ---
 
@@ -157,12 +157,4 @@
 - **AIX** → SMIT menus save time, always check volume groups before storage changes.  
 - **Windows** → PowerShell is your best friend, GUI is good for quick tasks, CLI is better for automation.
 
----
 
-✅ This file is now **GitHub-ready**, fully **collapsible, emoji-rich, readable**, and professional.  
-
----
-
-If you want, Hanu, I can also **create separate Markdown files for each OS** (`linux.md`, `aix.md`, `windows.md`) and a **main `README.md`** linking them all — making your **repo look organized and clean**, like a real professional GitHub project.  
-
-Do you want me to do that next?
