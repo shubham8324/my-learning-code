@@ -5,10 +5,10 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 
 ---
 
-## Linux Commands
 
-<details>
-<summary>Basic Commands (20)</summary>
+Linux 🐧
+<details> <summary>⚡ Basic Commands (20)</summary>
+
 
 1. `ls` : List directory contents  
 2. `pwd` : Print working directory  
@@ -31,10 +31,15 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `hostname` : Show system hostname  
 20. `man <command>` : Show manual page  
 
-</details>
+## 💡 Tips:
+- Use ls -la to list all files including hidden with permissions.
+- Use tab key for autocompletion.
+- cd .. moves up one directory.
+- Commands are case-sensitive.
+- Use man <command> to learn about options.
 
-<details>
-<summary>Intermediate Commands (20)</summary>
+</details>
+<details> <summary>🔧 Intermediate Commands (20)</summary>
 
 1. `grep <pattern> <file>` : Search for text in files  
 2. `awk '{print $1}' <file>` : Text processing  
@@ -57,11 +62,17 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `git status` : Check git repository status  
 20. `docker ps` : List running containers  
 
+💡 Tips:
+
+Use sudo !! to rerun last command as root.
+grep -i for case-insensitive searches.
+Use curl -O to save file with original name.
+Use tar -xvf to extract archives.
+Monitor system with htop if installed.
+
 </details>
-
-<details>
-<summary>Advanced Commands (20)</summary>
-
+<details> <summary>🚀 Advanced Commands (20)</summary>
+  
 1. `tcpdump -i <interface>` : Capture network traffic  
 2. `traceroute <host>` : Trace route to host  
 3. `nmap <host>` : Network scanning  
@@ -83,10 +94,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `sar -u 1 3` : CPU usage stats  
 20. `docker exec -it <container> /bin/bash` : Access container  
 
-</details>
+💡 Tips:
 
-<details>
-<summary>Expert Commands (20)</summary>
+Use iptables-save to back up firewall rules.
+
+strace -p <pid> to attach to running process.
+
+Use rsync -z to compress data during transfer.
+
+Use awk to perform complex data extractions.
+
+Use systemctl status to check service health.
+
+</details>
+<details> <summary>🏆 Expert Commands (20)</summary>
 
 1. `perf top` : Performance profiling  
 2. `perf record` : Record performance data  
@@ -109,11 +130,21 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `nc -l -p <port>` : Listen on port  
 20. `curl -O <url>` : Download file  
 
+💡 Tips:
+
+Use perf record and perf report for profiling.
+
+Combine ss with filters for deep socket inspection.
+
+Use bpftrace scripts for custom kernel probes.
+
+tcpdump requires root privileges.
+
+ip is preferred over deprecated ifconfig.
+
 </details>
-
-<details>
-<summary>Should Know Commands (20)</summary>
-
+<details> <summary>📘 Should Know Commands (20)</summary>
+  
 1. `alias ll='ls -la'` : Create alias  
 2. `unalias ll` : Remove alias  
 3. `export VAR=value` : Set environment variable  
@@ -135,14 +166,25 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `crontab -l -u <user>` : List user's cron jobs  
 20. `history | grep <command>` : Search command history  
 
+💡 Tips:
+
+Use watch to monitor changes live.
+
+Combine getent with grep to filter database entries.
+
+pkill for terminating multiple related processes.
+
+Use jobs, fg, bg to manage shell jobs.
+
+Regularly check logs with journalctl.
+
 </details>
 
 ---
 
-## AIX Commands
+AIX 💻
+<details> <summary>⚡ Basic Commands (20)</summary>
 
-<details>
-<summary>Basic Commands (20)</summary>
 
 1. `ls` : List directory contents  
 2. `pwd` : Print working directory  
@@ -165,10 +207,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `uptime` : Show uptime  
 20. `lsattr -El <device>` : Show device attributes  
 
-</details>
+💡 Tips:
 
-<details>
-<summary>Intermediate Commands (20)</summary>
+Use ls -l for detailed list with permissions.
+
+smit is useful for admin tasks via GUI.
+
+Use file to quickly know file type.
+
+Use more to scroll through large files.
+
+man pages contain detailed command info.
+
+</details>
+<details> <summary>🔧 Intermediate Commands (20)</summary>
 
 1. `lssrc -a` : Show subsystem status  
 2. `startsrc -s <subsystem>` : Start subsystem  
@@ -191,11 +243,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `traceroute <host>` : Trace route  
 20. `smit` : AIX management interface  
 
+💡 Tips:
+
+Use lslpp -L | grep <package> to find specific software.
+
+errpt -a gives detailed error info.
+
+Combine lsvg and lslv to understand storage.
+
+ping -c 4 for limited ping count.
+
+Use netstat -rn for route table.
+
 </details>
-
-<details>
-<summary>Advanced Commands (20)</summary>
-
+<details> <summary>🚀 Advanced Commands (20)</summary>
 1. `mksysb` : Create system backup  
 2. `alt_disk_install` : Alternate disk installation  
 3. `bosboot` : Rebuild boot image  
@@ -217,10 +278,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `passwd <user>` : Change user password  
 20. `exportvg` : Export volume group  
 
-</details>
+💡 Tips:
 
-<details>
-<summary>Expert Commands (20)</summary>
+aixpert helps harden security.
+
+Use alt_disk_copy for backup.
+
+adb can debug core dumps.
+
+acctcms helps analyze command usage.
+
+bindprocessor optimizes CPU usage.
+
+</details>
+<details> <summary>🏆 Expert Commands (20)</summary>
 
 1. `alt_disk_install` : Install OS on alternate disk  
 2. `bosboot -ad /dev/hd5` : Rebuild boot image  
@@ -243,10 +314,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `lsof -i` : Open files  
 20. `netstat -an | grep <port>` : Network connections  
 
-</details>
+💡 Tips:
 
-<details>
-<summary>Should Know Commands (20)</summary>
+Use certcreate and certget for certificate management.
+
+errlg -n to view recent errors.
+
+Use filemon to track file/system I/O.
+
+fastboot requires no other users logged in.
+
+Use getconf before scripts for environment info.
+
+</details>
+<details> <summary>📘 Should Know Commands (20)</summary>
 
 1. `ls -ltr` : List files by time  
 2. `df -k` : Disk usage in KB  
@@ -271,12 +352,23 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 
 </details>
 
----
+💡 Tips:
 
-## Windows Commands
+Use banner to create large ASCII headings.
 
-<details>
-<summary>Basic Commands (20)</summary>
+batch schedules commands when load is low.
+
+bc is useful for calculations in shell.
+
+Use Basename to parse filenames.
+
+ACL tools help manage file permissions finely.
+
+</details>
+
+----
+Windows 🪟
+<details> <summary>⚡ Basic Commands (20)</summary>
 
 1. `dir` : List directory contents  
 2. `cd <dir>` : Change directory  
@@ -299,10 +391,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `net user` : List users  
 20. `ver` : Windows version  
 
-</details>
+💡 Tips:
 
-<details>
-<summary>Intermediate Commands (20)</summary>
+Use dir /a to list hidden files.
+
+Use tasklist and taskkill to manage processes.
+
+Use ipconfig /all for detailed network info.
+
+Use help to learn about commands.
+
+cls clears the console screen.
+
+</details>
+<details> <summary>🔧 Intermediate Commands (20)</summary>
 
 1. `chkdsk` : Check disk  
 2. `sfc /scannow` : System file check  
@@ -325,10 +427,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `shutdown /r /t 0` : Restart immediately  
 20. `whoami /groups` : Show group membership  
 
-</details>
+💡 Tips:
 
-<details>
-<summary>Advanced Commands (20)</summary>
+Use tracert to diagnose routing problems.
+
+Use netstat -an for all connections.
+
+schtasks to automate jobs.
+
+sfc /scannow repairs system files.
+
+sc to view and manage services.
+
+</details>
+<details> <summary>🚀 Advanced Commands (20)</summary>
 
 1. `Get-WmiObject Win32_OperatingSystem` : OS info (PowerShell)  
 2. `Get-WmiObject Win32_ComputerSystem` : System info  
@@ -351,10 +463,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `Get-ChildItem -Recurse` : Recursive file listing  
 20. `icacls <file>` : Show file permissions  
 
-</details>
+💡 Tips:
 
-<details>
-<summary>Expert Commands (20)</summary>
+Use PowerShell for automation.
+
+Get-Help is the best friend.
+
+Use Format-Table to beautify output.
+
+Invoke-WebRequest for REST calls.
+
+Always check script execution policies.
+
+</details>
+<details> <summary>🏆 Expert Commands (20)</summary>
 
 1. `Get-Process | Where-Object {$_.CPU -gt 100}` : High CPU processes  
 2. `Get-WmiObject Win32_Service | Where-Object {$_.StartMode -eq "Auto"}` : Auto services  
@@ -377,10 +499,20 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `Set-ExecutionPolicy Bypass -Scope Process` : Temporary bypass policy  
 20. `Start-Process powershell -Verb RunAs` : Run PowerShell as admin  
 
-</details>
+💡 Tips:
 
-<details>
-<summary>Should Know Commands (20)</summary>
+Remote management via PowerShell is powerful.
+
+Regularly back up PowerShell transcript.
+
+Active Directory module is a must for admins.
+
+Use Measure-Command to benchmark.
+
+Registry manipulation requires caution.
+
+</details>
+<details> <summary>📘 Should Know Commands (20)</summary>
 
 1. `cls` : Clear console  
 2. `echo %USERNAME%` : Current user  
@@ -403,4 +535,17 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 19. `fsutil fsinfo drives` : List drives  
 20. `chkdsk /f` : Fix disk errors  
 
+💡 Tips:
+
+Use wmic for deep Windows queries.
+
+robocopy is superior for batch file copies.
+
+Enable-PSRemoting is critical for remote admin.
+
+Regularly chkdsk for disk health.
+
+netsh provides granular network controls.
+
 </details>
+
