@@ -146,20 +146,20 @@ Here’s a list of **30 powerful & practical kubectl commands** that go beyond t
 
 2️⃣ Use alias for speed
 
-alias k=kubectl
+> alias k=kubectl
 
 
 3️⃣ Structure clusters properly
 
-Keep dev, test, and prod isolated for safety and governance.
+> Keep dev, test, and prod isolated for safety and governance.
 
 4️⃣ Monitor systems smartly
 
-Integrate Prometheus and Grafana for observability.
+> Integrate Prometheus and Grafana for observability.
 
 5️⃣ Automate backups regularly
 
-Prevent downtime by backing up configs, manifests, and etcd data.
+> Prevent downtime by backing up configs, manifests, and etcd data.
 
 
 ## 🧾 Author Note
