@@ -9,7 +9,7 @@ Each OS section and skill level is **collapsible** for GitHub-friendly viewing.
 Linux 🐧
 <details> <summary>⚡ Basic Commands (20)</summary>
 
-  - ```pwd``` : **Print working directory**
+  - pwd : **Print working directory**
 
 > /home/username
 
