@@ -32,11 +32,11 @@ Linux 🐧
 20. `man <command>` : Show manual page  
 
 ## 💡 Tips:
--> Use ls -la to list all files including hidden with permissions.
--> Use tab key for autocompletion.
--> cd .. moves up one directory.
--> Commands are case-sensitive.
--> Use man <command> to learn about options.
+- Use ls -la to list all files including hidden with permissions.
+- Use tab key for autocompletion.
+- cd .. moves up one directory.
+- Commands are case-sensitive.
+- Use man <command> to learn about options.
 
 </details>
 <details> <summary>🔧 Intermediate Commands (20)</summary>
