@@ -141,7 +141,7 @@ Here’s a list of **30 powerful & practical kubectl commands** that go beyond t
 
 1️⃣ Combine JSONPath for scripting
 
-kubectl get <resource> -o jsonpath=...
+> kubectl get <resource> -o jsonpath=...
 
 
 2️⃣ Use alias for speed
