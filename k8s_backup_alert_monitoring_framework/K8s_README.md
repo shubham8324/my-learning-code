@@ -66,41 +66,60 @@ It ensures consistency, reliability, and readiness across Production (PROD) and 
 ## 📁 Project Folder Structure
 
 k8s_backup_alert_monitoring_framework/
-- ├── NGO/             # IP configuration
-- │ ├── Logs       # Collected monitoring logs
-- │ └── NGO_ALERT_SCRIPTS/
-- │ ├── Daily_Config_Backup_Scripts/
-- │ │ ├── config_prop_backup
-- │ │ ├── deployment_backup
-- │ │ ├── Backup_Failed_K8s.sh
-- │ │ ├── image_compare/     # Compare image versions across clusters
-- │ │ ├── Image_version_backup
-- │ │ ├── pod_backup
-- │ │ └── SVC_backup
-- │ ├── hpa_monitor.sh
-- │ ├── K8s_Liveness_probe_missing.sh
-- │ ├── K8s_Readiness_probe_missing.sh
-- │ ├── kube-config-certificate-expiry.sh
-- │ ├── nettest.sh
-- │ ├── POD_Exception.sh
-- │ ├── pod_monitor.sh
-- │ ├── Port_Monitoring.sh
-- │ ├── port_monitor.properties
-- │ ├── ssl_expiry.properties
-- │ ├── SSL_EXPIRY.sh
-- │ ├── url_monitoring.properties
-- │ └── url_monitoring.sh
-- └── Prometheus
-- ├── config/            # IP configuration
-- ├── container_cpu_usage_seconds_total
-- ├── container_memory_usage_bytes
-- ├── Deployment_HPA_Missing
-- ├── endpoint_not_available
-- ├── http_request_count
-- ├── HTTP_RESPONSE_TIME_MONITOR
-- ├── kube_pod_created
-- ├── pod_not_running
-- └── TOMCAT_THREADS_CURRENT_THREADS
+├── NGO/  
+│   ├── Logs/  
+│   └── NGO_ALERT_SCRIPTS/  
+│       ├── config/  
+│       │   └── ip.txt  
+│       ├── Daily_Config_Backup_Scripts/  
+│       │   ├── config_prop_backup/  
+│       │   │   └── all_properties/  
+│       │   ├── Daily_Config_Backup_Scripts.sh  
+│       │   ├── deployment_backup/  
+│       │   │   ├── All_Deployment_backup/  
+│       │   │   └── All_Deployment_yaml_backup/  
+│       │   ├── EBDM_Backup_Failed_K8s.sh  
+│       │   ├── image_compare/  
+│       │   │   ├── Image_15min_diff.sh  
+│       │   │   ├── image_compare.sh  
+│       │   ├── Image_version_backup/  
+│       │   ├── pod_backup/  
+│       │   └── SVC_backup/  
+│       ├── hpa_monitor.sh  
+│       ├── K8s_Liveness_probe_missing.sh  
+│       ├── K8s_Readiness_probe_missing.sh  
+│       ├── kube-config-certificate-expiry.sh  
+│       ├── nettest.sh  
+│       ├── POD_Exception.sh  
+│       ├── pod_monitor.sh  
+│       ├── Port_Monitoring.sh  
+│       ├── port_monitor.properties  
+│       ├── ssl_expiry.properties  
+│       ├── SSL_EXPIRY.sh  
+│       ├── url_monitoring.properties  
+│       └── url_monitoring.sh  
+├── Prometheus/  
+│   ├── config/  
+│   │   ├── ip.txt  
+│   │   └── prometheus_servers_config.conf  
+│   ├── container_cpu_usage_seconds_total/  
+│   │   ├── container_cpu_usage_bytes_monitor.sh  
+│   ├── container_memory_usage_bytes/  
+│   │   ├── container_memory_usage_bytes_monitor.sh  
+│   ├── Deployment_HPA_Missing/  
+│   │   ├── Deployment_HPA_Missing.sh  
+│   ├── endpoint_not_available/  
+│   │   ├── endpoint_not_available.sh  
+│   ├── http_request_count/  
+│   │   ├── http_request_count.sh  
+│   ├── HTTP_RESPONSE_TIME_MONITOR/  
+│   │   ├── HTTP_RESPONSE_TIME_MONITOR.sh  
+│   ├── kube_pod_created/  
+│   │   ├── kube_pod_created.sh  
+│   ├── pod_not_running/  
+│   │   ├── pod_not_running.sh  
+│   └── TOMCAT_THREADS_CURRENT_THREADS/  
+│       └── TOMCAT_THREADS_CURRENT_THREADS.sh  
 
 
 ---
