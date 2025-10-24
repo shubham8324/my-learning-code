@@ -1,5 +1,5 @@
-HARDCODED_IP=10.137.51.131
-HARDCODED_HOSTNAME=nvmbdprv125540
+HARDCODED_IP=your_IP
+HARDCODED_HOSTNAME=your_hostname
 DYNAMIC_IP_CMD="hostname -I | awk '{print \$1}'"
 DYNAMIC_HOSTNAME_CMD="hostname"
 
