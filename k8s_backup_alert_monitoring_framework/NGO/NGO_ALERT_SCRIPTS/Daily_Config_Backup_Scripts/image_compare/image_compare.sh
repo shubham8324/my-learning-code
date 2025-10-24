@@ -34,9 +34,9 @@ LOG_FILE="$LOG_DIR/NGO_CUSTOM_UTIL_K8S_POD_IMAGE_DIFF$(date +"%Y%m%d%H%M").log"
 MISSING_IMAGE_OUTPUT="$COMPARE_DIR/missing_images_across_clusters.txt"
 
 # Define clusters
-IP_LIST=("10.137.51.131" "10.137.51.140" "10.148.161.163" "10.148.160.185")
-PROD_IPS=("10.137.51.131" "10.137.51.140")
-DR_IPS=("10.148.161.163" "10.148.160.185")
+IP_LIST=("IP1" "IP2" "IP3" "IP4") 
+PROD_IPS=("Active_IP1" "Active_IP2")
+DR_IPS=("Passive_IP1" "Passive_IP2")
 
 mkdir -p "$COMPARE_DIR" "$LOG_DIR"
 
