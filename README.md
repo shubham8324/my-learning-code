@@ -39,9 +39,6 @@ This repository is licensed under the Creative Commons Attribution-NoDerivatives
 - Modify, delete, or redistribute any existing files.  
 - Create derivative works from this repository.  
 
-Notice:
-Proper attribution must be given if you share or reference any content from this repository. See the full license here.  
-
 All suggestions are reviewed and applied at the discretion of the repository owner.   
 
 This repository is provided "as-is" without any warranty of any kind.  
