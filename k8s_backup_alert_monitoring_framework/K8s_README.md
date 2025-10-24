@@ -1,22 +1,79 @@
-# 🚀 Kubernetes Backup & Alert Monitoring Framework
+# 🚀 k8s_backup_alert_monitoring_framework
 
-A **comprehensive framework** to monitor Kubernetes cluster backups, alerts, Prometheus metrics, and log collection.  
+![Kubernetes Logo](https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg)
+> **A lightweight, modular monitoring & alerting framework for Kubernetes backups and daily checks**
 
-> This project provides scripts, automation, and monitoring tools to ensure your K8s environment is healthy and backup processes are working correctly.
+---
+
+## 🔗 Quick Links
+- [📘 Introduction](#-introduction)
+- [🧠 Languages Used](#-languages-used)
+- [🌟 Project Highlights / Use Cases](#-project-highlights--use-cases)
+- [📁 Folder Structure](#-project-folder-structure)
+- [✨ Features](#-features)
+- [📝 Prerequisites](#-prerequisites)
+- [🛠️ How to Use](#️-how-to-use)
+- [💡 Tips & Best Practices](#-tips--best-practices)
+
+---
+
+## 📘 Introduction
+The **k8s_backup_alert_monitoring_framework** automates:
+- Kubernetes backup validation  
+- Alert monitoring and notification
+- Configuration verification  
+- Daily comparison reports between clusters  
+
+It ensures consistency, reliability, and readiness across Production (PROD) and Disaster Recovery (DR) environments, reducing manual operational overhead.
+---
+
+## 💡 Why Use This Framework
+✅ Centralized alert monitoring  
+✅ Automated configuration & backup checks
+✅ Seamless integration with Prometheus & NGO alert scripts
+✅ Reduces manual intervention, improving operational efficiency
+✅ Simple configuration-driven design  
+
+---
+
+## 🧠 Languages Used
+- 🐚 **Shell Script** (Core automation logic)  
+- ☁️ **YAML / Config files** (Cluster & Prometheus configurations)
+
+> 💾 *Usage and downloads metrics available via GitHub insights.*
+
+---
+
+## 🌟 Project Highlights / Use Cases
+
+- 🧩 **Kubernetes Deployment Image Comparison**  
+  - Ensures container image and configuration consistency between PROD and DR clusters.
+
+- 📡 **Prometheus-Based Alert Monitoring**  
+  - Continuously tracks metrics such as CPU, memory, Pod health, HTTP response times, and HPA deployment status.
+
+- 🔍 **Critical Component Validation**  
+  - Verifies the health and availability of pods, endpoints, and deployments to ensure system reliability.
+
+- ⚙️ **Environment-Agnostic Configuration**  
+  - Works seamlessly across multiple Kubernetes clusters with simple centralized configuration.
+
+- 🚀 **Operational Automation**  
+  - Automates daily health checks, backups, and cluster synchronization validations.
 
 ---
 
 ## 📁 Project Folder Structure
 
-k8s_backup_alert_monitoring_framework
-- ├── NGO
-- │ ├── Logs # Logs collected from monitoring scripts
-- │ └── NGO_ALERT_SCRIPTS
-- │ ├── Daily_Config_Backup_Scripts
+k8s_backup_alert_monitoring_framework/
+- ├── NGO/             # IP configuration
+- │ ├── Logs       # Collected monitoring logs
+- │ └── NGO_ALERT_SCRIPTS/
+- │ ├── Daily_Config_Backup_Scripts/
 - │ │ ├── config_prop_backup
 - │ │ ├── deployment_backup
 - │ │ ├── Backup_Failed_K8s.sh
-- │ │ ├── image_compare # Compare image versions across clusters
+- │ │ ├── image_compare/     # Compare image versions across clusters
 - │ │ ├── Image_version_backup
 - │ │ ├── pod_backup
 - │ │ └── SVC_backup
@@ -34,7 +91,7 @@ k8s_backup_alert_monitoring_framework
 - │ ├── url_monitoring.properties
 - │ └── url_monitoring.sh
 - └── Prometheus
-- ├── config # Prometheus configuration
+- ├── config/            # IP configuration
 - ├── container_cpu_usage_seconds_total
 - ├── container_memory_usage_bytes
 - ├── Deployment_HPA_Missing
@@ -48,152 +105,137 @@ k8s_backup_alert_monitoring_framework
 
 ---
 
-## ⚙️ Features
+## ✨ Features
 
-- **Prometheus Metrics Monitoring**  
-  - Monitors CPU, memory, pod status, endpoint availability, HTTP response time, Tomcat threads, and HPA deployment status.
-  - IP configuration is centralized in `Prometheus/config/prometheus_servers_config.conf`.
-  - Default setup:  
-    ```
-    Prometheus IP: 10.10.10.10
-    Worker IP:     20.20.20.20
-    ```
+- 🔭 **Prometheus Metrics Monitoring**
+  - Tracks key Kubernetes metrics: CPU, memory, pod status, endpoint availability, HTTP response time, Tomcat threads, and HPA deployment status.  
+  - Configuration via: Prometheus/config/prometheus_servers_config.conf
 
-- **Backup & Alerts Monitoring**  
-  - Daily configuration backup for deployments, pods, services, and images.
-  - Compares image versions across clusters (`Prod1`, `Prod2`, `DR1`, `DR2`).
-  - Generates logs in `NGO/Logs` folder.
+- 💾 **Backup & Alerts Monitoring**
+  - Daily backups for deployments, pods, services, and images
+  - Cross-cluster image comparison (PROD1, PROD2, DR1, DR2)
+  - Logs stored under NGO/Logs
 
-- **Certificate & Port Monitoring**  
-  - Monitors SSL expiry (`ssl_expiry.properties`) and certificates (`kube-config-certificate-expiry.sh`).  
-  - Monitors URL/Port availability (`url_monitoring.properties`, `port_monitor.properties`).
-
-- **SSH & Passwordless Setup**  
-  - Requires SSH and passwordless connectivity to clusters.
-  - Run backup and image version scripts remotely.
+- 🔐 **Certificate & Port Monitoring**
+  - SSL certificate expiry validation (ssl_expiry.properties)  
+  - K8s config certificate monitoring (kube-config-certificate-expiry.sh)
+  - URL & port availability checks (url_monitoring.properties & port_monitor.properties)
  
-- **Logs for alert**
-  - All script outputs and alert logs are stored in NGO/Logs.  
+- 🔗 **SSH & Passwordless Access**
+  - Executes scripts remotely for backup, alerting, and comparisons across clusters securely.
+
+- 🧩 **Flexible Configuration**
+  - Modular and easy-to-edit environment variables for rapid scaling and customization.
+
+- 🛡️ **DR Readiness Validation**
+  - Ensures synchronization between PROD and DR environments to detect missing/outdated components before failover.
+
+- 📊 **Comprehensive Logging**
+  - Logs all alerts, monitoring reports, and script outputs in NGO/Logs for debugging, auditing, and review.
+    
+- ⚙️ **Lightweight & Extensible Design**
+  - Pure Shell Script design for minimal dependencies and easy integration with any monitoring tools.
+
 
 ---
 
 ## 📝 Prerequisites
 
-- **Server Requirements**
+> ⚠️ **Before running**, make sure to apply the following configuration changes:
+
+1. Update Configuration Files
+- Prometheus/config/ip.txt & NGO/NGO_ALERT_SCRIPTS/config/ip.txt
+
+Replace the below variables:
+```bash
+HARDCODED_IP=your_IP
+HARDCODED_HOSTNAME=your_hostname
+```
+
+2. Update Prometheus Config
+- File: Prometheus/config/prometheus_servers_config.conf
+
+Replace all your_IP and Prometheus_IP with your actual IPs:
+```bash
+container_memory_usage_bytes EBDM2.0_FTTX Prometheus_IP:30900 your_IP
+container_cpu_usage_seconds_total EBDM2.0_FTTX Prometheus_IP:30900 your_IP
+TOMCAT_THREADS_CURRENT_THREADS EBDM2.0_FTTX Prometheus_IP:30900 your_IP
+...
+```
+
+3. Update Cluster IPs for Image Comparison
+-File: NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
+
+# Define cluster IP groups
+# IP_LIST  → List of all cluster nodes
+# PROD_IPS → Active/Primary cluster IPs
+# DR_IPS   → Passive/Disaster Recovery cluster IPs
+
+IP_LIST=("IP1" "IP2" "IP3" "IP4")
+PROD_IPS=("Active_IP1" "Active_IP2")
+DR_IPS=("Passive_IP1" "Passive_IP2")
+
+
+4. SSH Username Update
+- Change "your_user_name" to your actual username
+
+ssh -o BatchMode=yes -o ConnectTimeout=10 your_user_name@"$IP_ADDR" cat "$SRC_FILE" > "$TARGET_DIR/image_info.txt" 2>/dev/null
+
+
+5. Server Requirements
   - Linux server (Ubuntu/CentOS/RHEL)
   - `bash`, `ssh`, `scp`, `rsync`, `curl` installed
   - Passwordless SSH setup to all clusters (Prod & DR)
-
-- **Prometheus Configuration**
-  - Change IPs in `Prometheus/config/prometheus_servers_config.conf`:
     
-    ```text
-    prometheus_ip=10.10.10.10
-    worker_ip=20.20.20.20
-    ```
 
-  - Add matrix/alert whenever a new alert is created. Use **folder name = metric name = script name**.
+6. SSL & Port Monitoring
 
-    ```text
-    Metric: container_memory_usage_bytes
-    Folder: Prometheus/container_memory_usage_bytes/
-    Script: container_memory_usage_bytes_monitor.sh
-    ```
+- Update: Update mention properties to use these script
 
-- **NGO Script Configuration**
-  - Update IPs in `NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh`:
+```Bash
+port_monitor.properties → #website|IP|appname|port
+url_monitoring.properties → #hostname port
+ssl_expiry.properties → #website|IP|hostname|port
+Update certificates in kube-config-certificate-expiry.sh.
+```
 
-
-    ```bash
-    IP_LIST=("Prod1" "Prod2" "DR1" "DR2")
-    ssh username@$IP_ADDR ...
-    ```
-  > Update SSH username in scripts for your environment.
 
 ---
 
 ## 🛠️ How to Use
 
-### 1️⃣ Prometheus Alerts
-Add metrics in the folder name and script as required. Example metrics:
+- Extract this sub-repo into your working directory:
 
- **Data**
- 
-    ```bash
-    container_memory_usage_bytes EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    container_cpu_usage_seconds_total EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    TOMCAT_THREADS_CURRENT_THREADS EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    http_request_count EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    HTTP_RESPONSE_TIME_MONITOR EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    pod_not_running EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    endpoint_not_available EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    Deployment_HPA_Missing EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    kube_pod_created EBDM2.0_FTTX 10.10.10.10:30900 20.20.20.20
-    
-    ```
-
-
-### 2️⃣ Backup & Monitoring
-
-**Daily Config Backup**
-  
-    ```bash
-    /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/Daily_Config_Backup_Scripts.sh
-    ```
-    
-**Image Version Compare**
-
-    ```bash
-     /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
-    ```
-
-**Backup Alert**
-
-    ```bash
-     /k8s_backup_alert_monitoring_framework/NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/Backup_Failed_K8s.sh
-    ```
-    
-
-### 3️⃣ SSL & Port Monitoring
-
-> Update: Update mention properties to use these script
-
-- port_monitor.properties → #website|IP|appname|port
-- url_monitoring.properties → #hostname port
-- ssl_expiry.properties → #website|IP|hostname|port
-- Update certificates in kube-config-certificate-expiry.sh.
-  
-
-
-✉️ **Optional - Email Integration**
-
-- You can integrate email notifications using sendmail, mailx, or any SMTP tool of your choice.
-- Just call the mail function inside any .sh alert script.
-
-
+```bash
+git clone https://github.com/shubham8324/my-learning-code
+cd my-learning-code/k8s_backup_alert_monitoring_framework
 ```
-Example snippet:
-echo "Alert: Pod Not Running" | mail -s "K8s Alert" user@example.com
-```
+
+1. Apply the prerequisite changes above.
+
+2. Run your alert or backup scripts as per configuration:
+
+./NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
+
+3. Check logs & reports under output/ or logs/ folder.
+    
 
 ---
 
-⚡ **Tips & Best Practices**
+💡 Tips & Best Practices
 
-- Always use same folder name for metric, alert script, and configuration.
-- Enable passwordless SSH for smooth monitoring.
-- Keep Prometheus IP & Worker IP updated in config.
-- Add new alerts or backups following the same folder + file naming convention.
-- Scripts are portable and can run manually or via cron jobs.
+- 🔍 Validate IPs, hostnames & credentials before running scripts
+- 💾 Maintain backups of configuration files
+- ⏰ Use cron jobs for daily automation
+- 📡 Verify Prometheus connectivity before enabling alerts
+- 🔁 Keep PROD and DR configs synchronized
+- 📂 Maintain consistent folder, metric & script naming conventions
+- 🔑 Enable passwordless SSH for smooth operations
  
-----
-
-👋 **Final Words**
-- Stay proactive with your K8s monitoring!
-- This repo gives you a hands-on, scriptable, customizable monitoring system that works with your clusters.
-
 -----
 
 📫 Author
 
 🖋️ Shubham Patel 🚀 Happy Monitoring!
+
+> Automate, standardize, and simplify Kubernetes backup and alert monitoring.
