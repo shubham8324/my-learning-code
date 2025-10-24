@@ -1,6 +1,0 @@
-jio-fttx-ebdm-services|digitalapi-routingdatainquiry-app-67bc87b589-fv7vv||7
-jio-fttx-ebdm-services|digitalapi-routingdata-sap-connector-crm-app-7d78c9b4c-gqgjs||7
-jio-fttx-ebdm-services|digitalapi-routingdata-sap-connector-hana-app-db4f76b8f-bfjtw||7
-jio-fttx-ebdm-services|digitalapi-routingdata-sap-connector-hana-app-db4f76b8f-d2g9h||7
-jio-fttx-ebdm-services|digitalapi-balanceinquiry-app-6bdff8f975-vjhjf||7
-jio-fttx-ebdm-services|digitalapi-balanceinquiry-app-6bdff8f975-vxrdg||7
