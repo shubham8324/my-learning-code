@@ -29,9 +29,9 @@ It ensures consistency, reliability, and readiness across Production (PROD) and 
 
 ## 💡 Why Use This Framework
 ✅ Centralized alert monitoring  
-✅ Automated configuration & backup checks
-✅ Seamless integration with Prometheus & NGO alert scripts
-✅ Reduces manual intervention, improving operational efficiency
+✅ Automated configuration & backup checks  
+✅ Seamless integration with Prometheus & NGO alert scripts  
+✅ Reduces manual intervention, improving operational efficiency  
 ✅ Simple configuration-driven design  
 
 ---
