@@ -8,7 +8,7 @@ Collection of my code experiments, scripts, dashboards, and learning notes.
 ![Repository Badge](https://img.shields.io/badge/status-active-brightgreen)
 ![Languages Badge](https://img.shields.io/badge/languages-Python%2CSQL%2CShell-blue)
 ![Last Commit](https://img.shields.io/github/last-commit/shubham8324/my-learning-code)
-![License](https://img.shields.io/badge/license-Custom-lightgrey)
+[![License: CC BY-ND 4.0](https://img.shields.io/badge/License-CC%20BY--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nd/4.0/)
 
 **A personal repository for my learning journey: code, dashboards, scripts, notes, and key points.**  
 This repo is designed to organize my experiments, projects, and learning resources in one place.
@@ -27,10 +27,10 @@ This repo is designed to organize my experiments, projects, and learning resourc
 
 ## 📜 License (Custom Read-Only with Feedback)
 
-This repository is licensed under a **custom license** to allow learning and suggestions without modifying original files.  
+This repository is licensed under the Creative Commons Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0) license.
 
 **You may:**
-- Download, copy, and use the contents for personal learning and reference.  
+- Download, copy, and use the contents.  
 - Provide suggestions or feedback via:
   1. Creating a single file named `SUGGESTIONS.txt` in the repository  
   2. Opening GitHub Issues  
@@ -39,9 +39,12 @@ This repository is licensed under a **custom license** to allow learning and sug
 - Modify, delete, or redistribute any existing files.  
 - Create derivative works from this repository.  
 
-All suggestions are reviewed and applied at the discretion of the repository owner.  
+Notice:
+Proper attribution must be given if you share or reference any content from this repository. See the full license here.  
 
-This repository is provided "as-is" without any warranty of any kind.
+All suggestions are reviewed and applied at the discretion of the repository owner.   
+
+This repository is provided "as-is" without any warranty of any kind.  
 
 ---
 
