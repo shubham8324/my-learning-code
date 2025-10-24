@@ -33,6 +33,11 @@ LOG_DIR="/app/NGO/Logs"
 LOG_FILE="$LOG_DIR/NGO_CUSTOM_UTIL_K8S_POD_IMAGE_DIFF$(date +"%Y%m%d%H%M").log"
 MISSING_IMAGE_OUTPUT="$COMPARE_DIR/missing_images_across_clusters.txt"
 
+# Define cluster IP groups
+# IP_LIST  → List of all cluster nodes
+# PROD_IPS → Active/Primary cluster IPs
+# DR_IPS   → Passive/Disaster Recovery cluster IPs
+
 # Define clusters
 IP_LIST=("IP1" "IP2" "IP3" "IP4") 
 PROD_IPS=("Active_IP1" "Active_IP2")
@@ -64,8 +69,9 @@ for IP_ADDR in "${IP_LIST[@]}"; do
             MISSING_FILES+=("$IP_ADDR")
         fi
     else
-        echo "[$IP_ADDR] Fetching via SSH..."
-        ssh -o BatchMode=yes -o ConnectTimeout=10 SIEBDMK8S@"$IP_ADDR" cat "$SRC_FILE" > "$TARGET_DIR/image_info.txt" 2>/dev/null
+        echo "[$IP_ADDR] Fetching via SSH..." 
+        #### Change "your_user_name" to your actual username
+        ssh -o BatchMode=yes -o ConnectTimeout=10 your_user_name@"$IP_ADDR" cat "$SRC_FILE" > "$TARGET_DIR/image_info.txt" 2>/dev/null
         if [[ $? -ne 0 || ! -s "$TARGET_DIR/image_info.txt" ]]; then
             echo "[$IP_ADDR] image_info.txt missing or empty!"
             MISSING_FILES+=("$IP_ADDR")
