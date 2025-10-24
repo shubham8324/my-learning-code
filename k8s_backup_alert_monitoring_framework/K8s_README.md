@@ -185,14 +185,14 @@ TOMCAT_THREADS_CURRENT_THREADS EBDM2.0_FTTX Prometheus_IP:30900 your_IP
 3. Update Cluster IPs for Image Comparison
 -File: NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
 
-> Define cluster IP groups
-> IP_LIST  → List of all cluster nodes
-> PROD_IPS → Active/Primary cluster IPs
-> DR_IPS   → Passive/Disaster Recovery cluster IPs
-
-IP_LIST=("IP1" "IP2" "IP3" "IP4")
-PROD_IPS=("Active_IP1" "Active_IP2")
-DR_IPS=("Passive_IP1" "Passive_IP2")
+> Define cluster IP groups  
+> IP_LIST  → List of all cluster nodes  
+> PROD_IPS → Active/Primary cluster IPs  
+> DR_IPS   → Passive/Disaster Recovery cluster IPs  
+  
+IP_LIST=("IP1" "IP2" "IP3" "IP4")  
+PROD_IPS=("Active_IP1" "Active_IP2")  
+DR_IPS=("Passive_IP1" "Passive_IP2")  
 
 
 4. SSH Username Update
