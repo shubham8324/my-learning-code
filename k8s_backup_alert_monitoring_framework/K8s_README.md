@@ -162,7 +162,7 @@ k8s_backup_alert_monitoring_framework/
 
 > ⚠️ **Before running**, make sure to apply the following configuration changes:
 
-1. Update Configuration Files
+**1. Update Configuration Files**
 - Prometheus/config/ip.txt & NGO/NGO_ALERT_SCRIPTS/config/ip.txt
 
 Replace the below variables:
@@ -171,7 +171,7 @@ HARDCODED_IP=your_IP
 HARDCODED_HOSTNAME=your_hostname
 ```
 
-2. Update Prometheus Config
+**2. Update Prometheus Config**
 - File: Prometheus/config/prometheus_servers_config.conf
 
 Replace all your_IP and Prometheus_IP with your actual IPs:
@@ -182,7 +182,7 @@ TOMCAT_THREADS_CURRENT_THREADS EBDM2.0_FTTX Prometheus_IP:30900 your_IP
 ...
 ```
 
-3. Update Cluster IPs for Image Comparison
+**3. Update Cluster IPs for Image Comparison**
 -File: NGO/NGO_ALERT_SCRIPTS/Daily_Config_Backup_Scripts/image_compare/image_compare.sh
 
 > Define cluster IP groups  
@@ -195,19 +195,19 @@ PROD_IPS=("Active_IP1" "Active_IP2")
 DR_IPS=("Passive_IP1" "Passive_IP2")  
 
 
-4. SSH Username Update
+**4. SSH Username Update**
 - Change "your_user_name" to your actual username
 
 ssh -o BatchMode=yes -o ConnectTimeout=10 your_user_name@"$IP_ADDR" cat "$SRC_FILE" > "$TARGET_DIR/image_info.txt" 2>/dev/null
 
 
-5. Server Requirements
+**5. Server Requirements**
   - Linux server (Ubuntu/CentOS/RHEL)
   - `bash`, `ssh`, `scp`, `rsync`, `curl` installed
   - Passwordless SSH setup to all clusters (Prod & DR)
     
 
-6. SSL & Port Monitoring
+**6. SSL & Port Monitoring**
 
 - Update: Update mention properties to use these script
 
