@@ -37,6 +37,7 @@
 ### 1️⃣ Prepare your server list (`serverlist.txt`)
 
 > Use spaces or tabs consistently, no extra spaces at the end:
+> This is the pre-requisite step
 
 ```text
 # IP Address   Port
