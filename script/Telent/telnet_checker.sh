@@ -56,7 +56,7 @@ log_result() {
     local timestamp
     timestamp=$(date +"%Y-%m-%d %H:%M:%S")
 
-    if [[ "$status" == "Connected" ]]; then
+    if grep -Eqi "Connected|Escape character" "$tmp"; then
         echo "$timestamp - $ip $port ......Connected" | tee -a "$OUTPUT_CONNECTED"
     else
         echo "$timestamp - $ip $port ......Failed" | tee -a "$OUTPUT_FAILED"
