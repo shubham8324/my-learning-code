@@ -65,7 +65,7 @@ git config --global user.name "Your Name"
 git config --global user.email "your@email.com"
 git config --list
 ```
-- Name & email become permanent metadata in commit history.
+>  Name & email become permanent metadata in commit history.
 
 ## 6. Repository Initialization
 ```bash
@@ -75,7 +75,7 @@ git init
 ```
 
 Creates:
-- .git/ (hidden) → entire Git brain
+>  .git/ (hidden) → entire Git brain
 
 
 
@@ -92,11 +92,20 @@ git push origin master
 git pull origin master
 ```
 
--- push = local → remote
--- pull = remote → local (fetch + merge)
+> push = local → remote
+> pull = remote → local (fetch + merge)
 
 
-## 8. Status & Inspection
+## 8. Authentication (GitHub Token)
+
+Path:
+- GitHub → Settings → Developer Settings
+- → Personal Access Tokens (Classic)
+- → Generate → Copy immediately
+
+> Use token instead of password.
+
+## 9. Status & Inspection
 ```bash
 git status
 git log
@@ -105,3 +114,81 @@ git log -n 5
 git log --grep "keyword"
 git show <commit-id>
 ```
+
+## 10. .gitignore (Critical)
+
+Create:
+```bash
+vi .gitignore
+```
+
+Examples:
+```bash
+*.log
+*.class
+.env
+```
+
+Add & commit:
+```bash
+git add .gitignore
+git commit -m "add gitignore"
+```
+
+## 11. Git Ignore Cache Fix
+If want don't want to ignore *.class then 
+- edit .gitignore:
+```bash
+vi .gitignore
+```
+
+Examples:
+```bash
+*.log
+.env
+```
+
+clear index still tracked:
+```bash
+git rm -r --cached .
+git add .
+git commit -m "fix gitignore tracking"
+```
+> This is the only correct flow when changing what is ignored.
+
+If You want to stop ignoring ONE file but keep others ignored
+
+- edit .gitignore:
+```bash
+vi .gitignore
+```
+
+Examples:
+```bash
+*.log
+!app.log
+.env
+```
+
+```bash
+git add app.log
+git commit -m "track app.log while ignoring others"
+```
+> All .log ignored but app.log tracked
+
+
+
+- Completely remove .gitignore Completely
+```bash
+rm .gitignore
+git rm .gitignore
+git commit -m "remove gitignore"
+```
+>⚠️ Ignored files will not automatically come back unless you add them manually.
+
+
+## Golden Rules (Remember This)
+- .gitignore does not affect already tracked files
+- Changing ignore rules → clear cache once
+- Use !filename to re-include a file
+- Never commit secrets (.env, keys)
