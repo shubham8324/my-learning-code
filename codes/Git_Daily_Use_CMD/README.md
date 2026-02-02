@@ -316,7 +316,7 @@ git commit --amend
 > Why:Used when you want to modify the most recent commit before pushing.
 > --amend replaces the last commit.
 
-## 17. Tags (Release Markers)
+## 18. Tags (Release Markers)
 ```bash
 git tag
 git tag -a v1.0 -m "first release" <commit-id>
@@ -329,7 +329,19 @@ Use tags for:
 - Stable milestones
 - Rollback references
 
-## 18. Clone (New Machine / New User)
+## 19. git diff (Before You Commit)
+You inspect history, but not changes before committing.
+```bash
+Missing:
+git diff              # working vs staging
+git diff --staged     # staging vs last commit
+git diff HEAD~1 HEAD
+```
+
+Why it matters:
+>This is the last line of defense before bad commits.
+
+## 20. Clone (New Machine / New User)
 ```bash
 git clone <repo-url>
 ```
@@ -340,7 +352,7 @@ Creates:
 - Full history
 - Remote already configured
 
-## 19. Strategic Notes (Important)
+## 21. Strategic Notes (Important)
 - Commit small, commit often
 - Write commit messages like change-logs
 - Never reset after push
@@ -350,7 +362,7 @@ Creates:
 - Tags = trust points
 - Git history is documentation
 
-20. One-Line Philosophy
+## 22. One-Line Philosophy
 
 > Git is not a backup tool.
 > Git is decision tracking over time.
