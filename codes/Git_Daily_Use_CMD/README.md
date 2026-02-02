@@ -248,7 +248,7 @@ Rules:
 - Same file, same lines → conflict
 
 
-## 13. Merge Conflict Resolution
+## Merge Conflict Resolution
 When conflict occurs:
 ```bash
 CONFLICT (content): Merge conflict in file
@@ -264,7 +264,7 @@ git add .
 git commit -m "resolve merge conflict"
 ```
 
-## 14. Stash (Temporary Parking)
+## 13. Stash (Temporary Parking)
 
 Use when:
 - Work is incomplete
@@ -280,7 +280,7 @@ Notes:
 - Only uncommitted changes
 - Multiple stashes supported
 
-## 15. Reset vs Revert (Never Confuse)
+## 14. Reset vs Revert (Never Confuse)
 Reset (Local, Private)
 ```bash
 git reset <file>
@@ -299,7 +299,7 @@ git revert <commit-id>
 - History moves forward
 - State moves backward
 
-## 16. Clean (Untracked Files)
+## 15. Clean (Untracked Files)
 ```bash
 git clean -n   # dry run
 git clean -f   # force delete
@@ -307,7 +307,7 @@ git clean -f   # force delete
 
 > Only removes untracked files.
 
-## 17. Fix Last Commit
+## 16. Fix Last Commit
 ```bash
 vi file
 git add .
@@ -316,7 +316,7 @@ git commit --amend
 > Why:Used when you want to modify the most recent commit before pushing.
 > --amend replaces the last commit.
 
-## 18. Tags (Release Markers)
+## 17. Tags (Release Markers)
 ```bash
 git tag
 git tag -a v1.0 -m "first release" <commit-id>
@@ -329,7 +329,7 @@ Use tags for:
 - Stable milestones
 - Rollback references
 
-## 19. git diff (Before You Commit)
+## 18. git diff (Before You Commit)
 You inspect history, but not changes before committing.
 ```bash
 Missing:
@@ -341,7 +341,7 @@ git diff HEAD~1 HEAD
 Why it matters:
 >This is the last line of defense before bad commits.
 
-## 20. Clone (New Machine / New User)
+## 19. Clone (New Machine / New User)
 ```bash
 git clone <repo-url>
 ```
@@ -352,7 +352,7 @@ Creates:
 - Full history
 - Remote already configured
 
-## 21. Strategic Notes (Important)
+## 20. Strategic Notes (Important)
 - Commit small, commit often
 - Write commit messages like change-logs
 - Never reset after push
@@ -362,7 +362,7 @@ Creates:
 - Tags = trust points
 - Git history is documentation
 
-## 22. One-Line Philosophy
+## One-Line Philosophy
 
 > Git is not a backup tool.
 > Git is decision tracking over time.
