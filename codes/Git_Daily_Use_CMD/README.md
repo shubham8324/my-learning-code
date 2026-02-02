@@ -96,6 +96,19 @@ git pull origin master
 > pull = remote → local (fetch + merge)
 
 
+## Branch Upstream Setup (One-Time, Then Daily Benefit)
+```bash
+git push -u origin main
+```
+
+After that:
+```bash
+git push
+git pull
+```
+
+> Why:Removes noise from daily commands.
+
 ## 8. Authentication (GitHub Token)
 
 Path:
@@ -216,6 +229,14 @@ git branch -m main
 git branch -M main      # force rename
 ```
 
+## Remote Branch Cleanup
+```bash
+git branch -r
+git push origin --delete feature1
+```
+
+> Why:Housekeeping after PR merge.
+
 ## 12. Merge Strategy
 ```bash
 git checkout master
@@ -242,3 +263,94 @@ Steps:
 git add .
 git commit -m "resolve merge conflict"
 ```
+
+## 14. Stash (Temporary Parking)
+
+Use when:
+- Work is incomplete
+- You must switch context urgently
+```bash
+git stash
+git stash list
+git stash apply stash@{0}
+git stash clear
+```
+
+Notes:
+- Only uncommitted changes
+- Multiple stashes supported
+
+## 15. Reset vs Revert (Never Confuse)
+Reset (Local, Private)
+```bash
+git reset <file>
+git reset .
+git reset --hard
+```
+
+- Rewrites history
+- Dangerous after push
+
+Revert (Public, Safe)
+```bash
+git revert <commit-id>
+```
+- Creates a new commit
+- History moves forward
+- State moves backward
+
+## 16. Clean (Untracked Files)
+```bash
+git clean -n   # dry run
+git clean -f   # force delete
+```
+
+> Only removes untracked files.
+
+## 17. Fix Last Commit
+```bash
+vi file
+git add .
+git commit --amend
+```
+> Why:Used when you want to modify the most recent commit before pushing.
+> --amend replaces the last commit.
+
+## 17. Tags (Release Markers)
+```bash
+git tag
+git tag -a v1.0 -m "first release" <commit-id>
+git show v1.0
+git tag -d v1.0
+```
+
+Use tags for:
+- Releases
+- Stable milestones
+- Rollback references
+
+## 18. Clone (New Machine / New User)
+```bash
+git clone <repo-url>
+```
+
+Creates:
+- Directory
+- .git
+- Full history
+- Remote already configured
+
+## 19. Strategic Notes (Important)
+- Commit small, commit often
+- Write commit messages like change-logs
+- Never reset after push
+- Revert is audit-safe
+- Branch early, merge often
+- .gitignore must be decided early
+- Tags = trust points
+- Git history is documentation
+
+20. One-Line Philosophy
+
+> Git is not a backup tool.
+> Git is decision tracking over time.
