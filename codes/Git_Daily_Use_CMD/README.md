@@ -135,7 +135,7 @@ git add .gitignore
 git commit -m "add gitignore"
 ```
 
-## 11. Git Ignore Cache Fix
+## Git Ignore Cache Fix
 If want don't want to ignore *.class then 
 - edit .gitignore:
 ```bash
@@ -192,3 +192,53 @@ git commit -m "remove gitignore"
 - Changing ignore rules → clear cache once
 - Use !filename to re-include a file
 - Never commit secrets (.env, keys)
+
+
+## 11. Branching (Core Power of Git)
+- Branch = pointer to a commit
+- Default branch: master or main
+- Branch creation copies current state
+```bash
+git branch              # list
+git branch feature1     # create
+git checkout feature1   # switch
+```
+
+Delete:
+```bash
+git branch -d feature1
+git branch -D feature1  # force
+```
+
+Rename:
+```bash
+git branch -m main
+git branch -M main      # force rename
+```
+
+## 12. Merge Strategy
+```bash
+git checkout master
+git merge feature1
+```
+
+Rules:
+- Same file, different lines → auto-merge
+- Same file, same lines → conflict
+
+
+## 13. Merge Conflict Resolution
+When conflict occurs:
+```bash
+CONFLICT (content): Merge conflict in file
+```
+
+Steps:
+1. Open conflicted file
+2. Resolve manually
+3. Remove conflict markers
+4. Add & commit
+```bash
+git add .
+git commit -m "resolve merge conflict"
+```
