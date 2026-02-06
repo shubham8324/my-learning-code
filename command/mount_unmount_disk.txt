@@ -1,0 +1,89 @@
+Linux Disk Mount / Unmount — Quick Guide
+Mount a New Drive
+1. Identify the new disk
+lsblk
+
+
+Look for a disk without a mount point (e.g. /dev/sdb).
+
+2. Partition the disk
+sudo gdisk /dev/sdb
+
+
+Create a new partition → /dev/sdb1
+
+Write changes and exit
+
+3. Create filesystem
+sudo mkfs.ext4 /dev/sdb1
+
+4. Create mount directory
+sudo mkdir -p /mnt/yt_filestore
+
+5. Mount the disk
+sudo mount /dev/sdb1 /mnt/yt_filestore
+
+
+Verify:
+
+df -h | grep sdb
+
+6. Get UUID
+lsblk -f
+
+
+(or)
+
+sudo blkid /dev/sdb1
+
+7. Make mount persistent (on reboot)
+
+Edit /etc/fstab:
+
+sudo nano /etc/fstab
+
+
+Add entry:
+
+UUID=58e7420b-653f-4cbe-b8ab-dc8519a4c451  /mnt/yt_filestore  ext4  discard,commit=30,errors=remount-ro  0  1
+
+
+Test:
+
+sudo mount -a
+
+Unmount a Drive
+1. Unmount
+sudo umount /mnt/yt_filestore
+
+
+(or)
+
+sudo umount /dev/sdb1
+
+2. If “device is busy”
+lsof +D /mnt/yt_filestore
+
+
+or
+
+fuser -vm /mnt/yt_filestore
+
+
+Stop the process, then unmount again.
+
+3. Remove from auto-mount (optional)
+
+Edit /etc/fstab and remove the UUID entry:
+
+sudo nano /etc/fstab
+
+Quick Safety Notes
+
+Never run mkfs on a disk with data
+
+Always test with mount -a
+
+Use UUID, not /dev/sdX, for persistence
+
+Add nofail for cloud VMs to avoid boot issues
