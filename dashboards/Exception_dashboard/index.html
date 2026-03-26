@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<title>CLE ExceptionCode Details</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --white:      #ffffff;
+    --bg:         #e8ebf0;
+    --surface:    #ffffff;
+    --border:     #bec5d0;
+    --border-md:  #a8b2bf;
+    --text:       #1a2030;
+    --text-2:     #4a5568;
+    --text-3:     #3d4a5c;
+    --accent:     #2563eb;
+    --accent-bg:  #eff4ff;
+    --accent-bdr: #c0d0f8;
+    --success:    #0a7c4b;
+    --success-bg: #ecfdf5;
+    --warn:       #b45309;
+    --danger:     #c0392b;
+    --comp-bg:    #f5f3ff;
+    --comp-bdr:   #ddd6fe;
+    --comp-text:  #6d28d9;
+    --mono:       'JetBrains Mono', monospace;
+    --sans:       'Inter', sans-serif;
+    --radius:     6px;
+    --radius-lg:  10px;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.07);
+  }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; }
+  .app { display: flex; flex-direction: column; min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0 32px; height: 58px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-right: 32px; }
+  .logo { width: 30px; height: 30px; background: var(--accent); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .logo svg { width: 15px; height: 15px; color: #fff; }
+  .header-title { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; white-space: nowrap; }
+  .hdiv { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+  .header-sub { font-size: 12px; color: var(--text-3); white-space: nowrap; font-family: var(--mono); }
+  .header-right { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-left: auto; flex-shrink: 0; }
+
+  .btn-export { display:flex;align-items:center;gap:6px;padding:7px 15px;background:#0f9d6e;border:1px solid #0f9d6e;border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s;box-shadow:var(--shadow-sm); }
+  .btn-export:hover { background:#0b7d57;border-color:#0b7d57; }
+  .btn-export svg { width:14px;height:14px; }
+
+  .import-group { display:flex;align-items:center; }
+  .btn-import { display:flex;align-items:center;gap:6px;padding:7px 15px;background:#7c3aed;border:1px solid #7c3aed;border-radius:var(--radius) 0 0 var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s;box-shadow:var(--shadow-sm); }
+  .btn-import:hover { background:#6d28d9;border-color:#6d28d9; }
+  .btn-import svg { width:14px;height:14px; }
+  .btn-sample-csv { display:flex;align-items:center;justify-content:center;padding:7px 10px;background:#5b21b6;border:1px solid #5b21b6;border-left:1px solid rgba(255,255,255,.25);border-radius:0 var(--radius) var(--radius) 0;color:#fff;cursor:pointer;transition:background .12s;box-shadow:var(--shadow-sm);position:relative; }
+  .btn-sample-csv:hover { background:#4c1d95; }
+  .btn-sample-csv svg { width:14px;height:14px; }
+  .btn-sample-csv .tooltip { position:absolute;bottom:calc(100% + 8px);right:0;background:#1a2030;color:#fff;font-size:11px;font-weight:500;padding:5px 9px;border-radius:5px;white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;z-index:200; }
+  .btn-sample-csv .tooltip::after { content:'';position:absolute;top:100%;right:12px;border:5px solid transparent;border-top-color:#1a2030; }
+  .btn-sample-csv:hover .tooltip { opacity:1;transform:translateY(0); }
+
+  .btn-edit-mode { display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 15px;min-width:138px;background:#f97316;border:1px solid #f97316;border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .15s;box-shadow:var(--shadow-sm); }
+  .btn-edit-mode:hover { background:#ea6c0a; }
+  .btn-edit-mode.active { background:#dc2626;border-color:#dc2626; }
+  .btn-edit-mode.active:hover { background:#b91c1c; }
+  .btn-admin { display:flex;align-items:center;gap:6px;padding:7px 15px;background:var(--white);border:1px solid var(--border-md);border-radius:var(--radius);color:var(--text-2);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s,border-color .12s,color .12s;box-shadow:var(--shadow-sm); }
+  .btn-admin:hover { background:var(--bg);color:var(--text); }
+  .btn-admin.logged-in { background:#fef3c7;border-color:#f59e0b;color:#92400e; }
+  .btn-admin.logged-in:hover { background:#fde68a; }
+  .btn-admin svg { width:13px;height:13px; }
+  .btn-add { display:flex;align-items:center;gap:6px;padding:7px 15px;background:var(--accent);border:1px solid var(--accent);border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s;box-shadow:var(--shadow-sm); }
+  .btn-add:hover { background:#1d4ed8; }
+  .btn-add svg { width:13px;height:13px; }
+
+  /* STATS */
+  .stats-row { display:flex;gap:14px;padding:16px 32px;background:#f0f2f6;border-bottom:1px solid var(--border); }
+  .stat-card { padding:10px 18px;background:#dde1e9;border:1px solid #a8b2bf;border-radius:var(--radius);min-width:130px; }
+  .stat-label { font-size:11px;font-weight:600;color:#1e2a3a;letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:4px; }
+  .stat-value { font-family:var(--mono);font-size:22px;font-weight:500;color:#1a2030;line-height:1.1; }
+  .stat-card.c-accent .stat-value { color:var(--accent); }
+  .stat-card.c-warn   .stat-value { color:var(--warn); }
+  .stat-card.c-comp   .stat-value { color:var(--comp-text); }
+
+  /* TOOLBAR */
+  .toolbar { display:flex;align-items:center;gap:12px;padding:12px 32px;background:#f0f2f6;border-bottom:1px solid var(--border); }
+  .search-wrap { position:relative;flex:1;max-width:360px; }
+  .search-wrap svg { position:absolute;left:10px;top:50%;transform:translateY(-50%);width:13px;height:13px;color:var(--text-3);pointer-events:none; }
+  .search-input { width:100%;padding:7px 10px 7px 30px;background:var(--white);border:1px solid #b8bfcc;border-radius:var(--radius);color:var(--text);font-family:var(--sans);font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s; }
+  .search-input::placeholder { color:var(--text-3); }
+  .search-input:focus { border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+  .record-info { font-size:12px;color:var(--text-3);margin-left:auto; }
+  .btn-delete-sel { display:none;align-items:center;gap:6px;padding:7px 15px;background:var(--danger);border:1px solid var(--danger);border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s;box-shadow:var(--shadow-sm); }
+  .btn-delete-sel:hover { background:#a93226; }
+  .btn-delete-sel svg { width:13px;height:13px; }
+  .admin-edit-mode .btn-delete-sel { display:flex; }
+
+  /* TABLE */
+  .table-wrap { flex:1;padding:20px 32px 40px; }
+  .table-card { background:var(--white);border:1px solid #c8cdd8;border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.09); }
+  table { width:100%;border-collapse:collapse;table-layout:auto; }
+  thead tr { background:#1e3a5f;border-bottom:2px solid #a8b2bf; }
+  thead th { padding:11px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;user-select:none;border-right:1px solid rgba(255,255,255,.2); }
+  thead th:last-child { border-right:none; }
+  thead th.th-check { width:40px;text-align:center; }
+  tbody tr { border-bottom:1px solid var(--border);transition:background .1s; }
+  tbody tr:last-child { border-bottom:none; }
+  tbody tr:hover { background:#f8f9fb; }
+  tbody tr.row-editing { background:#f0f4ff; }
+  tbody td { padding:11px 14px;vertical-align:middle;font-size:13px;color:var(--text);border-right:1px solid #dde1e9; }
+  tbody td:last-child { border-right:none; }
+  tbody td.td-check { text-align:center;width:40px; }
+
+  .code-pill { display:inline-block;font-family:var(--mono);font-size:12px;font-weight:500;padding:3px 9px;background:var(--accent-bg);border:1px solid var(--accent-bdr);border-radius:4px;color:var(--accent); }
+  .comp-pill { display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 8px;background:var(--comp-bg);border:1px solid var(--comp-bdr);border-radius:4px;color:var(--comp-text);white-space:nowrap; }
+  .sys-pill  { display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 8px;background:var(--bg);border:1px solid var(--border-md);border-radius:4px;color:var(--text-2);white-space:nowrap; }
+  .desc-text { color:var(--text-2);line-height:1.5;white-space:normal;word-break:break-word; }
+
+  /* ACTION CELL */
+  .action-cell { display:flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:0; }
+  .action-text  { flex:1;color:var(--text-2);line-height:1.5;white-space:normal;word-break:break-word; }
+  .action-empty { flex:1;color:var(--text-3);font-size:12px;font-style:italic; }
+
+  .btn-edit { flex-shrink:0;display:none !important;align-items:center;gap:4px;padding:4px 10px;background:var(--white);border:1px solid var(--border-md);border-radius:var(--radius);color:var(--text-2);font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;transition:background .12s,border-color .12s,color .12s;white-space:nowrap; }
+  .btn-edit svg { width:11px;height:11px; }
+  .btn-edit:hover { background:var(--accent-bg);border-color:var(--accent-bdr);color:var(--accent); }
+  .edit-mode-on .btn-edit { display:inline-flex !important; }
+  .btn-edit-admin { display:inline-flex !important; }
+
+  /* COMMENT BUTTON */
+  .btn-comment { flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--text-3);cursor:pointer;transition:all .12s;position:relative; }
+  .btn-comment:hover { background:var(--bg);border-color:var(--border-md);color:var(--text-2); }
+  .btn-comment svg { width:13px;height:13px;pointer-events:none; }
+  .btn-comment.has-comment { border-color:#fed7aa;background:#fff7ed;color:#f97316; }
+  .btn-comment.has-comment:hover { background:#ffedd5; }
+  /* dot badge when has comment */
+  .btn-comment.has-comment::after { content:'';position:absolute;top:-3px;right:-3px;width:7px;height:7px;background:#f97316;border:1.5px solid #fff;border-radius:50%; }
+
+  .action-input { flex:1;min-width:0;padding:5px 9px;background:var(--white);border:1px solid var(--accent);border-radius:var(--radius);color:var(--text);font-family:var(--sans);font-size:13px;outline:none;box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+  .row-input { width:100%;padding:5px 9px;background:var(--white);border:1px solid var(--accent);border-radius:var(--radius);color:var(--text);font-family:var(--sans);font-size:13px;outline:none;box-shadow:0 0 0 2px rgba(37,99,235,.1); }
+  .row-input:focus { box-shadow:0 0 0 3px rgba(37,99,235,.2); }
+  .btn-save-inline { padding:5px 12px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .12s; }
+  .btn-save-inline:hover { background:#1d4ed8; }
+  .btn-cancel-inline { padding:5px 10px;background:var(--white);border:1px solid var(--border-md);border-radius:var(--radius);color:var(--text-2);font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .12s; }
+  .btn-cancel-inline:hover { background:var(--bg); }
+
+  input[type="checkbox"] { width:15px;height:15px;cursor:pointer;accent-color:var(--accent); }
+  .state-row td { padding:60px;text-align:center;color:var(--text-3);font-size:13px; }
+  .spinner { display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* MODALS */
+  .overlay { position:fixed;inset:0;background:rgba(10,15,30,.4);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s; }
+  .overlay.open { opacity:1;pointer-events:all; }
+  .modal { background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);width:500px;max-width:94vw;box-shadow:0 8px 40px rgba(0,0,0,.15);transform:translateY(10px) scale(.98);transition:transform .2s;overflow:hidden; }
+  .overlay.open .modal { transform:translateY(0) scale(1); }
+  .modal-import  { width:700px;max-height:90vh;display:flex;flex-direction:column; }
+  .modal-comment { width:500px; }
+  .modal-sm      { width:400px; }
+  .modal-header { padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0; }
+  .modal-title  { font-size:15px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px; }
+  .btn-close { width:28px;height:28px;background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--text-3);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s,color .12s; }
+  .btn-close:hover { background:var(--bg);color:var(--text); }
+  .modal-body { padding:18px 22px;overflow-y:auto;flex:1; }
+  .modal-body-scroll { overflow-y:auto;flex:1;padding:18px 22px; }
+  .form-row { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
+  .form-group { margin-bottom:14px; }
+  .form-group:last-child { margin-bottom:0; }
+  .form-label { display:block;font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:5px; }
+  .form-label .req { color:var(--danger);margin-left:2px; }
+  .form-input,.form-textarea { width:100%;padding:8px 10px;background:var(--white);border:1px solid var(--border-md);border-radius:var(--radius);color:var(--text);font-family:var(--sans);font-size:13px;outline:none;resize:none;transition:border-color .15s,box-shadow .15s; }
+  .form-input::placeholder,.form-textarea::placeholder { color:var(--text-3); }
+  .form-input:focus,.form-textarea:focus { border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+  .form-input.error { border-color:var(--danger); }
+  .form-textarea { min-height:68px;line-height:1.5; }
+  .form-error { font-size:11px;color:var(--danger);margin-top:4px;display:none; }
+  .modal-footer { padding:14px 22px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0; }
+  .btn-cancel { padding:8px 18px;background:var(--white);border:1px solid var(--border-md);border-radius:var(--radius);color:var(--text-2);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s; }
+  .btn-cancel:hover { background:var(--bg); }
+  .btn-submit { padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s; }
+  .btn-submit:hover { background:#1d4ed8; }
+  .btn-submit:disabled { opacity:.5;cursor:not-allowed; }
+  .btn-danger-submit { padding:8px 20px;background:var(--danger);border:none;border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s; }
+  .btn-danger-submit:hover { background:#a93226; }
+  .btn-danger-submit:disabled { opacity:.5;cursor:not-allowed; }
+  .modal-err { font-size:12px;color:var(--danger);margin-top:10px;display:none; }
+
+  /* COMMENT MODAL SPECIFIC */
+  .comment-row-id { font-size:12px;color:var(--text-3);margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
+  .comment-row-id .code-pill  { font-size:11px;padding:2px 7px; }
+  .comment-row-id .comp-pill  { font-size:11px;padding:2px 7px; }
+  .comment-textarea { width:100%;min-height:180px;padding:12px 14px;background:var(--white);border:1px solid var(--border-md);border-radius:var(--radius-lg);color:var(--text);font-family:var(--sans);font-size:13px;line-height:1.7;outline:none;resize:vertical;transition:border-color .15s,box-shadow .15s; }
+  .comment-textarea:focus { border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+  .comment-textarea[readonly] { background:#f8f9fb;cursor:default;color:var(--text-2); }
+  .comment-hint { font-size:11px;margin-top:8px;display:flex;align-items:center;gap:6px; }
+  .comment-hint.editable   { color:var(--success); }
+  .comment-hint.readonly   { color:var(--warn); }
+  .comment-hint.saving     { color:var(--accent); }
+  .comment-hint svg { width:11px;height:11px;flex-shrink:0; }
+
+  /* IMPORT MODAL */
+  .import-steps { display:flex;align-items:center;padding:14px 22px;background:#f8f9fb;border-bottom:1px solid var(--border);flex-shrink:0; }
+  .import-step { display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--text-3); }
+  .import-step.active { color:var(--accent); }
+  .import-step.done   { color:var(--success); }
+  .step-num { width:22px;height:22px;border-radius:50%;border:2px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--text-3);background:var(--white);flex-shrink:0; }
+  .import-step.active .step-num { border-color:var(--accent);color:var(--accent);background:var(--accent-bg); }
+  .import-step.done   .step-num { border-color:var(--success);background:var(--success-bg);color:var(--success); }
+  .step-arrow { width:24px;height:1px;background:var(--border);margin:0 6px;flex-shrink:0; }
+  .drop-zone { border:2px dashed var(--border-md);border-radius:var(--radius-lg);padding:32px 24px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:#fafbfc; }
+  .drop-zone:hover,.drop-zone.dragover { border-color:var(--accent);background:var(--accent-bg); }
+  .drop-zone input[type="file"] { display:none; }
+  .drop-icon { width:48px;height:48px;background:var(--accent-bg);border:1px solid var(--accent-bdr);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px; }
+  .drop-icon svg { width:22px;height:22px;color:var(--accent); }
+  .drop-title { font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px; }
+  .drop-sub   { font-size:12px;color:var(--text-3);margin-bottom:14px;line-height:1.6; }
+  .format-chips { display:flex;justify-content:center;gap:8px;flex-wrap:wrap; }
+  .format-chip { display:inline-flex;align-items:center;padding:4px 10px;background:var(--white);border:1px solid var(--border);border-radius:20px;font-size:11px;font-weight:600;color:var(--text-2);font-family:var(--mono); }
+  .format-chip.csv  { border-color:#6ee7b7;color:#065f46;background:#ecfdf5; }
+  .format-chip.xlsx { border-color:#93c5fd;color:#1e40af;background:#eff6ff; }
+  .format-chip.txt  { border-color:#d8b4fe;color:#581c87;background:#faf5ff; }
+  .btn-browse { display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s;margin-top:14px; }
+  .btn-browse:hover { background:#1d4ed8; }
+  .file-info { display:none;align-items:center;gap:12px;padding:12px 16px;background:var(--accent-bg);border:1px solid var(--accent-bdr);border-radius:var(--radius-lg);margin-top:14px; }
+  .file-info.visible { display:flex; }
+  .file-info-icon { width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .file-info-icon.csv-icon  { background:#ecfdf5; }
+  .file-info-icon.xlsx-icon { background:#eff6ff; }
+  .file-info-icon.txt-icon  { background:#faf5ff; }
+  .file-info-icon svg { width:18px;height:18px; }
+  .file-info-name { font-size:13px;font-weight:600;color:var(--text); }
+  .file-info-meta { font-size:11px;color:var(--text-3);margin-top:2px; }
+  .file-info-remove { margin-left:auto;flex-shrink:0;padding:4px 8px;background:var(--white);border:1px solid var(--border-md);border-radius:var(--radius);color:var(--text-3);font-size:11px;cursor:pointer;transition:background .12s; }
+  .file-info-remove:hover { background:#fee2e2;border-color:#fca5a5;color:var(--danger); }
+  .col-map-hint { margin-top:14px;padding:12px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius);font-size:12px;color:#78350f;line-height:1.7; }
+  .col-map-hint strong { color:#92400e; }
+  .col-map-hint .mono { font-family:var(--mono);font-size:11px;background:#fef3c7;padding:1px 4px;border-radius:3px; }
+  .preview-wrap { border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;max-height:280px;overflow-y:auto; }
+  .preview-table { width:100%;border-collapse:collapse;font-size:12px; }
+  .preview-table thead tr { background:#1e3a5f; }
+  .preview-table thead th { padding:8px 10px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;white-space:nowrap; }
+  .preview-table tbody tr { border-bottom:1px solid var(--border); }
+  .preview-table tbody tr:last-child { border-bottom:none; }
+  .preview-table tbody tr:hover { background:#f8f9fb; }
+  .preview-table tbody td { padding:6px 10px;color:var(--text-2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+  .preview-table tbody td.td-code { font-family:var(--mono);color:var(--accent);font-weight:500; }
+  .preview-table tbody td.td-comp { font-family:var(--mono);color:var(--comp-text);font-weight:500; }
+  .preview-table tbody td.td-empty { color:var(--text-3);font-style:italic;font-size:11px; }
+  .preview-meta { display:flex;align-items:center;justify-content:space-between;margin-bottom:10px; }
+  .preview-count { font-size:12px;color:var(--text-3); }
+  .preview-count strong { color:var(--text); }
+  .parse-err { display:none;padding:12px 14px;background:#fef2f2;border:1px solid #fca5a5;border-radius:var(--radius);font-size:12px;color:var(--danger);margin-top:12px; }
+  .result-summary { display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap; }
+  .result-stat { flex:1;min-width:110px;padding:14px 16px;border-radius:var(--radius-lg);border:1px solid transparent;text-align:center; }
+  .result-stat.added   { background:var(--success-bg);border-color:#6ee7b7; }
+  .result-stat.skipped { background:#fffbeb;border-color:#fde68a; }
+  .result-stat.invalid { background:#fef2f2;border-color:#fca5a5; }
+  .result-stat-num { font-family:var(--mono);font-size:28px;font-weight:600;line-height:1.1; }
+  .result-stat.added   .result-stat-num { color:var(--success); }
+  .result-stat.skipped .result-stat-num { color:var(--warn); }
+  .result-stat.invalid .result-stat-num { color:var(--danger); }
+  .result-stat-lbl { font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-top:4px; }
+  .skipped-list { display:none;padding:12px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-lg);font-size:12px;color:#78350f; }
+  .skipped-list.visible { display:block; }
+  .skipped-list-title { font-weight:600;color:#92400e;margin-bottom:8px; }
+  .skipped-codes { display:flex;flex-wrap:wrap;gap:6px; }
+  .skipped-code { display:inline-flex;align-items:center;padding:3px 9px;background:#fef3c7;border:1px solid #f59e0b;border-radius:4px;font-family:var(--mono);font-size:11px;font-weight:500;color:#92400e; }
+  .btn-import-submit { padding:8px 20px;background:#7c3aed;border:none;border-radius:var(--radius);color:#fff;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .12s;display:flex;align-items:center;gap:6px; }
+  .btn-import-submit:hover { background:#6d28d9; }
+  .btn-import-submit:disabled { opacity:.5;cursor:not-allowed; }
+
+  /* TOAST */
+  #toast { position:fixed;bottom:22px;right:22px;padding:10px 16px;border-radius:var(--radius);font-size:13px;font-weight:500;z-index:9999;opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none;border:1px solid transparent;box-shadow:var(--shadow-sm); }
+  #toast.show { opacity:1;transform:translateY(0); }
+  #toast.success { background:var(--success-bg);border-color:#6ee7b7;color:var(--success); }
+  #toast.error   { background:#fef2f2;border-color:#fca5a5;color:var(--danger); }
+  ::-webkit-scrollbar { width:5px;height:5px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border-md);border-radius:3px; }
+  .confirm-msg { font-size:13px;color:var(--text-2);line-height:1.6; }
+  .confirm-msg strong { color:var(--text); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="header-left">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+        </svg>
+      </div>
+      <span class="header-title">CLE ExceptionCode Details</span>
+      <div class="hdiv"></div>
+      <span class="header-sub" style="font-family:var(--sans);font-weight:600;font-size:13px;color:var(--text-2);letter-spacing:0.01em;">Shubham Patel</span>
+    </div>
+    <div class="header-right">
+      <button class="btn-export" onclick="exportData()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Export Data
+      </button>
+      <div class="import-group">
+        <button class="btn-import" onclick="openImportModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          Import
+        </button>
+        <button class="btn-sample-csv" onclick="downloadSampleCSV()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span class="tooltip">Download sample CSV template</span>
+        </button>
+      </div>
+      <button class="btn-edit-mode" id="btnEditMode" onclick="toggleEditMode()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        Enable Edit
+      </button>
+      <button class="btn-admin" id="btnAdmin" onclick="handleAdminClick()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span id="adminBtnLabel">Admin</span>
+      </button>
+      <button class="btn-add" onclick="openAddModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add Exception
+      </button>
+    </div>
+  </header>
+
+  <div class="stats-row">
+    <div class="stat-card c-accent">
+      <span class="stat-label">Total Records</span>
+      <span class="stat-value" id="totalCount">—</span>
+    </div>
+    <div class="stat-card c-warn">
+      <span class="stat-label">Action Pending</span>
+      <span class="stat-value" id="pendingCount">—</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">End Systems</span>
+      <span class="stat-value" id="systemCount">—</span>
+    </div>
+    <div class="stat-card c-comp">
+      <span class="stat-label">Components</span>
+      <span class="stat-value" id="componentCount">—</span>
+    </div>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input class="search-input" id="searchInput" placeholder="Search by code, component, description, system…" oninput="filterTable()"/>
+    </div>
+    <button class="btn-delete-sel" id="btnDeleteSel" onclick="promptDeleteSelected()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+      Delete Selected
+    </button>
+    <span class="record-info" id="recordCount"></span>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-card">
+      <table id="mainTable">
+        <thead><tr id="tableHead"><th>Error Code</th><th>Component</th><th>Description</th><th>End System</th><th>Action Required</th></tr></thead>
+        <tbody id="tableBody"><tr class="state-row"><td colspan="5"><span class="spinner"></span> Loading data…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ADD MODAL ══════════════ -->
+<div class="overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add New Exception</span>
+      <button class="btn-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Error Code <span class="req">*</span></label>
+          <input class="form-input" id="fCode" placeholder="e.g. CLE-006"/>
+          <div class="form-error" id="errCode">Error code is required</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Component</label>
+          <input class="form-input" id="fComp" placeholder="e.g. GATEWAY"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">End System</label>
+          <input class="form-input" id="fSys" placeholder="e.g. PAYMENT_GW"/>
+        </div>
+        <div class="form-group"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="fDesc" placeholder="Describe the exception…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Action Required</label>
+        <textarea class="form-textarea" id="fAction" placeholder="Steps to resolve…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-submit" id="btnSubmit" onclick="saveModal()">Save Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ COMMENT MODAL ══════════════ -->
+<div class="overlay" id="commentModal">
+  <div class="modal modal-comment">
+    <div class="modal-header">
+      <span class="modal-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:#f97316">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        Comments
+      </span>
+      <button class="btn-close" id="btnCloseComment" onclick="closeCommentModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="comment-row-id">
+        <span>Entry:</span>
+        <span class="code-pill" id="commentCodeLabel"></span>
+        <span class="comp-pill" id="commentCompLabel"></span>
+      </div>
+      <textarea class="comment-textarea" id="commentTextarea" placeholder="Add your notes, steps, or details here…"></textarea>
+      <div class="comment-hint" id="commentHint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="commentHintText"></span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-submit" onclick="closeCommentModal()">Close &amp; Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ IMPORT MODAL ══════════════ -->
+<div class="overlay" id="importModal">
+  <div class="modal modal-import">
+    <div class="modal-header">
+      <span class="modal-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:#7c3aed"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        Bulk Import Exceptions
+      </span>
+      <button class="btn-close" onclick="closeImportModal()">✕</button>
+    </div>
+    <div class="import-steps" id="importSteps">
+      <div class="import-step active" id="step1Ind"><div class="step-num">1</div><span>Upload File</span></div>
+      <div class="step-arrow"></div>
+      <div class="import-step" id="step2Ind"><div class="step-num">2</div><span>Preview Data</span></div>
+      <div class="step-arrow"></div>
+      <div class="import-step" id="step3Ind"><div class="step-num">3</div><span>Import Result</span></div>
+    </div>
+    <!-- Step 1 -->
+    <div class="modal-body-scroll" id="importStep1">
+      <div class="drop-zone" id="dropZone"
+           onclick="document.getElementById('fileInput').click()"
+           ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls,.txt" onchange="handleFileSelect(event)"/>
+        <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg></div>
+        <div class="drop-title">Drop your file here or click to browse</div>
+        <div class="drop-sub">Supported formats: CSV, Excel (.xlsx / .xls), plain text (.txt)<br/>File must include column headers.</div>
+        <div class="format-chips">
+          <span class="format-chip csv">.csv</span>
+          <span class="format-chip xlsx">.xlsx / .xls</span>
+          <span class="format-chip txt">.txt</span>
+        </div>
+        <button class="btn-browse" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">Browse Files</button>
+      </div>
+      <div class="file-info" id="fileInfo">
+        <div class="file-info-icon" id="fileInfoIcon"></div>
+        <div><div class="file-info-name" id="fileInfoName"></div><div class="file-info-meta" id="fileInfoMeta"></div></div>
+        <button class="file-info-remove" onclick="clearFile()">✕ Remove</button>
+      </div>
+      <div class="col-map-hint">
+        <strong>Columns:</strong>&nbsp;
+        <span class="mono">ERROR_CODE</span> · <span class="mono">COMPONENT</span> · <span class="mono">DESCRIPTION</span> · <span class="mono">END_SYSTEM</span> · <span class="mono">ACTION_REQUIRED</span> · <span class="mono">COMMENTS</span><br/>
+        Headers are <strong>case-insensitive</strong>. Only <span class="mono">ERROR_CODE</span> is required per row.<br/>
+        Uniqueness is <strong>ERROR_CODE + COMPONENT</strong> — same code with different component = separate record.<br/>
+        For <strong>.txt</strong> files use comma or tab-separated values with a header row.
+      </div>
+      <div class="parse-err" id="parseErr"></div>
+    </div>
+    <!-- Step 2 -->
+    <div class="modal-body-scroll" id="importStep2" style="display:none">
+      <div class="preview-meta">
+        <span class="preview-count" id="previewCount"></span>
+        <button class="btn-cancel" style="font-size:12px;padding:5px 12px" onclick="goBackToStep1()">← Change File</button>
+      </div>
+      <div class="preview-wrap">
+        <table class="preview-table">
+          <thead><tr><th>Error Code</th><th>Component</th><th>Description</th><th>End System</th><th>Action Required</th></tr></thead>
+          <tbody id="previewBody"></tbody>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--text-3);margin-top:10px;">
+        Rows where <strong>ERROR_CODE + COMPONENT</strong> already exists will be skipped. New combinations will be added.
+      </p>
+    </div>
+    <!-- Step 3 -->
+    <div class="modal-body-scroll" id="importStep3" style="display:none">
+      <div class="result-summary">
+        <div class="result-stat added">  <div class="result-stat-num" id="resAdded">0</div>  <div class="result-stat-lbl">Records Added</div></div>
+        <div class="result-stat skipped"><div class="result-stat-num" id="resSkipped">0</div><div class="result-stat-lbl">Already Existed</div></div>
+        <div class="result-stat invalid"><div class="result-stat-num" id="resInvalid">0</div><div class="result-stat-lbl">Invalid / No Code</div></div>
+      </div>
+      <div class="skipped-list" id="skippedList">
+        <div class="skipped-list-title">⚠️ Skipped (ERROR_CODE + COMPONENT already exist):</div>
+        <div class="skipped-codes" id="skippedCodes"></div>
+      </div>
+    </div>
+    <div class="modal-footer" id="importFooter">
+      <button class="btn-cancel" onclick="closeImportModal()">Cancel</button>
+      <button class="btn-import-submit" id="btnPreview" onclick="goToPreview()" disabled style="display:flex">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Preview Data →
+      </button>
+      <button class="btn-import-submit" id="btnDoImport" onclick="executeImport()" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        Import Records
+      </button>
+      <button class="btn-submit" id="btnImportDone" onclick="closeImportModal()" style="display:none">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ADMIN LOGIN MODAL ══════════════ -->
+<div class="overlay" id="adminModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <span class="modal-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Admin Login</span>
+      <button class="btn-close" onclick="closeAdminModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="aUser" placeholder="admin" autocomplete="username"/></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" id="aPass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') doAdminLogin()"/></div>
+      <div class="modal-err" id="adminErr"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn-submit" id="btnLoginSubmit" onclick="doAdminLogin()">Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CONFIRM DELETE MODAL ══════════════ -->
+<div class="overlay" id="confirmModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <span class="modal-title">Confirm Delete</span>
+      <button class="btn-close" onclick="closeConfirmModal()">✕</button>
+    </div>
+    <div class="modal-body"><p class="confirm-msg" id="confirmMsg"></p></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeConfirmModal()">Cancel</button>
+      <button class="btn-danger-submit" id="btnConfirmDel" onclick="executeDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ─── Global state ───────────────────────────────────────────────
+  let allRows           = [];
+  let editModeOn        = false;
+  let adminLoggedIn     = false;
+  let pendingDeletePairs = [];
+  let importParsedRows   = [];
+
+  // ─── Comment modal state ────────────────────────────────────────
+  let currentComment = null; // {error_code, component, original, canEdit}
+
+  // ════════════════════════════════════════════════════════════════
+  // COMMENT FEATURE
+  // ════════════════════════════════════════════════════════════════
+
+  function openCommentModal(idx, code, component) {
+    const rowData = allRows.find(r => r.ERROR_CODE === code && r.COMPONENT === component);
+    if (!rowData) return;
+
+    const canEdit = adminLoggedIn || editModeOn;
+    const comment = rowData.COMMENTS || '';
+
+    currentComment = { error_code: code, component: component, original: comment, canEdit };
+
+    document.getElementById('commentCodeLabel').textContent = code;
+    document.getElementById('commentCompLabel').textContent = component || '—';
+
+    const ta   = document.getElementById('commentTextarea');
+    const hint = document.getElementById('commentHintText');
+    const hintWrap = document.getElementById('commentHint');
+
+    ta.value    = comment;
+    ta.readOnly = !canEdit;
+    ta.placeholder = canEdit ? 'Add your notes, steps, or details here…' : 'No comments yet.';
+
+    if (canEdit) {
+      hint.textContent = 'Auto-saves when you close.';
+      hintWrap.className = 'comment-hint editable';
+    } else {
+      hint.textContent = 'Enable Edit or login as Admin to add comments.';
+      hintWrap.className = 'comment-hint readonly';
+    }
+
+    document.getElementById('commentModal').classList.add('open');
+    if (canEdit) setTimeout(() => ta.focus(), 150);
+  }
+
+  async function closeCommentModal() {
+    if (currentComment && currentComment.canEdit) {
+      const ta  = document.getElementById('commentTextarea');
+      const val = ta.value;
+      if (val !== currentComment.original) {
+        await saveComment(currentComment.error_code, currentComment.component, val);
+      }
+    }
+    document.getElementById('commentModal').classList.remove('open');
+    currentComment = null;
+  }
+
+  async function saveComment(errorCode, component, comment) {
+    const hintWrap = document.getElementById('commentHint');
+    const hint     = document.getElementById('commentHintText');
+    hintWrap.className = 'comment-hint saving';
+    hint.textContent   = 'Saving…';
+    try {
+      const res  = await fetch('/api/update-comment', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ ERROR_CODE: errorCode, COMPONENT: component, COMMENTS: comment })
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        // Update in-memory
+        const row = allRows.find(r => r.ERROR_CODE === errorCode && r.COMPONENT === component);
+        if (row) row.COMMENTS = comment;
+        // Update comment button badge in table
+        refreshCommentBtn(errorCode, component, comment);
+        showToast('Comment saved', 'success');
+      } else {
+        showToast('Failed to save comment', 'error');
+      }
+    } catch(e) { showToast('Network error saving comment', 'error'); }
+  }
+
+  function refreshCommentBtn(errorCode, component, comment) {
+    const btn = document.querySelector(
+      `.btn-comment[data-ccode="${CSS.escape(errorCode)}"][data-ccomp="${CSS.escape(component)}"]`
+    );
+    if (!btn) return;
+    if (comment && comment.trim()) {
+      btn.classList.add('has-comment');
+      btn.title = 'View / edit comment';
+    } else {
+      btn.classList.remove('has-comment');
+      btn.title = 'Add comment';
+    }
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // ADMIN
+  // ════════════════════════════════════════════════════════════════
+  async function checkAdminStatus() {
+    try {
+      const res  = await fetch('/api/admin/status');
+      const data = await res.json();
+      adminLoggedIn = data.admin === true;
+    } catch(e) { adminLoggedIn = false; }
+    updateAdminUI();
+  }
+
+  function updateAdminUI() {
+    const btn     = document.getElementById('btnAdmin');
+    const label   = document.getElementById('adminBtnLabel');
+    const toolbar = document.getElementById('toolbar');
+    const table   = document.getElementById('mainTable');
+    if (adminLoggedIn) {
+      btn.classList.add('logged-in');
+      label.textContent = 'Logout Admin';
+      toolbar.classList.add('admin-edit-mode');
+      table.classList.add('admin-col');
+    } else {
+      btn.classList.remove('logged-in');
+      label.textContent = 'Admin';
+      toolbar.classList.remove('admin-edit-mode');
+      table.classList.remove('admin-col');
+    }
+    renderTableHeader();
+  }
+
+  function handleAdminClick() { if (adminLoggedIn) doAdminLogout(); else openAdminModal(); }
+
+  function openAdminModal() {
+    document.getElementById('aUser').value = '';
+    document.getElementById('aPass').value = '';
+    document.getElementById('adminErr').style.display = 'none';
+    const btn = document.getElementById('btnLoginSubmit');
+    btn.disabled = false; btn.textContent = 'Login';
+    document.getElementById('adminModal').classList.add('open');
+    setTimeout(() => document.getElementById('aUser').focus(), 150);
+  }
+  function closeAdminModal() { document.getElementById('adminModal').classList.remove('open'); }
+
+  async function doAdminLogin() {
+    const user = document.getElementById('aUser').value.trim();
+    const pass = document.getElementById('aPass').value;
+    const err  = document.getElementById('adminErr');
+    const btn  = document.getElementById('btnLoginSubmit');
+    if (!user || !pass) { err.textContent = 'Username and password are required.'; err.style.display = 'block'; return; }
+    btn.disabled = true; btn.textContent = 'Logging in…'; err.style.display = 'none';
+    try {
+      const res  = await fetch('/api/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:user, password:pass}) });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        adminLoggedIn = true; closeAdminModal(); showToast('Admin login successful','success'); updateAdminUI(); loadData();
+      } else {
+        err.textContent = data.message || 'Invalid credentials'; err.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'Login';
+      }
+    } catch(e) { err.textContent = 'Network error — is the server running?'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Login'; }
+  }
+
+  async function doAdminLogout() {
+    try { await fetch('/api/admin/logout', {method:'POST'}); } catch(e) {}
+    adminLoggedIn = false;
+    if (editModeOn) toggleEditMode();
+    showToast('Logged out','success');
+    updateAdminUI(); loadData();
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // EDIT MODE
+  // ════════════════════════════════════════════════════════════════
+  function toggleEditMode() {
+    editModeOn = !editModeOn;
+    const btn   = document.getElementById('btnEditMode');
+    const table = document.getElementById('mainTable');
+    const icon  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>`;
+    if (editModeOn) { btn.innerHTML = icon+' Disable Edit'; btn.classList.add('active'); table.classList.add('edit-mode-on'); }
+    else            { btn.innerHTML = icon+' Enable Edit';  btn.classList.remove('active'); table.classList.remove('edit-mode-on'); loadData(); }
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // DATA
+  // ════════════════════════════════════════════════════════════════
+  async function loadData() {
+    try {
+      const res = await fetch('/api/data');
+      allRows = await res.json();
+      renderTable(allRows); updateStats(allRows);
+    } catch(e) {
+      const cols = adminLoggedIn ? 6 : 5;
+      document.getElementById('tableBody').innerHTML = `<tr class="state-row"><td colspan="${cols}">Unable to connect to backend.</td></tr>`;
+      showToast('Failed to load data','error');
+    }
+  }
+
+  function renderTableHeader() {
+    const head = document.getElementById('tableHead');
+    if (adminLoggedIn) {
+      head.innerHTML = `<th class="th-check"><input type="checkbox" id="chkAll" title="Select all" onchange="toggleSelectAll(this.checked)"/></th>
+        <th>Error Code</th><th>Component</th><th>Description</th><th>End System</th><th>Action Required</th>`;
+    } else {
+      head.innerHTML = `<th>Error Code</th><th>Component</th><th>Description</th><th>End System</th><th>Action Required</th>`;
+    }
+  }
+
+  function renderTable(rows) {
+    const tbody = document.getElementById('tableBody');
+    const cols  = adminLoggedIn ? 6 : 5;
+    if (!rows.length) {
+      tbody.innerHTML = `<tr class="state-row"><td colspan="${cols}">No records found.</td></tr>`;
+      document.getElementById('recordCount').textContent = '0 records';
+      return;
+    }
+    const editSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>`;
+    const commentSvgEmpty  = `<svg viewBox="0 0 24 24" fill="none"           stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`;
+    const commentSvgFilled = `<svg viewBox="0 0 24 24" fill="currentColor"   stroke="currentColor" stroke-width="1"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`;
+
+    tbody.innerHTML = rows.map((r, i) => {
+      const action     = r.ACTION_REQUIRED || '';
+      const hasComment = (r.COMMENTS || '').trim().length > 0;
+      const actionHtml = action ? `<span class="action-text">${esc(action)}</span>` : `<span class="action-empty">Not set</span>`;
+      const editBtnClass = adminLoggedIn ? 'btn-edit btn-edit-admin' : 'btn-edit';
+
+      // Use data-ccode / data-ccomp to avoid collision with other data- attrs
+      const editBtn = `<button class="${editBtnClass}" data-idx="${i}" data-code="${esc(r.ERROR_CODE)}" data-comp="${esc(r.COMPONENT)}"
+            onclick="startEdit(parseInt(this.dataset.idx), this.dataset.code, this.dataset.comp)">${editSvg} Edit</button>`;
+
+      const commentBtn = `<button class="btn-comment ${hasComment ? 'has-comment' : ''}"
+            data-ccode="${esc(r.ERROR_CODE)}" data-ccomp="${esc(r.COMPONENT)}" data-idx="${i}"
+            onclick="openCommentModal(${i}, this.dataset.ccode, this.dataset.ccomp)"
+            title="${hasComment ? 'View / edit comment' : 'Add comment'}">
+            ${hasComment ? commentSvgFilled : commentSvgEmpty}
+          </button>`;
+
+      const checkCell = adminLoggedIn
+        ? `<td class="td-check"><input type="checkbox" class="row-chk" data-code="${esc(r.ERROR_CODE)}" data-comp="${esc(r.COMPONENT)}" onchange="updateDeleteBtn()"/></td>`
+        : '';
+
+      return `<tr id="row-${i}" data-code="${esc(r.ERROR_CODE)}" data-comp="${esc(r.COMPONENT)}">
+        ${checkCell}
+        <td><span class="code-pill">${esc(r.ERROR_CODE)}</span></td>
+        <td><span class="comp-pill">${esc(r.COMPONENT) || '—'}</span></td>
+        <td><span class="desc-text">${esc(r.DESCRIPTION)}</span></td>
+        <td><span class="sys-pill">${esc(r.END_SYSTEM) || '—'}</span></td>
+        <td><div class="action-cell" id="ac-${i}">${editBtn}${actionHtml}${commentBtn}</div></td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('recordCount').textContent = `${rows.length} record${rows.length !== 1 ? 's' : ''}`;
+  }
+
+  // ── Checkbox helpers ────────────────────────────────────────────
+  function toggleSelectAll(checked) {
+    document.querySelectorAll('.row-chk').forEach(cb => cb.checked = checked);
+    updateDeleteBtn();
+  }
+  function updateDeleteBtn() {
+    const checked = document.querySelectorAll('.row-chk:checked').length;
+    document.getElementById('btnDeleteSel').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg> ${checked > 0 ? `Delete Selected (${checked})` : 'Delete Selected'}`;
+  }
+
+  // ── Inline edit ─────────────────────────────────────────────────
+  function startEdit(idx, code, component) {
+    const rowData = allRows.find(r => r.ERROR_CODE === code && r.COMPONENT === component);
+    if (!rowData) return;
+    if (adminLoggedIn) startAdminEdit(idx, rowData);
+    else {
+      const cell = document.getElementById(`ac-${idx}`);
+      if (!cell) return;
+      cell.innerHTML = `
+        <button class="btn-save-inline" data-idx="${idx}" data-code="${esc(code)}" data-comp="${esc(component)}"
+                onclick="commitEdit(parseInt(this.dataset.idx), this.dataset.code, this.dataset.comp)">Save</button>
+        <button class="btn-cancel-inline" onclick="loadData()">Cancel</button>
+        <input class="action-input" id="ai-${idx}" placeholder="Enter action required…"/>`;
+      const inp = document.getElementById(`ai-${idx}`);
+      if (inp) {
+        inp.value = rowData.ACTION_REQUIRED || '';
+        inp.addEventListener('keydown', e => { if(e.key==='Enter') commitEdit(idx,code,component); if(e.key==='Escape') loadData(); });
+        inp.focus();
+      }
+    }
+  }
+
+  function startAdminEdit(idx, rowData) {
+    const tr = document.getElementById(`row-${idx}`);
+    if (!tr) return;
+    const code = rowData.ERROR_CODE, component = rowData.COMPONENT;
+    tr.classList.add('row-editing');
+    tr.innerHTML = `
+      <td class="td-check"></td>
+      <td><input class="row-input" id="re-code-${idx}" placeholder="Error Code"/></td>
+      <td><input class="row-input" id="re-comp-${idx}" placeholder="Component"/></td>
+      <td><input class="row-input" id="re-desc-${idx}" placeholder="Description"/></td>
+      <td><input class="row-input" id="re-sys-${idx}"  placeholder="End System"/></td>
+      <td><div class="action-cell">
+        <input class="row-input" id="re-act-${idx}" placeholder="Action Required"/>
+        <button class="btn-save-inline" data-idx="${idx}" data-code="${esc(code)}" data-comp="${esc(component)}"
+                onclick="commitAdminEdit(parseInt(this.dataset.idx), this.dataset.code, this.dataset.comp)">Save</button>
+        <button class="btn-cancel-inline" onclick="loadData()">Cancel</button>
+      </div></td>`;
+    document.getElementById(`re-code-${idx}`).value = rowData.ERROR_CODE      || '';
+    document.getElementById(`re-comp-${idx}`).value = rowData.COMPONENT       || '';
+    document.getElementById(`re-desc-${idx}`).value = rowData.DESCRIPTION     || '';
+    document.getElementById(`re-sys-${idx}`).value  = rowData.END_SYSTEM      || '';
+    document.getElementById(`re-act-${idx}`).value  = rowData.ACTION_REQUIRED || '';
+    [`re-code-${idx}`,`re-comp-${idx}`,`re-desc-${idx}`,`re-sys-${idx}`,`re-act-${idx}`].forEach(id => {
+      document.getElementById(id)?.addEventListener('keydown', e => {
+        if(e.key==='Enter')  commitAdminEdit(idx,code,component);
+        if(e.key==='Escape') loadData();
+      });
+    });
+    document.getElementById(`re-code-${idx}`)?.focus();
+  }
+
+  async function commitEdit(idx, code, component) {
+    const inp = document.getElementById(`ai-${idx}`);
+    const val = inp ? inp.value.trim() : '';
+    try {
+      const res  = await fetch('/api/update', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ ERROR_CODE: code, COMPONENT: component, ACTION_REQUIRED: val }) });
+      const data = await res.json();
+      if (data.status === 'ok') { showToast('Action updated','success'); await loadData(); }
+      else showToast(data.message||'Update failed','error');
+    } catch(e) { showToast('Network error','error'); }
+  }
+
+  async function commitAdminEdit(idx, originalCode, originalComp) {
+    const newCode = document.getElementById(`re-code-${idx}`)?.value.trim() || '';
+    const newComp = document.getElementById(`re-comp-${idx}`)?.value.trim() || '';
+    const newDesc = document.getElementById(`re-desc-${idx}`)?.value.trim() || '';
+    const newSys  = document.getElementById(`re-sys-${idx}`)?.value.trim()  || '';
+    const newAct  = document.getElementById(`re-act-${idx}`)?.value.trim()  || '';
+    if (!newCode) { showToast('Error Code cannot be empty','error'); return; }
+    const payload = { ERROR_CODE: originalCode, COMPONENT: originalComp, DESCRIPTION: newDesc, END_SYSTEM: newSys, ACTION_REQUIRED: newAct };
+    if (newCode !== originalCode) payload.NEW_ERROR_CODE = newCode;
+    if (newComp !== originalComp) payload.NEW_COMPONENT  = newComp;
+    try {
+      const res  = await fetch('/api/admin/update', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      const data = await res.json();
+      if (data.status === 'ok') { showToast('Row updated','success'); await loadData(); }
+      else showToast(data.message||'Update failed','error');
+    } catch(e) { showToast('Network error','error'); }
+  }
+
+  // ── Delete selected ─────────────────────────────────────────────
+  function promptDeleteSelected() {
+    const checked = document.querySelectorAll('.row-chk:checked');
+    if (!checked.length) { showToast('No rows selected','error'); return; }
+    pendingDeletePairs = Array.from(checked).map(cb => ({ error_code: cb.dataset.code, component: cb.dataset.comp }));
+    const display = pendingDeletePairs.map(p => p.component ? `${p.error_code}[${p.component}]` : p.error_code).join(', ');
+    document.getElementById('confirmMsg').innerHTML =
+      `You are about to permanently delete <strong>${pendingDeletePairs.length}</strong> record(s):<br/><br/>
+       <code style="font-size:12px;color:var(--accent)">${display}</code><br/><br/>
+       This action cannot be undone.`;
+    document.getElementById('confirmModal').classList.add('open');
+  }
+  function closeConfirmModal() { document.getElementById('confirmModal').classList.remove('open'); pendingDeletePairs = []; }
+
+  async function executeDelete() {
+    if (!pendingDeletePairs.length) return;
+    const btn = document.getElementById('btnConfirmDel');
+    btn.disabled = true; btn.textContent = 'Deleting…';
+    try {
+      const res  = await fetch('/api/admin/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ pairs: pendingDeletePairs }) });
+      const data = await res.json();
+      if (data.status === 'ok') { showToast(`${data.deleted} record(s) deleted`,'success'); closeConfirmModal(); await loadData(); }
+      else { showToast(data.message||'Delete failed','error'); btn.disabled=false; btn.textContent='Delete'; }
+    } catch(e) { showToast('Network error','error'); btn.disabled=false; btn.textContent='Delete'; }
+  }
+
+  // ── Search ──────────────────────────────────────────────────────
+  function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    if (!q) { renderTable(allRows); return; }
+    renderTable(allRows.filter(r => Object.values(r).some(v => (v||'').toLowerCase().includes(q))));
+  }
+
+  // ── Stats ───────────────────────────────────────────────────────
+  function updateStats(rows) {
+    document.getElementById('totalCount').textContent     = rows.length;
+    document.getElementById('pendingCount').textContent   = rows.filter(r => !(r.ACTION_REQUIRED||'').trim()).length;
+    document.getElementById('systemCount').textContent    = new Set(rows.map(r=>r.END_SYSTEM).filter(Boolean)).size;
+    document.getElementById('componentCount').textContent = new Set(rows.map(r=>r.COMPONENT).filter(Boolean)).size;
+  }
+
+  // ── Add modal ───────────────────────────────────────────────────
+  function openAddModal() {
+    ['fCode','fComp','fDesc','fSys','fAction'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fCode').classList.remove('error');
+    document.getElementById('errCode').style.display = 'none';
+    const btn = document.getElementById('btnSubmit'); btn.disabled=false; btn.textContent='Save Entry';
+    document.getElementById('modal').classList.add('open');
+    setTimeout(() => document.getElementById('fCode').focus(), 150);
+  }
+  function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+  async function saveModal() {
+    const code = document.getElementById('fCode').value.trim();
+    if (!code) {
+      document.getElementById('fCode').classList.add('error');
+      document.getElementById('errCode').style.display = 'block';
+      document.getElementById('fCode').focus(); return;
+    }
+    document.getElementById('fCode').classList.remove('error');
+    document.getElementById('errCode').style.display = 'none';
+    const btn = document.getElementById('btnSubmit'); btn.disabled=true; btn.textContent='Saving…';
+    try {
+      const res  = await fetch('/api/add', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          ERROR_CODE:      code,
+          COMPONENT:       document.getElementById('fComp').value.trim(),
+          DESCRIPTION:     document.getElementById('fDesc').value.trim(),
+          END_SYSTEM:      document.getElementById('fSys').value.trim(),
+          ACTION_REQUIRED: document.getElementById('fAction').value.trim(),
+          COMMENTS:        '',
+        }) });
+      const data = await res.json();
+      if (data.status === 'ok') { showToast(`${code} added successfully`,'success'); closeModal(); await loadData(); }
+      else { showToast(data.message||'Failed to add record','error'); btn.disabled=false; btn.textContent='Save Entry'; }
+    } catch(e) { showToast('Network error','error'); btn.disabled=false; btn.textContent='Save Entry'; }
+  }
+
+  // ── Export ──────────────────────────────────────────────────────
+  function exportData() { window.location.href='/api/export'; showToast('Downloading CSV…','success'); }
+
+  // ══════════════════════════════════════════════════════════════════
+  // IMPORT FEATURE
+  // ══════════════════════════════════════════════════════════════════
+  function openImportModal() { resetImportModal(); document.getElementById('importModal').classList.add('open'); }
+  function closeImportModal() { document.getElementById('importModal').classList.remove('open'); resetImportModal(); }
+  function resetImportModal() {
+    importParsedRows = [];
+    const fi = document.getElementById('fileInput'); if(fi) fi.value='';
+    setImportStep(1);
+    const pe = document.getElementById('parseErr'); pe.style.display='none'; pe.textContent='';
+    document.getElementById('fileInfo').classList.remove('visible');
+  }
+
+  function setImportStep(step) {
+    document.getElementById('importStep1').style.display = step===1 ? '' : 'none';
+    document.getElementById('importStep2').style.display = step===2 ? '' : 'none';
+    document.getElementById('importStep3').style.display = step===3 ? '' : 'none';
+    document.getElementById('btnPreview').style.display   = step===1 ? 'flex' : 'none';
+    document.getElementById('btnDoImport').style.display  = step===2 ? 'flex' : 'none';
+    document.getElementById('btnImportDone').style.display= step===3 ? '' : 'none';
+    const cancel = document.querySelector('#importModal .modal-footer .btn-cancel');
+    cancel.style.display = step===3 ? 'none' : '';
+    [1,2,3].forEach(n => {
+      const el  = document.getElementById(`step${n}Ind`);
+      const num = el.querySelector('.step-num');
+      el.classList.remove('active','done');
+      if(n < step)  { el.classList.add('done');   num.textContent='✓'; }
+      if(n === step){ el.classList.add('active');  num.textContent=n; }
+      if(n > step)  { num.textContent=n; }
+    });
+  }
+
+  function handleDragOver(e)  { e.preventDefault(); document.getElementById('dropZone').classList.add('dragover'); }
+  function handleDragLeave(e) { document.getElementById('dropZone').classList.remove('dragover'); }
+  function handleDrop(e)      { e.preventDefault(); document.getElementById('dropZone').classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) processFile(f); }
+  function handleFileSelect(e){ const f=e.target.files[0]; if(f) processFile(f); }
+
+  function clearFile() {
+    importParsedRows=[];
+    document.getElementById('fileInput').value='';
+    document.getElementById('fileInfo').classList.remove('visible');
+    document.getElementById('parseErr').style.display='none';
+    document.getElementById('btnPreview').disabled=true;
+  }
+
+  function formatBytes(b) { if(b<1024) return b+' B'; if(b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
+  function getExt(name) { return (name.split('.').pop()||'').toLowerCase(); }
+
+  function processFile(file) {
+    const ext=getExt(file.name);
+    const pe=document.getElementById('parseErr');
+    pe.style.display='none'; pe.textContent='';
+    if(!['csv','xlsx','xls','txt'].includes(ext)) {
+      pe.textContent=`Unsupported file type ".${ext}". Please upload CSV, XLSX, XLS, or TXT.`; pe.style.display='block'; return;
+    }
+    document.getElementById('fileInfoName').textContent = file.name;
+    document.getElementById('fileInfoMeta').textContent = `${formatBytes(file.size)} · .${ext.toUpperCase()}`;
+    const iconEl = document.getElementById('fileInfoIcon');
+    const iconMap = {
+      csv:  {cls:'csv-icon',  svg:`<svg viewBox="0 0 24 24" fill="none" stroke="#065f46" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`},
+      xlsx: {cls:'xlsx-icon', svg:`<svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`},
+      xls:  {cls:'xlsx-icon', svg:`<svg viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`},
+      txt:  {cls:'txt-icon',  svg:`<svg viewBox="0 0 24 24" fill="none" stroke="#581c87" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`},
+    };
+    const ico = iconMap[ext]||iconMap.txt;
+    iconEl.className=`file-info-icon ${ico.cls}`; iconEl.innerHTML=ico.svg;
+    document.getElementById('fileInfo').classList.add('visible');
+    const reader = new FileReader();
+    if(ext==='xlsx'||ext==='xls') {
+      reader.onload=e=>{try{const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});const ws=wb.Sheets[wb.SheetNames[0]];finishParse(XLSX.utils.sheet_to_json(ws,{defval:''}),file.name);}catch(err){showParseError('Failed to parse Excel: '+err.message);}};
+      reader.readAsArrayBuffer(file);
+    } else {
+      reader.onload=e=>{try{finishParse(parseDelimited(e.target.result),file.name);}catch(err){showParseError('Failed to parse: '+err.message);}};
+      reader.readAsText(file);
+    }
+  }
+
+  function parseDelimited(text) {
+    const lines = text.split(/\r?\n/).filter(l=>l.trim());
+    if(lines.length<2) throw new Error('File must have a header row and at least one data row.');
+    const h=lines[0];
+    const delim=(h.split('\t').length>h.split(',').length)?'\t':',';
+    const headers=parseLine(h,delim).map(x=>x.trim());
+    const result=[];
+    for(let i=1;i<lines.length;i++){
+      const vals=parseLine(lines[i],delim);
+      const row={};
+      headers.forEach((hh,idx)=>{row[hh]=(vals[idx]||'').trim();});
+      result.push(row);
+    }
+    return result;
+  }
+
+  function parseLine(line,delim) {
+    const res=[]; let cur='',inQ=false;
+    for(let i=0;i<line.length;i++){
+      const ch=line[i];
+      if(ch==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+      else if(ch===delim&&!inQ){res.push(cur);cur='';}
+      else cur+=ch;
+    }
+    res.push(cur); return res;
+  }
+
+  function normalizeHeaders(rows) {
+    const MAP = {
+      'error_code':'ERROR_CODE','errorcode':'ERROR_CODE','code':'ERROR_CODE',
+      'component':'COMPONENT','comp':'COMPONENT','module':'COMPONENT','service':'COMPONENT',
+      'description':'DESCRIPTION','desc':'DESCRIPTION',
+      'end_system':'END_SYSTEM','endsystem':'END_SYSTEM','system':'END_SYSTEM',
+      'action_required':'ACTION_REQUIRED','actionrequired':'ACTION_REQUIRED','action':'ACTION_REQUIRED',
+      'comments':'COMMENTS','comment':'COMMENTS','notes':'COMMENTS','note':'COMMENTS',
+    };
+    return rows.map(row => {
+      const norm={};
+      Object.entries(row).forEach(([k,v])=>{ norm[MAP[k.toLowerCase().replace(/\s+/g,'_')]||k]=v; });
+      return norm;
+    });
+  }
+
+  function finishParse(rawRows, fileName) {
+    if(!rawRows||!rawRows.length){showParseError('No data rows found.');return;}
+    const rows = normalizeHeaders(rawRows);
+    if(!rows.some(r=>'ERROR_CODE' in r)){showParseError('Could not find "ERROR_CODE" column.');return;}
+    const valid=rows.filter(r=>(r.ERROR_CODE||'').trim());
+    if(!valid.length){showParseError('No rows with a valid ERROR_CODE found.');return;}
+    importParsedRows=valid;
+    document.getElementById('btnPreview').disabled=false;
+    document.getElementById('parseErr').style.display='none';
+    showToast(`Parsed ${valid.length} row(s) — click Preview to continue`,'success');
+  }
+
+  function showParseError(msg){
+    const pe=document.getElementById('parseErr'); pe.textContent='⚠ '+msg; pe.style.display='block';
+    importParsedRows=[]; document.getElementById('btnPreview').disabled=true;
+  }
+
+  function goToPreview(){
+    if(!importParsedRows.length){showToast('Please select a file first','error');return;}
+    const tbody=document.getElementById('previewBody');
+    const MAX=200, shown=importParsedRows.slice(0,MAX);
+    tbody.innerHTML=shown.map(r=>{
+      const code=esc(r.ERROR_CODE||''),comp=esc(r.COMPONENT||''),desc=esc(r.DESCRIPTION||''),sys=esc(r.END_SYSTEM||''),act=esc(r.ACTION_REQUIRED||'');
+      return `<tr>
+        <td class="td-code">${code}</td>
+        <td class="${comp?'td-comp':'td-empty'}">${comp||'—'}</td>
+        <td class="${desc?'':'td-empty'}">${desc||'not set'}</td>
+        <td class="${sys?'':'td-empty'}">${sys||'not set'}</td>
+        <td class="${act?'':'td-empty'}">${act||'not set'}</td>
+      </tr>`;
+    }).join('');
+    const t=importParsedRows.length;
+    document.getElementById('previewCount').innerHTML=`<strong>${t}</strong> record${t!==1?'s':''} ready`+(t>MAX?` (showing first ${MAX})`:'');
+    setImportStep(2);
+  }
+
+  function goBackToStep1(){ setImportStep(1); }
+
+  async function executeImport(){
+    if(!importParsedRows.length) return;
+    const btn=document.getElementById('btnDoImport');
+    btn.disabled=true; btn.innerHTML=`<span class="spinner"></span> Importing…`;
+    try{
+      const res=await fetch('/api/bulk-add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rows:importParsedRows})});
+      const data=await res.json();
+      if(data.status==='ok'){
+        document.getElementById('resAdded').textContent   = data.added  ||0;
+        document.getElementById('resSkipped').textContent = (data.skipped||[]).length;
+        document.getElementById('resInvalid').textContent = data.invalid ||0;
+        const skList=document.getElementById('skippedList');
+        const skCodes=document.getElementById('skippedCodes');
+        if(data.skipped&&data.skipped.length){
+          skList.classList.add('visible');
+          skCodes.innerHTML=data.skipped.map(s=>
+            `<span class="skipped-code">${esc(s.code)}${s.component?'['+esc(s.component)+']':''}</span>`
+          ).join('');
+        } else { skList.classList.remove('visible'); }
+        setImportStep(3);
+        await loadData();
+        showToast(`${data.added} added${data.skipped.length?`, ${data.skipped.length} skipped`:''}`, 'success');
+      } else {
+        showToast(data.message||'Import failed','error');
+        btn.disabled=false;
+        btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg> Import Records`;
+      }
+    }catch(e){showToast('Network error','error');btn.disabled=false;btn.innerHTML='Import Records';}
+  }
+
+  function downloadSampleCSV(){ window.location.href='/api/sample-csv'; showToast('Downloading sample CSV template…','success'); }
+
+  // ── Toast ────────────────────────────────────────────────────────
+  let toastTimer;
+  function showToast(msg,type='success'){
+    const t=document.getElementById('toast'); t.textContent=msg; t.className=`show ${type}`;
+    clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+  }
+
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // ── Click outside / Escape ───────────────────────────────────────
+  document.getElementById('modal').addEventListener('click',        e=>{if(e.target===e.currentTarget) closeModal();});
+  document.getElementById('adminModal').addEventListener('click',   e=>{if(e.target===e.currentTarget) closeAdminModal();});
+  document.getElementById('confirmModal').addEventListener('click', e=>{if(e.target===e.currentTarget) closeConfirmModal();});
+  document.getElementById('importModal').addEventListener('click',  e=>{if(e.target===e.currentTarget) closeImportModal();});
+  document.getElementById('commentModal').addEventListener('click', e=>{if(e.target===e.currentTarget) closeCommentModal();});
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){
+      closeModal(); closeAdminModal(); closeConfirmModal(); closeImportModal();
+      if(document.getElementById('commentModal').classList.contains('open')) closeCommentModal();
+    }
+  });
+
+  // ── Init ─────────────────────────────────────────────────────────
+  (async()=>{ await checkAdminStatus(); await loadData(); })();
+</script>
+</body>
+</html>
