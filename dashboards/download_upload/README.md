@@ -133,9 +133,9 @@ Example payload:
 ```json
 {
   "env": "prod",
-  "ip": "10.143.67.29",
-  "username": "sik8susr",
-  "path": "/home/sik8susr",
+  "ip": "10.20.20.20",
+  "username": "username",
+  "path": "/home/username",
   "path_save_enabled": true
 }
 ```
