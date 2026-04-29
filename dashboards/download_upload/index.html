@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FileOps Console</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── LIGHT THEME ── */
+:root {
+  --bg:      #f6f8fa;
+  --bg2:     #ffffff;
+  --bg3:     #f0f2f5;
+  --bg4:     #e5e8ec;
+  --border:  #d0d7de;
+  --border2: #afb8c1;
+  --accent:  #0969da;
+  --accent2: #0550ae;
+  --green:   #1a7f37;
+  --red:     #cf222e;
+  --yellow:  #9a6700;
+  --text:    #1f2328;
+  --text2:   #656d76;
+  --text3:   #9198a1;
+  --radius:  6px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:13px;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* TOPBAR */
+.topbar{height:46px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;z-index:50;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.logo{font-weight:700;font-size:14px;display:flex;align-items:center;gap:7px;white-space:nowrap;color:var(--text)}
+.logo-box{width:24px;height:24px;background:linear-gradient(135deg,var(--accent),#7c3aed);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.topbar-sep{flex:1}
+.dev{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.dev-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px 3px 6px;border-radius:20px;background:linear-gradient(135deg,#0969da18,#7c3aed18);border:1px solid #7c3aed44;font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap}
+.dev-badge .dev-dot{width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#7c3aed);flex-shrink:0}
+.dev-badge .dev-name{background:linear-gradient(135deg,var(--accent),#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
+
+/* ENV TABS */
+.env-tabs{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:2px;gap:2px}
+.etab{padding:4px 12px;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;color:var(--text2);border:none;background:none;font-family:inherit;transition:all .15s}
+.etab:hover{color:var(--text);background:var(--bg4)}
+.etab.active[data-env="self"]{background:#e6f3eb;color:var(--green);border:1px solid #a3d4b5}
+.etab.active[data-env="prod"]{background:#e0ebff;color:var(--accent);border:1px solid #a3c4f0}
+
+/* HIST BTN */
+.hbtn{padding:4px 12px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:inherit;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;transition:all .15s}
+.hbtn:hover{background:var(--bg4);color:var(--text);border-color:var(--border2)}
+.hbadge{background:var(--accent);color:#fff;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:700}
+
+/* HIST SAVE TOGGLE in topbar */
+.htog-wrap{display:flex;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;padding:4px 8px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg3);transition:all .15s}
+.htog-wrap:hover{background:var(--bg4);border-color:var(--border2)}
+.htog-track{width:28px;height:15px;background:var(--bg4);border:1px solid var(--border2);border-radius:8px;position:relative;transition:background .2s;flex-shrink:0}
+.htog-track.on{background:var(--accent);border-color:var(--accent)}
+.htog-track::after{content:'';position:absolute;width:11px;height:11px;background:#fff;border-radius:50%;top:1px;left:1px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.htog-track.on::after{transform:translateX(13px)}
+.htog-lbl{font-size:10px;color:var(--text3);white-space:nowrap;user-select:none;font-weight:600}
+
+/* BODY */
+.body{display:flex;flex:1;overflow:hidden;position:relative}
+
+/* SIDEBAR */
+.sidebar{width:255px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;overflow-x:hidden;box-shadow:1px 0 3px rgba(0,0,0,.04)}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sbs{padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sblbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
+
+/* MODE TOGGLE */
+.mtog{display:grid;grid-template-columns:1fr 1fr;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:2px;gap:2px}
+.mbtn{padding:5px 0;text-align:center;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;color:var(--text2);border:none;background:none;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:4px}
+.mbtn:hover{color:var(--text);background:var(--bg4)}
+.mbtn.active.dl{background:linear-gradient(135deg,#ddeaff,#cfe0ff);color:var(--accent);border:1px solid #a3c4f0}
+.mbtn.active.ul{background:linear-gradient(135deg,#d4f0dc,#c5e8d0);color:var(--green);border:1px solid #a3cfa8}
+
+/* FIELDS */
+.fld{margin-bottom:7px}
+.fld:last-child{margin-bottom:0}
+.fld label{display:block;font-size:9px;color:var(--text3);margin-bottom:3px;letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+.fld input,.fld select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:5px 9px;font-family:'Inter',sans-serif;font-size:12px;outline:none;transition:border-color .15s}
+.fld input:focus,.fld select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(9,105,218,.1)}
+.fld input::placeholder{color:var(--text3)}
+.fld select option{background:var(--bg2);color:var(--text)}
+.fld select:disabled{opacity:.35;cursor:not-allowed}
+.irow{display:flex;gap:5px;align-items:center}
+.irow .fld{flex:1;margin-bottom:0}
+
+/* BUTTONS */
+.btn{padding:5px 10px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:inherit;font-size:11px;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.btn:hover{background:var(--bg4);color:var(--text);border-color:var(--border2)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.pri:hover{background:var(--accent2)}
+.btn.suc{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+.btn.suc:hover{filter:brightness(1.1)}
+.btn.dng{border-color:var(--red);color:var(--red)}
+.btn.dng:hover{background:rgba(207,34,46,.06)}
+.btn-full{width:100%;justify-content:center}
+.btn-xs{padding:2px 7px;font-size:10px}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* TOOLBAR */
+.tbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 12px;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.nbtn{width:26px;height:26px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:all .15s;font-size:12px;flex-shrink:0}
+.nbtn:hover:not([disabled]){background:var(--bg4);color:var(--text);border-color:var(--border2)}
+.nbtn[disabled]{opacity:.3;cursor:default;pointer-events:none}
+
+/* BREADCRUMB */
+.bc{display:flex;align-items:center;gap:2px;flex:1;overflow:hidden;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:3px 9px;min-height:28px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.bc-c{cursor:pointer;color:var(--accent);padding:1px 3px;border-radius:3px;transition:background .12s;white-space:nowrap;flex-shrink:0}
+.bc-c:hover{background:var(--bg4)}
+.bc-s{color:var(--text3);padding:0 1px;flex-shrink:0}
+.bc-cur{color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* TOGGLE */
+.twrap{display:flex;align-items:center;gap:5px;cursor:pointer;flex-shrink:0}
+.ttrack{width:28px;height:15px;background:var(--bg4);border:1px solid var(--border2);border-radius:8px;position:relative;transition:background .2s}
+.ttrack.on{background:var(--accent);border-color:var(--accent)}
+.ttrack::after{content:'';position:absolute;width:11px;height:11px;background:#fff;border-radius:50%;top:1px;left:1px;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.ttrack.on::after{transform:translateX(13px)}
+.tlbl{font-size:10px;color:var(--text3);white-space:nowrap;user-select:none;font-weight:500}
+
+/* DL BAR */
+.dlbar{background:rgba(9,105,218,.05);border-bottom:1px solid rgba(9,105,218,.18);padding:5px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.dlbar-info{flex:1;font-size:11px;color:var(--text2)}
+.dlbar-info strong{color:var(--accent)}
+
+/* FILE AREA */
+.farea{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--bg2)}
+.farea::-webkit-scrollbar{width:4px}
+.farea::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+thead th{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:6px 10px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;background:var(--bg3);z-index:1;overflow:hidden}
+thead th:hover{color:var(--text2);background:var(--bg4)}
+.sic{opacity:.4;font-size:9px;margin-left:2px}
+thead th.sorted .sic{opacity:1;color:var(--accent)}
+tbody tr{border-bottom:1px solid var(--border);transition:background .08s}
+tbody tr:hover{background:var(--bg3)}
+tbody tr.sel{background:rgba(9,105,218,.07)!important;border-color:rgba(9,105,218,.18)}
+tbody tr.dim{opacity:.4}
+td{padding:5px 10px;vertical-align:middle;overflow:hidden}
+.tcb{width:30px;text-align:center}
+.tic{width:30px;text-align:center;font-size:13px}
+/* NAME column — no explicit width so it takes all remaining space */
+.tnm{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Right columns — exact fit, no extra space */
+.tsz{color:var(--text3);width:70px;font-size:11px;white-space:nowrap;text-align:right}
+.tdt{color:var(--text3);width:150px;font-size:11px;white-space:nowrap}
+.tow{color:var(--text3);width:90px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tow span{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2)}
+.tac{width:105px;text-align:right;white-space:nowrap}
+
+/* SEARCH BAR */
+.srch-wrap{display:flex;align-items:center;gap:6px;padding:7px 12px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.srch-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:5px 10px;font-family:inherit;font-size:12px;outline:none;transition:border .15s}
+.srch-inp:focus{border-color:var(--accent);background:var(--bg2)}
+.srch-inp::placeholder{color:var(--text3)}
+.srch-btn{padding:5px 12px;border-radius:var(--radius);border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:opacity .15s;white-space:nowrap}
+.srch-btn:hover{opacity:.85}
+.srch-btn:disabled{opacity:.45;cursor:not-allowed}
+.srch-clr{padding:5px 10px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-family:inherit;font-size:11px;cursor:pointer;white-space:nowrap}
+.srch-clr:hover{background:var(--bg4);color:var(--red)}
+.srch-spin{display:none;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.srch-badge{font-size:10px;color:var(--text3);white-space:nowrap}
+
+/* SEARCH RESULTS */
+.sres-header{padding:8px 14px;background:linear-gradient(135deg,#0969da0d,#7c3aed0d);border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);display:flex;align-items:center;gap:8px}
+.sres-kw{font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace;background:rgba(9,105,218,.1);padding:1px 6px;border-radius:4px}
+.sres-base{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);background:var(--bg3);padding:1px 6px;border-radius:4px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sres-row{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--border);transition:background .08s;cursor:default}
+.sres-row:hover{background:var(--bg3)}
+.sres-icon{padding:5px 8px;font-size:13px;flex-shrink:0}
+.sres-info{flex:1;padding:5px 4px;min-width:0}
+.sres-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sres-name.is-dir{color:var(--accent)}
+.sres-name.is-file{color:var(--text)}
+.sres-path{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sres-meta{display:flex;align-items:center;gap:6px;padding:0 10px;flex-shrink:0}
+.sres-sz{font-size:11px;color:var(--text3);white-space:nowrap;width:65px;text-align:right}
+.sres-ow span{display:inline-flex;align-items:center;padding:1px 6px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2)}
+.sres-go{padding:3px 8px;border-radius:var(--radius);border:none;background:var(--accent);color:#fff;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
+.sres-go:hover{opacity:.85}
+.sres-dl{padding:3px 8px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:11px;cursor:pointer;white-space:nowrap;margin-left:4px}
+.sres-dl:hover{background:var(--bg4)}
+.fname{color:var(--text);display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.dname{color:var(--accent);font-weight:500;cursor:pointer;display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.dname:hover{text-decoration:underline}
+.facs{display:flex;gap:3px;justify-content:flex-end;align-items:center}
+input[type=checkbox]{width:12px;height:12px;accent-color:var(--accent);cursor:pointer}
+
+/* EMPTY/SPINNER */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:var(--text3);text-align:center}
+.empty .ei{font-size:34px;margin-bottom:10px;opacity:.35}
+.empty .et{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:5px}
+.empty .es{font-size:11px}
+.spin{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* STATUS */
+.sbar{background:var(--bg2);border-top:1px solid var(--border);padding:3px 14px;font-size:10px;color:var(--text3);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.sdot.ok{background:var(--green)}.sdot.err{background:var(--red)}.sdot.ld{background:var(--yellow);animation:pulse .8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* UPLOAD */
+.uarea{flex:1;overflow-y:auto;padding:14px;background:var(--bg2)}
+.udest{font-size:11px;color:var(--text2);margin-bottom:10px;font-family:'JetBrains Mono',monospace}
+.dropz{border:2px dashed var(--border2);border-radius:10px;padding:28px;text-align:center;color:var(--text2);cursor:pointer;transition:all .2s;background:var(--bg3)}
+.dropz:hover,.dropz.don{border-color:var(--green);background:rgba(26,127,55,.04);color:var(--green)}
+.dzi{font-size:26px;margin-bottom:7px}.dzt{font-size:13px;font-weight:600;margin-bottom:3px}.dzs{font-size:11px;color:var(--text3)}
+.queue{margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.qi{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:5px 10px;display:flex;align-items:center;gap:7px;font-size:11px}
+.qi-nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.qi-sz{color:var(--text3);white-space:nowrap}
+.qi-st{font-size:12px;flex-shrink:0}
+.qi-st.ok{color:var(--green)}.qi-st.err{color:var(--red)}.qi-st.ld{color:var(--yellow);animation:pulse .8s infinite}.qi-st.wt{color:var(--text3)}
+.uacts{display:flex;gap:6px;margin-top:8px}
+
+/* HISTORY PANEL */
+.hov{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s}
+.hov.open{opacity:1;pointer-events:auto}
+.hpanel{position:fixed;top:0;right:0;bottom:0;width:320px;background:var(--bg2);border-left:1px solid var(--border);z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 20px rgba(0,0,0,.1)}
+.hpanel.open{transform:none}
+.hphdr{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--bg3)}
+.hptit{font-size:13px;font-weight:600;flex:1;color:var(--text)}
+.hpcls{width:22px;height:22px;border:1px solid var(--border);background:var(--bg2);border-radius:4px;cursor:pointer;color:var(--text2);font-size:13px;display:flex;align-items:center;justify-content:center}
+.hpcls:hover{background:var(--bg4);color:var(--text)}
+.hpsrch{padding:8px 12px;border-bottom:1px solid var(--border)}
+.hpsrch input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:5px 9px;font-family:inherit;font-size:12px;outline:none}
+.hpsrch input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(9,105,218,.1)}
+.hpsrch input::placeholder{color:var(--text3)}
+.hlist{flex:1;overflow-y:auto;padding:6px}
+.hlist::-webkit-scrollbar{width:3px}
+.hlist::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.hitem{padding:7px 9px;border-radius:var(--radius);cursor:pointer;border:1px solid transparent;transition:all .1s;margin-bottom:2px}
+.hitem:hover{background:var(--bg3);border-color:var(--border)}
+.hitem-top{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.henv{font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;text-transform:uppercase}
+.henv.self{background:rgba(26,127,55,.1);color:var(--green);border:1px solid rgba(26,127,55,.25)}
+.henv.replica{background:rgba(124,58,237,.1);color:#7c3aed;border:1px solid rgba(124,58,237,.25)}
+.henv.prod{background:rgba(9,105,218,.1);color:var(--accent);border:1px solid rgba(9,105,218,.25)}
+.hip{font-size:11px;color:var(--text2)}
+.husr{font-size:10px;color:var(--text3)}
+.hpath{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hemp{text-align:center;padding:24px;color:var(--text3);font-size:11px}
+.hfoot{padding:8px 12px;border-top:1px solid var(--border);background:var(--bg3)}
+
+/* TOAST */
+#toasts{position:fixed;bottom:38px;right:14px;z-index:999;display:flex;flex-direction:column;gap:5px;pointer-events:none}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:11px;min-width:190px;max-width:300px;display:flex;align-items:center;gap:7px;animation:tin .2s ease;pointer-events:auto;box-shadow:0 4px 18px rgba(0,0,0,.1)}
+.toast.ok{border-color:var(--green);color:var(--green)}
+.toast.err{border-color:var(--red);color:var(--red)}
+.toast.info{border-color:var(--accent);color:var(--accent)}
+@keyframes tin{from{transform:translateX(100%);opacity:0}to{transform:none;opacity:1}}
+
+#file-input{display:none}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo"><div class="logo-box">⬡</div>Remote File Console</div>
+
+  <div class="env-tabs">
+    <button class="etab active" data-env="self" onclick="setEnv('self')">Self</button>
+    <button class="etab"        data-env="prod" onclick="setEnv('prod')">Prod</button>
+  </div>
+
+  <div class="topbar-sep"></div>
+
+  <!-- History Save Toggle -->
+  <div class="htog-wrap" onclick="toggleHistSave()" title="Enable or disable history saving">
+    <div class="htog-track" id="hst-track"></div>
+    <span class="htog-lbl">Save History</span>
+  </div>
+
+  <!-- History View Button -->
+  <button class="hbtn" onclick="openHist()">
+    🕐 History <span class="hbadge" id="hbadge">0</span>
+  </button>
+
+  <div class="dev"><span class="dev-badge"><span class="dev-dot"></span>Developed by <span class="dev-name">Shubham Patel</span></span></div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Mode -->
+    <div class="sbs">
+      <div class="sblbl">Operation</div>
+      <div class="mtog">
+        <button class="mbtn dl active" onclick="setMode('dl')">⬇ Download</button>
+        <button class="mbtn ul"        onclick="setMode('ul')">⬆ Upload</button>
+      </div>
+    </div>
+
+    <!-- Connection (replica/prod only) -->
+    <div class="sbs" id="conn-sec" style="display:none">
+      <div class="sblbl">Connection</div>
+
+      <div class="fld">
+        <label>IP Address</label>
+        <select id="ip-sel" onchange="onIPChange()"></select>
+      </div>
+      <div class="fld">
+        <label>New IP</label>
+        <input type="text" id="ip-new" placeholder="e.g. 10.10.10.10" oninput="onManualIP()">
+      </div>
+      <div class="fld">
+        <label>Username</label>
+        <select id="usr-sel" onchange="onUserChange()"></select>
+      </div>
+      <div class="fld">
+        <label>New Username</label>
+        <input type="text" id="usr-new" placeholder="e.g. user_name" oninput="onManualUser()">
+      </div>
+    </div>
+
+    <!-- Path -->
+    <div class="sbs">
+      <div class="sblbl">Path</div>
+      <div class="irow">
+        <input type="text" id="path-in" placeholder="/home/username"
+               onkeydown="if(event.key==='Enter')loadDir()" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:5px 9px;font-family:inherit;font-size:12px;outline:none">
+        <button class="btn pri" onclick="loadDir()" style="padding:5px 10px">Go</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- Toolbar -->
+    <div class="tbar">
+      <button class="nbtn" id="btn-bk" onclick="goBack()" disabled title="Back">←</button>
+      <button class="nbtn" id="btn-fw" onclick="goFwd()"  disabled title="Forward">→</button>
+      <button class="nbtn" onclick="goUp()"    title="Up">↑</button>
+      <button class="nbtn" onclick="loadDir()" title="Refresh">↺</button>
+      <div class="bc" id="bc"><span class="bc-cur">/</span></div>
+      <div class="twrap" onclick="toggleHid()" title="Show/hide dotfiles">
+        <div class="ttrack" id="htrack"></div>
+        <span class="tlbl" id="hlbl">Hidden</span>
+      </div>
+    </div>
+
+    <!-- Search bar -->
+    <div class="srch-wrap">
+      <span style="font-size:13px">🔍</span>
+      <input class="srch-inp" id="srch-inp" placeholder="Search filename recursively from current folder…"
+             onkeydown="if(event.key==='Enter')doSearch()">
+      <div class="srch-spin" id="srch-spin"></div>
+      <span class="srch-badge" id="srch-badge"></span>
+      <button class="srch-btn" id="srch-btn" onclick="doSearch()">Find</button>
+      <button class="srch-clr" id="srch-clr" onclick="clearSearch()" style="display:none">✕ Clear</button>
+    </div>
+
+    <!-- Selection action bar -->
+    <div class="dlbar" id="dlbar" style="display:none">
+      <span class="dlbar-info"><strong id="selcnt">0</strong> item(s) selected</span>
+      <button class="btn pri" onclick="dlSelected()">⬇ Download Selected</button>
+      <button class="btn"     onclick="clearSel()">✕ Clear</button>
+    </div>
+
+    <!-- File table -->
+    <div class="farea" id="farea">
+      <div class="empty"><div class="ei">📂</div><div class="et">No directory loaded</div><div class="es">Pick an environment, enter a path and click Go</div></div>
+    </div>
+
+    <!-- Search results -->
+    <div id="sarea" style="display:none;flex:1;overflow:auto;flex-direction:column"></div>
+
+    <!-- Upload view -->
+    <div class="uarea" id="uarea" style="display:none">
+      <div class="udest" id="udest"></div>
+      <div class="dropz" id="dropz"
+           ondragover="event.preventDefault();this.classList.add('don')"
+           ondragleave="this.classList.remove('don')"
+           ondrop="handleDrop(event)"
+           onclick="document.getElementById('file-input').click()">
+        <div class="dzi">☁</div>
+        <div class="dzt">Drop files here or click to select</div>
+        <div class="dzs">Any type · Multiple files OK</div>
+      </div>
+      <div class="queue" id="ul-q"></div>
+      <div class="uacts" id="ul-acts"></div>
+    </div>
+
+    <!-- Status bar -->
+    <div class="sbar">
+      <div class="sdot" id="sdot"></div>
+      <span id="stxt">Ready</span>
+      <div style="flex:1"></div>
+      <span id="scnt"></span>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY PANEL -->
+<div class="hov" id="hov" onclick="closeHist()"></div>
+<div class="hpanel" id="hpanel">
+  <div class="hphdr">
+    <span>🕐</span>
+    <span class="hptit">Browse History</span>
+    <button class="hpcls" onclick="closeHist()">✕</button>
+  </div>
+  <div class="hpsrch">
+    <input type="text" id="hsrch" placeholder="Search history…" oninput="renderHist()">
+  </div>
+  <div class="hlist" id="hlist"><div class="hemp">No history yet</div></div>
+  <div class="hfoot">
+    <div id="hfoot-normal" style="display:flex;gap:6px">
+      <button class="btn btn-full" style="flex:1" onclick="enterHistSelect()">☑ Select to Clear</button>
+    </div>
+    <div id="hfoot-select" style="display:none;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11px;color:var(--text2)">
+          <input type="checkbox" id="hsel-all" onchange="histSelAll(this.checked)" style="width:12px;height:12px;accent-color:var(--accent)"> Select All
+        </label>
+        <span id="hsel-cnt" style="flex:1;text-align:right;font-size:10px;color:var(--text3)">0 selected</span>
+      </div>
+      <div style="display:flex;gap:5px">
+        <button class="btn dng" style="flex:1" onclick="clearSelHist()">🗑 Clear Selected</button>
+        <button class="btn" onclick="exitHistSelect()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="file-input" multiple onchange="onFileSel(event)">
+<div id="toasts"></div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────
+const S = {
+  env:'self', mode:'dl', ip:'self', username:'self', path:'',
+  selfIP:'', selfUser:'', dirData:null, selected:new Set(),
+  navHist:[], navIdx:-1, showHid:false,
+  browseHist:[], ulQueue:[], config:null,
+  sortBy:'name', sortDir:1,
+  histEnabled: false,   // history saving toggle (also gates path saving to backend)
+  histSelectMode: false,
+  histSelected: new Set(),
+};
+
+// ── BOOT ──────────────────────────────────────────────────────
+async function boot() {
+  try { S.browseHist = JSON.parse(localStorage.getItem('rv_hist')||'[]'); } catch(_){}
+  // Robust read: compare string directly, not JSON.parse
+  S.histEnabled = localStorage.getItem('rv_hist_enabled') === 'true';
+  g('hst-track').classList.toggle('on', S.histEnabled);
+  updBadge();
+  const cfg = await api('/api/config');
+  S.config = cfg;
+  S.selfIP   = cfg.self_ip   || '';
+  S.selfUser = cfg.self_user || '';
+  setEnv('self', true);
+}
+
+// ── HIST SAVE TOGGLE ──────────────────────────────────────────
+function toggleHistSave() {
+  S.histEnabled = !S.histEnabled;
+  g('hst-track').classList.toggle('on', S.histEnabled);
+  // Write as plain string 'true'/'false' for reliable cross-session reads
+  localStorage.setItem('rv_hist_enabled', S.histEnabled ? 'true' : 'false');
+  updBadge();
+  toast('info', S.histEnabled ? 'History saving enabled' : 'History saving disabled');
+}
+
+// ── ENV ──────────────────────────────────────────────────────
+async function setEnv(env, silent) {
+  S.env = env;
+  document.querySelectorAll('.etab').forEach(b => b.classList.toggle('active', b.dataset.env===env));
+  const rem = env !== 'self';
+  document.getElementById('conn-sec').style.display = rem ? '' : 'none';
+  if (rem) {
+    g('path-in').value = '';          // clear path until IP+user chosen
+    await refreshIPList();
+  } else {
+    S.ip='self'; S.username='self';
+    // Self env: default to /home/<self_user>
+    g('path-in').value = S.selfUser ? '/home/' + S.selfUser : '';
+  }
+}
+
+// ── MODE ──────────────────────────────────────────────────────
+function setMode(m) {
+  S.mode = m;
+  document.querySelectorAll('.mbtn').forEach(b => b.classList.toggle('active', b.classList.contains(m)));
+  document.getElementById('farea').style.display = m==='dl' ? '' : 'none';
+  document.getElementById('uarea').style.display = m==='ul' ? '' : 'none';
+  document.getElementById('dlbar').style.display = 'none';
+  if (m==='ul') renderUL();
+}
+
+// ── HIDDEN TOGGLE ──────────────────────────────────────────────
+function toggleHid() {
+  S.showHid = !S.showHid;
+  document.getElementById('htrack').classList.toggle('on', S.showHid);
+  document.getElementById('hlbl').textContent = S.showHid ? 'Showing hidden' : 'Hidden';
+  if (S.dirData) renderTable();
+}
+function vis(items) {
+  if (!items) return [];
+  return S.showHid ? items : items.filter(i => !i.name.startsWith('.'));
+}
+
+// ── IP / USER DROPDOWNS ──────────────────────────────────────
+async function refreshIPList() {
+  const sel = document.getElementById('ip-sel');
+  sel.innerHTML = '';
+  addOpt(sel,'','— select IP —');
+  const d = await api('/api/ips/'+S.env);
+  (d.ips||[]).forEach(ip => addOpt(sel, ip, ip));
+  // Do NOT auto-select first IP or auto-fill path — user must choose explicitly
+  S.ip = '';
+  sel.value = '';
+  // Reset user dropdown to blank as well
+  const usel = document.getElementById('usr-sel');
+  usel.innerHTML = ''; addOpt(usel,'','— select user —');
+  S.username = '';
+  g('path-in').value = '';
+}
+async function onIPChange() {
+  const m = document.getElementById('ip-new').value.trim();
+  S.ip = m || document.getElementById('ip-sel').value;
+  await refreshUserList();
+}
+function onManualIP() {
+  const v = document.getElementById('ip-new').value.trim();
+  if (v) { S.ip=v; document.getElementById('ip-sel').value=''; }
+}
+async function refreshUserList() {
+  const sel = document.getElementById('usr-sel');
+  sel.innerHTML=''; addOpt(sel,'','— select user —');
+  if (!S.ip) return;
+  const d = await api('/api/users',{env:S.env,ip:S.ip});
+  (d.users||[]).forEach(u => addOpt(sel,u,u));
+  // Do NOT auto-select first user or auto-fill path — user must choose explicitly
+  S.username = '';
+  sel.value = '';
+}
+async function onUserChange() {
+  const m = document.getElementById('usr-new').value.trim();
+  S.username = m || document.getElementById('usr-sel').value;
+  refreshPathHint();
+}
+function onManualUser() {
+  const v = document.getElementById('usr-new').value.trim();
+  if (v) { S.username=v; document.getElementById('usr-sel').value=''; }
+  refreshPathHint();
+}
+
+// ── DEFAULT PATH: always /home/username (forced, no sub-paths shown) ──────────
+function refreshPathHint() {
+  const usr = (g('usr-new') ? g('usr-new').value.trim() : '') || S.username;
+  if (!usr || usr === 'self') {
+    g('path-in').value = '';
+    return;
+  }
+  // Always set /home/<username> — overwrite whatever was there
+  g('path-in').value = '/home/' + usr;
+}
+
+function addOpt(sel,val,lbl){const o=document.createElement('option');o.value=val;o.textContent=lbl;sel.appendChild(o)}
+
+// ── LOAD DIR ──────────────────────────────────────────────────
+async function loadDir(path) {
+  const mnIP  = g('ip-new')  ? g('ip-new').value.trim()  : '';
+  const mnUsr = g('usr-new') ? g('usr-new').value.trim() : '';
+  const ipSel = g('ip-sel')  ? g('ip-sel').value         : '';
+  const uSel  = g('usr-sel') ? g('usr-sel').value        : '';
+
+  const ip  = S.env==='self' ? 'self' : (mnIP ||ipSel ||S.ip      ||'self');
+  const usr = S.env==='self' ? 'self' : (mnUsr||uSel  ||S.username||'self');
+  const p   = (path!==undefined&&path!==null) ? path : (g('path-in').value.trim()||'');
+
+  S.ip=ip; S.username=usr; S.path=p;
+  setSt('ld','Loading…'); showSpin();
+
+  const data = await api('/api/browse',{env:S.env,ip,username:usr,path:p,path_save_enabled:S.histEnabled});
+
+  if (data.error && !Array.isArray(data.items)) {
+    setSt('err',data.error); showErr(data.error); return;
+  }
+
+  S.dirData=data; S.selected.clear();
+  const cwd = data.cwd||p; S.path=cwd;
+
+  const top = S.navHist[S.navIdx];
+  if (!top||top!==cwd) {
+    S.navHist=S.navHist.slice(0,S.navIdx+1);
+    S.navHist.push(cwd); S.navIdx=S.navHist.length-1;
+  }
+
+  g('path-in').value=cwd;
+  updBC(cwd); updNavBtns(); renderTable(); updDLBar();
+  addHist(S.env,ip,usr,cwd);
+
+  const all=(data.items||[]).length;
+  const vi=vis(data.items||[]).length;
+  setSt('ok',all+' items');
+  g('scnt').textContent=vi+' shown'+(all-vi?' ('+(all-vi)+' hidden)':'');
+}
+
+function g(id){return document.getElementById(id)}
+
+// ── BREADCRUMB ──────────────────────────────────────────────
+function updBC(path) {
+  const bc=g('bc'); bc.innerHTML='';
+  const parts=(path||'/').split('/').filter(Boolean);
+  const r=mk('span','bc-c','/'); r.onclick=()=>loadDir('/'); bc.appendChild(r);
+  parts.forEach((part,i)=>{
+    bc.appendChild(mk('span','bc-s',' › '));
+    const fp='/'+parts.slice(0,i+1).join('/');
+    if(i<parts.length-1){const c=mk('span','bc-c',part);c.onclick=()=>loadDir(fp);bc.appendChild(c);}
+    else bc.appendChild(mk('span','bc-cur',part));
+  });
+}
+function mk(t,c,tx){const e=document.createElement(t);if(c)e.className=c;if(tx)e.textContent=tx;return e}
+
+// ── NAV ──────────────────────────────────────────────────────
+function goBack(){if(S.navIdx>0){S.navIdx--;loadDir(S.navHist[S.navIdx]);}}
+function goFwd() {if(S.navIdx<S.navHist.length-1){S.navIdx++;loadDir(S.navHist[S.navIdx]);}}
+function goUp()  {const p=(S.path||'/').replace(/\/+$/,'');const up=p.includes('/')?(p.replace(/\/[^/]+$/,'')||'/'):'/';loadDir(up);}
+function updNavBtns(){g('btn-bk').disabled=S.navIdx<=0;g('btn-fw').disabled=S.navIdx>=S.navHist.length-1;}
+
+// ── RENDER TABLE ──────────────────────────────────────────────
+function renderTable() {
+  const area=g('farea');
+  if(!S.dirData){area.innerHTML=emptyH('📂','No directory loaded','Enter a path and click Go');return;}
+
+  // If server returned raw ls -la output, parse it
+  if(S.dirData.raw && (!S.dirData.items||!S.dirData.items.length)){
+    const parsed=parseLs(S.dirData.raw, S.path);
+    if(parsed.length) S.dirData.items=parsed;
+    else{area.innerHTML=`<pre style="color:var(--text2);font-size:11px;padding:14px;white-space:pre-wrap;font-family:'JetBrains Mono',monospace">${escH(S.dirData.raw)}</pre>`;return;}
+  }
+
+  const all=S.dirData.items||[];
+  const items=vis(all);
+  const sorted=sortIt([...items]);
+
+  if(!sorted.length){area.innerHTML=emptyH('🗂','Empty directory',escH(S.dirData.cwd||''));return;}
+
+  const rows=sorted.map(item=>{
+    const sel=S.selected.has(item.path);
+    const hid=item.name.startsWith('.');
+    const icon=item.is_dir?'📁':fIcon(item.name);
+    const sp=escA(item.path),sn=escA(item.name);
+    const rc=(sel?' sel':'')+(hid?' dim':'');
+
+    // Show size for both files and folders (show '—' only when size is 0/unknown)
+    const szCell = (item.size && item.size > 0) ? fmtSz(item.size) : '—';
+
+    const ac = `<button class="btn btn-xs pri" onclick="event.stopPropagation();trigDL('${sp}','${sn}')" title="${item.is_dir?'Download folder as tar.gz':'Download file'}">⬇ ${item.is_dir?'tar.gz':'Download'}</button>`;
+
+    const ownerCell = item.owner ? `<span title="${escH(item.owner)}">${escH(item.owner)}</span>` : '—';
+
+    return `<tr class="${rc}" onclick="rClick(event,'${sp}','${sn}',${item.is_dir})" ondblclick="rDbl(event,'${sp}',${item.is_dir})">
+      <td class="tcb" onclick="event.stopPropagation()"><input type="checkbox" ${sel?'checked':''} onchange="togSel('${sp}','${sn}')"></td>
+      <td class="tic">${icon}</td>
+      <td class="tnm">${item.is_dir?`<span class="dname" onclick="event.stopPropagation();loadDir('${sp}')">${escH(item.name)}</span>`:`<span class="fname">${escH(item.name)}</span>`}</td>
+      <td class="tsz">${szCell}</td>
+      <td class="tdt">${fmtDt(item.mtime)}</td>
+      <td class="tow">${ownerCell}</td>
+      <td class="tac">${ac}</td>
+    </tr>`;
+  }).join('');
+
+  area.innerHTML=`<table>
+    <thead><tr>
+      <th class="tcb"><input type="checkbox" onchange="selAll(this)"></th>
+      <th style="width:30px"></th>
+      <th class="${S.sortBy==='name'?'sorted':''}" onclick="setSort('name')">Name<span class="sic">${sArr('name')}</span></th>
+      <th class="tsz ${S.sortBy==='size'?'sorted':''}" onclick="setSort('size')" style="text-align:right">Size<span class="sic">${sArr('size')}</span></th>
+      <th class="tdt ${S.sortBy==='mtime'?'sorted':''}" onclick="setSort('mtime')">Modified<span class="sic">${sArr('mtime')}</span></th>
+      <th class="tow">Owner</th>
+      <th class="tac"></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// ── SEARCH ───────────────────────────────────────────────────────
+async function doSearch() {
+  const q = g('srch-inp').value.trim();
+  if (!q) { toast('warn', 'Enter a filename or pattern to search'); return; }
+  if (!S.path) { toast('warn', 'Load a directory first'); return; }
+
+  // Show spinner, disable button
+  g('srch-spin').style.display = 'block';
+  g('srch-btn').disabled = true;
+  g('srch-badge').textContent = 'Searching…';
+  g('srch-clr').style.display = '';
+
+  // Hide browse area, show search area
+  g('farea').style.display = 'none';
+  const sa = g('sarea');
+  sa.style.display = 'flex';
+  sa.innerHTML = `<div class="empty"><div class="ei">🔍</div><div class="et">Searching…</div><div class="es">Running find recursively from <code>${escH(S.path)}</code></div></div>`;
+
+  try {
+    const d = await api('/api/search', {
+      env: S.env, ip: S.ip, username: S.username,
+      path: S.path, query: q
+    });
+    renderSearchResults(d, q);
+  } catch(e) {
+    sa.innerHTML = `<div class="empty"><div class="ei">❌</div><div class="et">Search failed</div><div class="es">${escH(String(e))}</div></div>`;
+    g('srch-badge').textContent = '';
+  } finally {
+    g('srch-spin').style.display = 'none';
+    g('srch-btn').disabled = false;
+  }
+}
+
+function clearSearch() {
+  g('srch-inp').value = '';
+  g('srch-badge').textContent = '';
+  g('srch-clr').style.display = 'none';
+  g('sarea').style.display = 'none';
+  g('sarea').innerHTML = '';
+  g('farea').style.display = '';
+}
+
+function renderSearchResults(d, q) {
+  const sa = g('sarea');
+  const items = d.items || [];
+  const base  = escH(d.base || S.path);
+
+  if (d.error && !items.length) {
+    sa.innerHTML = `<div class="empty"><div class="ei">❌</div><div class="et">Search error</div><div class="es">${escH(d.error)}</div></div>`;
+    g('srch-badge').textContent = '';
+    return;
+  }
+
+  g('srch-badge').textContent = items.length ? items.length + ' result' + (items.length > 1 ? 's' : '') + (items.length >= 500 ? ' (limit)' : '') : 'No results';
+
+  if (!items.length) {
+    sa.innerHTML = `<div class="empty"><div class="ei">🔍</div><div class="et">No results for "${escH(q)}"</div><div class="es">Try a shorter or different pattern</div></div>`;
+    return;
+  }
+
+  const rows = items.map(item => {
+    const sp = escA(item.path), sn = escA(item.name), pp = escA(item.parent || '');
+    const icon = item.is_dir ? '📁' : fIcon(item.name);
+    const sz   = item.size > 0 ? fmtSz(item.size) : '—';
+    const owner = item.owner ? `<span title="${escH(item.owner)}">${escH(item.owner)}</span>` : '';
+    const dt   = fmtDt(item.mtime);
+    const navBtn = item.is_dir
+      ? `<button class="sres-go" onclick="clearSearch();loadDir('${sp}')" title="Open folder">Open</button>`
+      : `<button class="sres-go" onclick="clearSearch();loadDir('${pp}')" title="Go to parent folder">Go to</button>`;
+
+    return `<div class="sres-row">
+      <div class="sres-icon">${icon}</div>
+      <div class="sres-info">
+        <div class="sres-name ${item.is_dir?'is-dir':'is-file'}">${escH(item.name)}</div>
+        <div class="sres-path" title="${escH(item.path)}">${escH(item.path)}</div>
+      </div>
+      <div class="sres-meta">
+        <span class="sres-sz">${sz}</span>
+        <span class="sres-ow">${owner}</span>
+        <span style="color:var(--text3);font-size:10px;white-space:nowrap;width:120px;display:inline-block">${dt}</span>
+        ${navBtn}
+        <button class="sres-dl" onclick="event.stopPropagation();trigDL('${sp}','${sn}')" title="${item.is_dir?'Download as tar.gz':'Download'}">⬇</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  sa.innerHTML = `
+    <div class="sres-header">
+      <span>Results for</span>
+      <span class="sres-kw">${escH(q)}</span>
+      <span>from</span>
+      <span class="sres-base" title="${base}">${base}</span>
+      <span style="color:var(--text3)">·</span>
+      <strong style="color:var(--text)">${items.length}</strong>
+      <span style="color:var(--text3)">item${items.length!==1?'s':''}${items.length>=500?' (capped at 500)':''}</span>
+    </div>
+    ${rows}`;
+}
+
+// ── PARSE ls -la OUTPUT ──────────────────────────────────────
+// Extract mtime from ls -la date fields (month day time/year)
+function parseMtime(parts) {
+  const MONTHS = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  if (parts.length < 8) return 0;
+  const month = MONTHS[parts[5]];
+  if (month === undefined) return 0;
+  const day = parseInt(parts[6], 10);
+  const timeOrYear = parts[7];
+  const now = new Date();
+  let year, hours = 0, minutes = 0;
+  if (timeOrYear.includes(':')) {
+    // Recent file — has HH:MM but no year; assume current year
+    year = now.getFullYear();
+    const tp = timeOrYear.split(':');
+    hours = parseInt(tp[0], 10) || 0;
+    minutes = parseInt(tp[1], 10) || 0;
+    // If the resulting date is in the future it must belong to last year
+    const d = new Date(year, month, day, hours, minutes);
+    if (d > now) year--;
+  } else {
+    year = parseInt(timeOrYear, 10) || now.getFullYear();
+  }
+  const d = new Date(year, month, day, hours, minutes);
+  return isNaN(d.getTime()) ? 0 : Math.floor(d.getTime() / 1000);
+}
+
+function parseLs(raw, base) {
+  const items=[];
+  for(const line of raw.split('\n')){
+    if(!line.trim()||line.startsWith('total')) continue;
+    const parts=line.trim().split(/\s+/);
+    if(parts.length<9) continue;
+    const name=parts.slice(8).join(' ');
+    if(name==='.'||name==='..') continue;
+    const isDir=parts[0].startsWith('d');
+    const size=parseInt(parts[4],10)||0;
+    const owner=parts[2]||'';
+    const mtime=parseMtime(parts);
+    items.push({name,path:(base||'').replace(/\/$/,'')+'/'+name,is_dir:isDir,size,mtime,owner});
+  }
+  return items;
+}
+
+// Sort
+function sortIt(items){
+  return items.sort((a,b)=>{
+    if(a.is_dir!==b.is_dir)return a.is_dir?-1:1;
+    let va=a[S.sortBy],vb=b[S.sortBy];
+    if(typeof va==='string'){va=va.toLowerCase();vb=vb.toLowerCase();}
+    return(va<vb?-1:va>vb?1:0)*S.sortDir;
+  });
+}
+function setSort(col){S.sortDir=(S.sortBy===col)?-S.sortDir:1;S.sortBy=col;renderTable();}
+function sArr(c){return S.sortBy!==c?'↕':S.sortDir===1?'↑':'↓';}
+
+// ── SELECTION ──────────────────────────────────────────────────
+function rClick(e,path,name,isDir){
+  if(['INPUT','BUTTON'].includes(e.target.tagName))return;
+  if(isDir)return;
+  togSel(path,name);
+}
+function rDbl(e,path,isDir){
+  if(['INPUT','BUTTON'].includes(e.target.tagName))return;
+  if(isDir)loadDir(path);
+}
+function togSel(path){if(S.selected.has(path))S.selected.delete(path);else S.selected.add(path);renderTable();updDLBar();}
+function selAll(cb){vis(S.dirData?.items||[]).forEach(i=>cb.checked?S.selected.add(i.path):S.selected.delete(i.path));renderTable();updDLBar();}
+function clearSel(){S.selected.clear();renderTable();updDLBar();}
+function updDLBar(){const show=S.mode==='dl'&&S.selected.size>0;g('dlbar').style.display=show?'':'none';if(g('selcnt'))g('selcnt').textContent=S.selected.size;}
+
+// ── SET PATH ──────────────────────────────────────────────────
+function setPath(path){
+  S.path=path; g('path-in').value=path;
+  toast('info','Path set to: '+path);
+}
+
+// ── DOWNLOAD ──────────────────────────────────────────────────
+function dlSelected(){
+  if(!S.selected.size)return;
+  const paths=[...S.selected];
+  paths.forEach((p,i)=>setTimeout(()=>trigDL(p,p.split('/').pop()),i*800));
+  toast('info','⬇ Downloading '+paths.length+' item(s)');
+  clearSel();
+}
+
+function trigDL(path, name) {
+  const ip  = S.ip==='self'?'self':S.ip;
+  const usr = S.username==='self'?'self':S.username;
+  const fn  = name||path.split('/').pop()||'download';
+  fetch('/api/download',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({env:S.env,ip,username:usr,path})
+  }).then(async res=>{
+    if(!res.ok){let m='Download failed';try{const j=await res.json();m=j.error||m;}catch(_){}toast('err',m);return;}
+    const disp=res.headers.get('Content-Disposition')||'';
+    const match=disp.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+    const dl=match?match[1].replace(/['"]/g,''):fn;
+    const blob=await res.blob();
+    const url=URL.createObjectURL(blob);
+    const a=Object.assign(document.createElement('a'),{href:url,download:dl});
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+    toast('ok','✓ Downloaded '+dl);
+  }).catch(e=>toast('err','Error: '+e.message));
+}
+
+// ── UPLOAD ──────────────────────────────────────────────────
+function renderUL(){
+  const dest=g('udest');
+  if(S.path){dest.innerHTML='Uploading to: <span style="color:var(--green)">'+escH(S.path)+'</span>';}
+  else{dest.innerHTML='<span style="color:var(--yellow)">⚠ Browse to a folder first to set destination</span>';}
+  renderULQ();
+}
+function renderULQ(){
+  const q=g('ul-q'),a=g('ul-acts');
+  if(!q)return;
+  q.innerHTML=S.ulQueue.map((f,i)=>`
+    <div class="qi">
+      <span class="qi-st ${f.status||'wt'}">${f.status==='ok'?'✓':f.status==='err'?'✗':f.status==='ld'?'⏳':'○'}</span>
+      <span class="qi-nm">${escH(f.name)}</span>
+      <span class="qi-sz">${fmtSz(f.size)}</span>
+      ${f.status!=='ok'&&f.status!=='ld'?`<button class="btn btn-xs" onclick="S.ulQueue.splice(${i},1);renderULQ()">✕</button>`:''}
+    </div>`).join('');
+  a.innerHTML=S.ulQueue.length?`<button class="btn suc" onclick="startUL()">🚀 Upload All</button><button class="btn dng" onclick="S.ulQueue=[];renderULQ()">✕ Clear</button>`:'';
+}
+function onFileSel(e){Array.from(e.target.files).forEach(f=>S.ulQueue.push({file:f,name:f.name,size:f.size,status:'wt'}));e.target.value='';renderULQ();}
+function handleDrop(e){e.preventDefault();g('dropz').classList.remove('don');Array.from(e.dataTransfer.files).forEach(f=>S.ulQueue.push({file:f,name:f.name,size:f.size,status:'wt'}));renderULQ();}
+
+async function startUL(){
+  if(!S.path){toast('err','Browse to a destination folder first');return;}
+  const ip=S.ip==='self'?'self':S.ip, usr=S.username==='self'?'self':S.username;
+  setSt('ld','Uploading…');
+  for(let i=0;i<S.ulQueue.length;i++){
+    const item=S.ulQueue[i];
+    if(item.status==='ok')continue;
+    item.status='ld';renderULQ();
+    const fd=new FormData();
+    fd.append('env',S.env);fd.append('ip',ip);fd.append('username',usr);fd.append('path',S.path);fd.append('path_save_enabled',S.histEnabled?'true':'false');fd.append('files',item.file);
+    try{const res=await fetch('/api/upload',{method:'POST',body:fd});const d=await res.json();const r=d.results&&d.results[0];item.status=(r&&r.status==='ok')?'ok':'err';}
+    catch(e){item.status='err';item.error=e.message;}
+    renderULQ();
+  }
+  const ok=S.ulQueue.filter(x=>x.status==='ok').length,err=S.ulQueue.filter(x=>x.status==='err').length;
+  setSt(err?'err':'ok',`Upload: ${ok} done${err?', '+err+' failed':''}`);
+  toast(err?'err':'ok',`Upload complete: ${ok} OK${err?', '+err+' failed':''}`);
+}
+
+// ── HISTORY ──────────────────────────────────────────────────
+function addHist(env,ip,usr,path){
+  // Only save history when enabled
+  if (!S.histEnabled) return;
+  S.browseHist=S.browseHist.filter(h=>!(h.env===env&&h.ip===ip&&h.usr===usr&&h.path===path));
+  S.browseHist.unshift({env,ip,usr,path,ts:Date.now()});
+  if(S.browseHist.length>100)S.browseHist.pop();
+  try{localStorage.setItem('rv_hist',JSON.stringify(S.browseHist));}catch(_){}
+  updBadge(); renderHist();
+}
+function updBadge(){g('hbadge').textContent=S.browseHist.length;}
+function openHist(){g('hov').classList.add('open');g('hpanel').classList.add('open');renderHist();}
+function closeHist(){g('hov').classList.remove('open');g('hpanel').classList.remove('open');}
+
+function renderHist(){
+  const q=(g('hsrch').value||'').toLowerCase();
+  let items=S.browseHist;
+  if(q)items=items.filter(h=>h.path.toLowerCase().includes(q)||h.ip.toLowerCase().includes(q)||h.usr.toLowerCase().includes(q)||h.env.toLowerCase().includes(q));
+  const lst=g('hlist');
+  if(!items.length){
+    lst.innerHTML=`<div class="hemp">${!S.histEnabled?'History saving is disabled — toggle "Save History" to start':'No history yet'}</div>`;
+    return;
+  }
+  const sel=S.histSelectMode;
+  lst.innerHTML=items.map((h,i)=>{
+    const key=escA(h.env+'|'+h.ip+'|'+h.usr+'|'+h.path);
+    const isChk=S.histSelected.has(h.env+'|'+h.ip+'|'+h.usr+'|'+h.path);
+    const cb=sel?`<input type="checkbox" ${isChk?'checked':''} onclick="event.stopPropagation()" onchange="histToggleSel('${key}',this.checked)" style="width:12px;height:12px;accent-color:var(--accent);flex-shrink:0;cursor:pointer">` :'';
+    return `<div class="hitem" style="${sel?'cursor:default':''}" onclick="${sel?`histToggleSelClick('${key}')`:('loadHist('+i+')')}">
+      <div class="hitem-top" style="gap:6px">${cb}<span class="henv ${h.env}">${h.env}</span><span class="hip">${escH(h.ip==='self'?(S.selfIP||'self'):h.ip)}</span><span class="husr">· ${escH(h.usr)}</span></div>
+      <div class="hpath">${escH(h.path)}</div>
+    </div>`;
+  }).join('');
+  if(sel) updHistSelCnt();
+}
+
+async function loadHist(i){
+  const q=(g('hsrch').value||'').toLowerCase();
+  let items=S.browseHist;
+  if(q)items=items.filter(h=>h.path.toLowerCase().includes(q)||h.ip.includes(q)||h.usr.includes(q)||h.env.includes(q));
+  const h=items[i]; if(!h)return;
+  closeHist();
+  await setEnv(h.env, true);
+  if(h.env!=='self'){
+    await refreshIPList();
+    const isel=g('ip-sel'),usel=g('usr-sel');
+    const iopt=[...isel.options].find(o=>o.value===h.ip);
+    if(iopt){isel.value=h.ip;S.ip=h.ip;}else{g('ip-new').value=h.ip;S.ip=h.ip;}
+    await refreshUserList();
+    const uopt=[...usel.options].find(o=>o.value===h.usr);
+    if(uopt){usel.value=h.usr;S.username=h.usr;}else{g('usr-new').value=h.usr;S.username=h.usr;}
+  }
+  g('path-in').value=h.path;
+  loadDir(h.path);
+}
+
+// ── HISTORY SELECT-CLEAR ──────────────────────────────────────
+function enterHistSelect(){
+  S.histSelectMode=true; S.histSelected.clear();
+  g('hfoot-normal').style.display='none';
+  g('hfoot-select').style.display='flex';
+  renderHist();
+}
+function exitHistSelect(){
+  S.histSelectMode=false; S.histSelected.clear();
+  g('hfoot-normal').style.display='flex';
+  g('hfoot-select').style.display='none';
+  const sa=g('hsel-all'); if(sa)sa.checked=false;
+  renderHist();
+}
+function histToggleSel(key,checked){ if(checked)S.histSelected.add(key); else S.histSelected.delete(key); updHistSelCnt(); }
+function histToggleSelClick(key){ if(S.histSelected.has(key))S.histSelected.delete(key); else S.histSelected.add(key); renderHist(); }
+function histSelAll(checked){
+  const q=(g('hsrch').value||'').toLowerCase();
+  let items=S.browseHist;
+  if(q)items=items.filter(h=>h.path.toLowerCase().includes(q)||h.ip.toLowerCase().includes(q)||h.usr.toLowerCase().includes(q)||h.env.toLowerCase().includes(q));
+  items.forEach(h=>{ const k=h.env+'|'+h.ip+'|'+h.usr+'|'+h.path; if(checked)S.histSelected.add(k); else S.histSelected.delete(k); });
+  renderHist();
+}
+function updHistSelCnt(){ const c=S.histSelected.size; if(g('hsel-cnt'))g('hsel-cnt').textContent=c+' selected'; }
+async function clearSelHist(){
+  if(!S.histSelected.size){toast('info','No items selected');return;}
+  const toDelete=S.browseHist.filter(h=>S.histSelected.has(h.env+'|'+h.ip+'|'+h.usr+'|'+h.path));
+  S.browseHist=S.browseHist.filter(h=>!S.histSelected.has(h.env+'|'+h.ip+'|'+h.usr+'|'+h.path));
+  try{localStorage.setItem('rv_hist',JSON.stringify(S.browseHist));}catch(_){}
+  // Remove non-self entries from backend conf
+  const backendItems=toDelete.filter(h=>h.env!=='self'&&!isSelfIP(h.ip));
+  if(backendItems.length){ try{await api('/api/history/delete',{items:backendItems});}catch(_){} }
+  exitHistSelect(); updBadge();
+  toast('ok','Cleared '+toDelete.length+' item(s)');
+}
+function isSelfIP(ip){return ip==='self'||ip==='localhost'||ip==='127.0.0.1'||ip===S.selfIP;}
+
+// ── API ──────────────────────────────────────────────────────
+async function api(url,body){
+  try{const o=body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{method:'GET'};return await(await fetch(url,o)).json();}
+  catch(e){return{error:e.message};}
+}
+
+// ── HELPERS ──────────────────────────────────────────────────
+function setSt(t,m){g('sdot').className='sdot '+(t==='ld'?'ld':t==='err'?'err':'ok');g('stxt').textContent=m;}
+function showSpin(){g('farea').innerHTML=`<div class="empty"><div class="spin"></div><div class="es" style="margin-top:10px">Loading…</div></div>`;}
+function showErr(m){g('farea').innerHTML=`<div class="empty"><div class="ei">⚠</div><div class="et" style="color:var(--red)">Error</div><div class="es">${escH(m)}</div></div>`;}
+function emptyH(ic,t,s){return`<div class="empty"><div class="ei">${ic}</div><div class="et">${t}</div><div class="es">${s}</div></div>`;}
+function toast(type,msg,dur=3200){
+  const el=Object.assign(document.createElement('div'),{className:`toast ${type}`});
+  el.innerHTML=`<span>${type==='ok'?'✓':type==='err'?'✗':'ℹ'}</span><span>${escH(msg)}</span>`;
+  g('toasts').appendChild(el);
+  setTimeout(()=>{el.style.cssText+='opacity:0;transform:translateX(110%);transition:all .3s';setTimeout(()=>el.remove(),300);},dur);
+}
+function fmtSz(b){if(!b||b===0)return'0 B';const u=['B','KB','MB','GB','TB'];let i=0,v=b;while(v>=1024&&i<u.length-1){v/=1024;i++;}return v.toFixed(i?1:0)+' '+u[i];}
+function fmtDt(ts){if(!ts)return'—';return new Date(ts*1000).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function fIcon(n){const e=(n.split('.').pop()||'').toLowerCase();const m={zip:'🗜',tar:'🗜',gz:'🗜','7z':'🗜',rar:'🗜',py:'🐍',sh:'📜',js:'📜',ts:'📜',html:'🌐',css:'🎨',json:'📋',xml:'📋',yaml:'📋',yml:'📋',pdf:'📕',doc:'📘',docx:'📘',xls:'📗',xlsx:'📗',ppt:'📙',pptx:'📙',txt:'📄',jpg:'🖼',jpeg:'🖼',png:'🖼',gif:'🖼',svg:'🖼',mp4:'🎬',avi:'🎬',mkv:'🎬',mp3:'🎵',wav:'🎵',csv:'📊',conf:'⚙',log:'📋',sql:'🗃',db:'🗃'};return m[e]||'📄';}
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function escA(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+
+boot();
+</script>
+</body>
+</html>
